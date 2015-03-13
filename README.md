@@ -1,7 +1,8 @@
-PPCast: A on-demand video broadcasting system
-=============================================
+PPCast
+======
+A on-demand video broadcasting system
 
-#Features  
+## Features  
 * Works in a peer-to-peer fashion
 * Large scale broadcasting
 * Cross platforms
