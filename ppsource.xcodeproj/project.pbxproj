@@ -1,0 +1,434 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FEB443C21ABA345E008EECB3 /* buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443A01ABA345E008EECB3 /* buffer.cpp */; };
+		FEB443C31ABA345E008EECB3 /* endpoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443A21ABA345E008EECB3 /* endpoint.cpp */; };
+		FEB443C41ABA345E008EECB3 /* logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443A41ABA345E008EECB3 /* logger.cpp */; };
+		FEB443C51ABA345E008EECB3 /* mediaslice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443A61ABA345E008EECB3 /* mediaslice.cpp */; };
+		FEB443C61ABA345E008EECB3 /* network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443A81ABA345E008EECB3 /* network.cpp */; };
+		FEB443C71ABA345E008EECB3 /* os.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443AA1ABA345E008EECB3 /* os.cpp */; };
+		FEB443C81ABA345E008EECB3 /* osthread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443AC1ABA345E008EECB3 /* osthread.cpp */; };
+		FEB443C91ABA345E008EECB3 /* osthreadlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443AE1ABA345E008EECB3 /* osthreadlock.cpp */; };
+		FEB443CA1ABA345E008EECB3 /* packet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443B01ABA345E008EECB3 /* packet.cpp */; };
+		FEB443CB1ABA345E008EECB3 /* pppacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443B21ABA345E008EECB3 /* pppacket.cpp */; };
+		FEB443CC1ABA345E008EECB3 /* rtppacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443B41ABA345E008EECB3 /* rtppacket.cpp */; };
+		FEB443CD1ABA345E008EECB3 /* selector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443B61ABA345E008EECB3 /* selector.cpp */; };
+		FEB443CF1ABA345E008EECB3 /* tcplistener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443BA1ABA345E008EECB3 /* tcplistener.cpp */; };
+		FEB443D01ABA345E008EECB3 /* tinystr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443BC1ABA345E008EECB3 /* tinystr.cpp */; };
+		FEB443D11ABA345E008EECB3 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443BE1ABA345E008EECB3 /* tinyxml.cpp */; };
+		FEB443D21ABA345E008EECB3 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443C01ABA345E008EECB3 /* tinyxmlerror.cpp */; };
+		FEB443D31ABA345E008EECB3 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443C11ABA345E008EECB3 /* tinyxmlparser.cpp */; };
+		FEB443F31ABA3468008EECB3 /* asfobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443D71ABA3468008EECB3 /* asfobject.cpp */; };
+		FEB443F41ABA3468008EECB3 /* asfpacker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443D91ABA3468008EECB3 /* asfpacker.cpp */; };
+		FEB443F51ABA3468008EECB3 /* asfpacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443DB1ABA3468008EECB3 /* asfpacket.cpp */; };
+		FEB443F61ABA3468008EECB3 /* asfparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443DD1ABA3468008EECB3 /* asfparser.cpp */; };
+		FEB443F71ABA3468008EECB3 /* asfreader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443DF1ABA3468008EECB3 /* asfreader.cpp */; };
+		FEB443F81ABA3468008EECB3 /* mediaparsermgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443E31ABA3468008EECB3 /* mediaparsermgr.cpp */; };
+		FEB443F91ABA3468008EECB3 /* mediaslicer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443E51ABA3468008EECB3 /* mediaslicer.cpp */; };
+		FEB443FA1ABA3468008EECB3 /* netclient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443E81ABA3468008EECB3 /* netclient.cpp */; };
+		FEB443FB1ABA3468008EECB3 /* netclientmgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443EA1ABA3468008EECB3 /* netclientmgr.cpp */; };
+		FEB443FC1ABA3468008EECB3 /* netserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443EC1ABA3468008EECB3 /* netserver.cpp */; };
+		FEB443FD1ABA3468008EECB3 /* netservermgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443EE1ABA3468008EECB3 /* netservermgr.cpp */; };
+		FEB443FE1ABA3468008EECB3 /* settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443F01ABA3468008EECB3 /* settings.cpp */; };
+		FEB443FF1ABA3468008EECB3 /* source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443F21ABA3468008EECB3 /* source.cpp */; };
+		FEB4447C1ABA3AC6008EECB3 /* tcpconnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB4447B1ABA3AC5008EECB3 /* tcpconnection.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FE12528D1AB4A9E700AE6489 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		FE12528F1AB4A9E700AE6489 /* ppsource */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = ppsource; path = ppsourced; sourceTree = BUILT_PRODUCTS_DIR; };
+		FEB443A01ABA345E008EECB3 /* buffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = buffer.cpp; sourceTree = "<group>"; };
+		FEB443A11ABA345E008EECB3 /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
+		FEB443A21ABA345E008EECB3 /* endpoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = endpoint.cpp; sourceTree = "<group>"; };
+		FEB443A31ABA345E008EECB3 /* endpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endpoint.h; sourceTree = "<group>"; };
+		FEB443A41ABA345E008EECB3 /* logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = logger.cpp; sourceTree = "<group>"; };
+		FEB443A51ABA345E008EECB3 /* logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logger.h; sourceTree = "<group>"; };
+		FEB443A61ABA345E008EECB3 /* mediaslice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mediaslice.cpp; sourceTree = "<group>"; };
+		FEB443A71ABA345E008EECB3 /* mediaslice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mediaslice.h; sourceTree = "<group>"; };
+		FEB443A81ABA345E008EECB3 /* network.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = network.cpp; sourceTree = "<group>"; };
+		FEB443A91ABA345E008EECB3 /* network.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = network.h; sourceTree = "<group>"; };
+		FEB443AA1ABA345E008EECB3 /* os.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = os.cpp; sourceTree = "<group>"; };
+		FEB443AB1ABA345E008EECB3 /* os.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = os.h; sourceTree = "<group>"; };
+		FEB443AC1ABA345E008EECB3 /* osthread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = osthread.cpp; sourceTree = "<group>"; };
+		FEB443AD1ABA345E008EECB3 /* osthread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = osthread.h; sourceTree = "<group>"; };
+		FEB443AE1ABA345E008EECB3 /* osthreadlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = osthreadlock.cpp; sourceTree = "<group>"; };
+		FEB443AF1ABA345E008EECB3 /* osthreadlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = osthreadlock.h; sourceTree = "<group>"; };
+		FEB443B01ABA345E008EECB3 /* packet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = packet.cpp; sourceTree = "<group>"; };
+		FEB443B11ABA345E008EECB3 /* packet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = packet.h; sourceTree = "<group>"; };
+		FEB443B21ABA345E008EECB3 /* pppacket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pppacket.cpp; sourceTree = "<group>"; };
+		FEB443B31ABA345E008EECB3 /* pppacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pppacket.h; sourceTree = "<group>"; };
+		FEB443B41ABA345E008EECB3 /* rtppacket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rtppacket.cpp; sourceTree = "<group>"; };
+		FEB443B51ABA345E008EECB3 /* rtppacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rtppacket.h; sourceTree = "<group>"; };
+		FEB443B61ABA345E008EECB3 /* selector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = selector.cpp; sourceTree = "<group>"; };
+		FEB443B71ABA345E008EECB3 /* selector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = selector.h; sourceTree = "<group>"; };
+		FEB443B91ABA345E008EECB3 /* tcpconnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tcpconnection.h; sourceTree = "<group>"; };
+		FEB443BA1ABA345E008EECB3 /* tcplistener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tcplistener.cpp; sourceTree = "<group>"; };
+		FEB443BB1ABA345E008EECB3 /* tcplistener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tcplistener.h; sourceTree = "<group>"; };
+		FEB443BC1ABA345E008EECB3 /* tinystr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinystr.cpp; sourceTree = "<group>"; };
+		FEB443BD1ABA345E008EECB3 /* tinystr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinystr.h; sourceTree = "<group>"; };
+		FEB443BE1ABA345E008EECB3 /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxml.cpp; sourceTree = "<group>"; };
+		FEB443BF1ABA345E008EECB3 /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
+		FEB443C01ABA345E008EECB3 /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
+		FEB443C11ABA345E008EECB3 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
+		FEB443D71ABA3468008EECB3 /* asfobject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = asfobject.cpp; sourceTree = "<group>"; };
+		FEB443D81ABA3468008EECB3 /* asfobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asfobject.h; sourceTree = "<group>"; };
+		FEB443D91ABA3468008EECB3 /* asfpacker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = asfpacker.cpp; sourceTree = "<group>"; };
+		FEB443DA1ABA3468008EECB3 /* asfpacker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asfpacker.h; sourceTree = "<group>"; };
+		FEB443DB1ABA3468008EECB3 /* asfpacket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = asfpacket.cpp; sourceTree = "<group>"; };
+		FEB443DC1ABA3468008EECB3 /* asfpacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asfpacket.h; sourceTree = "<group>"; };
+		FEB443DD1ABA3468008EECB3 /* asfparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = asfparser.cpp; sourceTree = "<group>"; };
+		FEB443DE1ABA3468008EECB3 /* asfparser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asfparser.h; sourceTree = "<group>"; };
+		FEB443DF1ABA3468008EECB3 /* asfreader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = asfreader.cpp; sourceTree = "<group>"; };
+		FEB443E01ABA3468008EECB3 /* asfreader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asfreader.h; sourceTree = "<group>"; };
+		FEB443E11ABA3468008EECB3 /* mediapacker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mediapacker.h; sourceTree = "<group>"; };
+		FEB443E21ABA3468008EECB3 /* mediaparser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mediaparser.h; sourceTree = "<group>"; };
+		FEB443E31ABA3468008EECB3 /* mediaparsermgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mediaparsermgr.cpp; sourceTree = "<group>"; };
+		FEB443E41ABA3468008EECB3 /* mediaparsermgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mediaparsermgr.h; sourceTree = "<group>"; };
+		FEB443E51ABA3468008EECB3 /* mediaslicer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mediaslicer.cpp; sourceTree = "<group>"; };
+		FEB443E61ABA3468008EECB3 /* mediaslicer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mediaslicer.h; sourceTree = "<group>"; };
+		FEB443E81ABA3468008EECB3 /* netclient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = netclient.cpp; sourceTree = "<group>"; };
+		FEB443E91ABA3468008EECB3 /* netclient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = netclient.h; sourceTree = "<group>"; };
+		FEB443EA1ABA3468008EECB3 /* netclientmgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = netclientmgr.cpp; sourceTree = "<group>"; };
+		FEB443EB1ABA3468008EECB3 /* netclientmgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = netclientmgr.h; sourceTree = "<group>"; };
+		FEB443EC1ABA3468008EECB3 /* netserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = netserver.cpp; sourceTree = "<group>"; };
+		FEB443ED1ABA3468008EECB3 /* netserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = netserver.h; sourceTree = "<group>"; };
+		FEB443EE1ABA3468008EECB3 /* netservermgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = netservermgr.cpp; sourceTree = "<group>"; };
+		FEB443EF1ABA3468008EECB3 /* netservermgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = netservermgr.h; sourceTree = "<group>"; };
+		FEB443F01ABA3468008EECB3 /* settings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = settings.cpp; sourceTree = "<group>"; };
+		FEB443F11ABA3468008EECB3 /* settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = settings.h; sourceTree = "<group>"; };
+		FEB443F21ABA3468008EECB3 /* source.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = source.cpp; sourceTree = "<group>"; };
+		FEB4447B1ABA3AC5008EECB3 /* tcpconnection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tcpconnection.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FE12528C1AB4A9E700AE6489 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FE1252841AB4A9E700AE6489 = {
+			isa = PBXGroup;
+			children = (
+				FEB443D41ABA3468008EECB3 /* source */,
+				FEB4439F1ABA345E008EECB3 /* common */,
+				FE1252901AB4A9E700AE6489 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FE1252901AB4A9E700AE6489 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FE12528F1AB4A9E700AE6489 /* ppsource */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FEB4439F1ABA345E008EECB3 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				FEB443A01ABA345E008EECB3 /* buffer.cpp */,
+				FEB443A11ABA345E008EECB3 /* buffer.h */,
+				FEB443A21ABA345E008EECB3 /* endpoint.cpp */,
+				FEB443A31ABA345E008EECB3 /* endpoint.h */,
+				FEB443A41ABA345E008EECB3 /* logger.cpp */,
+				FEB443A51ABA345E008EECB3 /* logger.h */,
+				FEB443A61ABA345E008EECB3 /* mediaslice.cpp */,
+				FEB443A71ABA345E008EECB3 /* mediaslice.h */,
+				FEB443A81ABA345E008EECB3 /* network.cpp */,
+				FEB443A91ABA345E008EECB3 /* network.h */,
+				FEB443AA1ABA345E008EECB3 /* os.cpp */,
+				FEB443AB1ABA345E008EECB3 /* os.h */,
+				FEB443AC1ABA345E008EECB3 /* osthread.cpp */,
+				FEB443AD1ABA345E008EECB3 /* osthread.h */,
+				FEB443AE1ABA345E008EECB3 /* osthreadlock.cpp */,
+				FEB443AF1ABA345E008EECB3 /* osthreadlock.h */,
+				FEB443B01ABA345E008EECB3 /* packet.cpp */,
+				FEB443B11ABA345E008EECB3 /* packet.h */,
+				FEB443B21ABA345E008EECB3 /* pppacket.cpp */,
+				FEB443B31ABA345E008EECB3 /* pppacket.h */,
+				FEB443B41ABA345E008EECB3 /* rtppacket.cpp */,
+				FEB443B51ABA345E008EECB3 /* rtppacket.h */,
+				FEB443B61ABA345E008EECB3 /* selector.cpp */,
+				FEB443B71ABA345E008EECB3 /* selector.h */,
+				FEB4447B1ABA3AC5008EECB3 /* tcpconnection.cpp */,
+				FEB443B91ABA345E008EECB3 /* tcpconnection.h */,
+				FEB443BA1ABA345E008EECB3 /* tcplistener.cpp */,
+				FEB443BB1ABA345E008EECB3 /* tcplistener.h */,
+				FEB443BC1ABA345E008EECB3 /* tinystr.cpp */,
+				FEB443BD1ABA345E008EECB3 /* tinystr.h */,
+				FEB443BE1ABA345E008EECB3 /* tinyxml.cpp */,
+				FEB443BF1ABA345E008EECB3 /* tinyxml.h */,
+				FEB443C01ABA345E008EECB3 /* tinyxmlerror.cpp */,
+				FEB443C11ABA345E008EECB3 /* tinyxmlparser.cpp */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
+		FEB443D41ABA3468008EECB3 /* source */ = {
+			isa = PBXGroup;
+			children = (
+				FEB443D51ABA3468008EECB3 /* media */,
+				FEB443E71ABA3468008EECB3 /* server */,
+			);
+			path = source;
+			sourceTree = "<group>";
+		};
+		FEB443D51ABA3468008EECB3 /* media */ = {
+			isa = PBXGroup;
+			children = (
+				FEB443D61ABA3468008EECB3 /* asf */,
+				FEB443E11ABA3468008EECB3 /* mediapacker.h */,
+				FEB443E21ABA3468008EECB3 /* mediaparser.h */,
+				FEB443E31ABA3468008EECB3 /* mediaparsermgr.cpp */,
+				FEB443E41ABA3468008EECB3 /* mediaparsermgr.h */,
+				FEB443E51ABA3468008EECB3 /* mediaslicer.cpp */,
+				FEB443E61ABA3468008EECB3 /* mediaslicer.h */,
+			);
+			path = media;
+			sourceTree = "<group>";
+		};
+		FEB443D61ABA3468008EECB3 /* asf */ = {
+			isa = PBXGroup;
+			children = (
+				FEB443D71ABA3468008EECB3 /* asfobject.cpp */,
+				FEB443D81ABA3468008EECB3 /* asfobject.h */,
+				FEB443D91ABA3468008EECB3 /* asfpacker.cpp */,
+				FEB443DA1ABA3468008EECB3 /* asfpacker.h */,
+				FEB443DB1ABA3468008EECB3 /* asfpacket.cpp */,
+				FEB443DC1ABA3468008EECB3 /* asfpacket.h */,
+				FEB443DD1ABA3468008EECB3 /* asfparser.cpp */,
+				FEB443DE1ABA3468008EECB3 /* asfparser.h */,
+				FEB443DF1ABA3468008EECB3 /* asfreader.cpp */,
+				FEB443E01ABA3468008EECB3 /* asfreader.h */,
+			);
+			path = asf;
+			sourceTree = "<group>";
+		};
+		FEB443E71ABA3468008EECB3 /* server */ = {
+			isa = PBXGroup;
+			children = (
+				FEB443E81ABA3468008EECB3 /* netclient.cpp */,
+				FEB443E91ABA3468008EECB3 /* netclient.h */,
+				FEB443EA1ABA3468008EECB3 /* netclientmgr.cpp */,
+				FEB443EB1ABA3468008EECB3 /* netclientmgr.h */,
+				FEB443EC1ABA3468008EECB3 /* netserver.cpp */,
+				FEB443ED1ABA3468008EECB3 /* netserver.h */,
+				FEB443EE1ABA3468008EECB3 /* netservermgr.cpp */,
+				FEB443EF1ABA3468008EECB3 /* netservermgr.h */,
+				FEB443F01ABA3468008EECB3 /* settings.cpp */,
+				FEB443F11ABA3468008EECB3 /* settings.h */,
+				FEB443F21ABA3468008EECB3 /* source.cpp */,
+			);
+			path = server;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FE12528E1AB4A9E700AE6489 /* ppsource */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FE1252991AB4A9E700AE6489 /* Build configuration list for PBXNativeTarget "ppsource" */;
+			buildPhases = (
+				FE12528B1AB4A9E700AE6489 /* Sources */,
+				FE12528C1AB4A9E700AE6489 /* Frameworks */,
+				FE12528D1AB4A9E700AE6489 /* CopyFiles */,
+				FEB441EA1AB94E04008EECB3 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ppsource;
+			productName = ppsource;
+			productReference = FE12528F1AB4A9E700AE6489 /* ppsource */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FE1252861AB4A9E700AE6489 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = FE1252891AB4A9E700AE6489 /* Build configuration list for PBXProject "ppsource" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = FE1252841AB4A9E700AE6489;
+			productRefGroup = FE1252901AB4A9E700AE6489 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FE12528E1AB4A9E700AE6489 /* ppsource */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FEB441EA1AB94E04008EECB3 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp $TARGET_BUILD_DIR/$EXECUTABLE_PATH $SRCROOT/build/ppsource/$EXECUTABLE_PATH";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FE12528B1AB4A9E700AE6489 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FEB443C21ABA345E008EECB3 /* buffer.cpp in Sources */,
+				FEB443C31ABA345E008EECB3 /* endpoint.cpp in Sources */,
+				FEB443C41ABA345E008EECB3 /* logger.cpp in Sources */,
+				FEB443C51ABA345E008EECB3 /* mediaslice.cpp in Sources */,
+				FEB443C61ABA345E008EECB3 /* network.cpp in Sources */,
+				FEB443C71ABA345E008EECB3 /* os.cpp in Sources */,
+				FEB443C81ABA345E008EECB3 /* osthread.cpp in Sources */,
+				FEB443C91ABA345E008EECB3 /* osthreadlock.cpp in Sources */,
+				FEB443CA1ABA345E008EECB3 /* packet.cpp in Sources */,
+				FEB443CB1ABA345E008EECB3 /* pppacket.cpp in Sources */,
+				FEB443CC1ABA345E008EECB3 /* rtppacket.cpp in Sources */,
+				FEB443CD1ABA345E008EECB3 /* selector.cpp in Sources */,
+				FEB443CF1ABA345E008EECB3 /* tcplistener.cpp in Sources */,
+				FEB443D01ABA345E008EECB3 /* tinystr.cpp in Sources */,
+				FEB443D11ABA345E008EECB3 /* tinyxml.cpp in Sources */,
+				FEB443D21ABA345E008EECB3 /* tinyxmlerror.cpp in Sources */,
+				FEB443D31ABA345E008EECB3 /* tinyxmlparser.cpp in Sources */,
+				FEB443F31ABA3468008EECB3 /* asfobject.cpp in Sources */,
+				FEB443F41ABA3468008EECB3 /* asfpacker.cpp in Sources */,
+				FEB443F51ABA3468008EECB3 /* asfpacket.cpp in Sources */,
+				FEB443F61ABA3468008EECB3 /* asfparser.cpp in Sources */,
+				FEB443F71ABA3468008EECB3 /* asfreader.cpp in Sources */,
+				FEB443F81ABA3468008EECB3 /* mediaparsermgr.cpp in Sources */,
+				FEB443F91ABA3468008EECB3 /* mediaslicer.cpp in Sources */,
+				FEB443FA1ABA3468008EECB3 /* netclient.cpp in Sources */,
+				FEB443FB1ABA3468008EECB3 /* netclientmgr.cpp in Sources */,
+				FEB443FC1ABA3468008EECB3 /* netserver.cpp in Sources */,
+				FEB443FD1ABA3468008EECB3 /* netservermgr.cpp in Sources */,
+				FEB443FE1ABA3468008EECB3 /* settings.cpp in Sources */,
+				FEB443FF1ABA3468008EECB3 /* source.cpp in Sources */,
+				FEB4447C1ABA3AC6008EECB3 /* tcpconnection.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		FE1252971AB4A9E700AE6489 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		FE1252981AB4A9E700AE6489 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		FE12529A1AB4A9E700AE6489 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)d";
+			};
+			name = Debug;
+		};
+		FE12529B1AB4A9E700AE6489 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FE1252891AB4A9E700AE6489 /* Build configuration list for PBXProject "ppsource" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE1252971AB4A9E700AE6489 /* Debug */,
+				FE1252981AB4A9E700AE6489 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FE1252991AB4A9E700AE6489 /* Build configuration list for PBXNativeTarget "ppsource" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FE12529A1AB4A9E700AE6489 /* Debug */,
+				FE12529B1AB4A9E700AE6489 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FE1252861AB4A9E700AE6489 /* Project object */;
+}
