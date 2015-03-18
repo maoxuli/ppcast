@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Source>
+	<LocalDirs>
+		<dir>d:\movies</dir>
+	</LocalDirs>
+	<LocalIP>192.168.1.5</LocalIP>
+	<anchor_interval>60</anchor_interval>
+</Source>

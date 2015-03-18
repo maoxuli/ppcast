@@ -302,7 +302,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp $TARGET_BUILD_DIR/$EXECUTABLE_PATH $SRCROOT/build/ppsource/$EXECUTABLE_PATH";
+			shellScript = "cp $TARGET_BUILD_DIR/$EXECUTABLE_PATH $SRCROOT/build/source/$EXECUTABLE_PATH";
 		};
 /* End PBXShellScriptBuildPhase section */
 
