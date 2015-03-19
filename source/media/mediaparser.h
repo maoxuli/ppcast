@@ -24,9 +24,10 @@ public:
     virtual size_t GetBitrate() = 0;
 	virtual size_t GetDuration() = 0;
     virtual size_t GetSliceCount() = 0;
-	virtual SLICE_TABLE* GetSliceTable() = 0;
+	virtual SliceTable* GetSliceTable() = 0;
     
-    virtual MediaPacker* CreatePacker() = 0;
+    virtual MediaPacker* GetPacker() = 0;
+    virtual void ReleasePacker(MediaPacker* packer) = 0;
 };
 
 #endif

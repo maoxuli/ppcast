@@ -3,9 +3,10 @@
 
 #include "mediapacker.h"
 #include "asfreader.h"
+#include "mediaslice.h"
 
-class RtpPacket;
 class AsfPacket;
+class RtpPacket;
 
 //
 // RTP packer for a media file
@@ -14,17 +15,25 @@ class AsfPacket;
 class AsfPacker : public MediaPacker
 {
 public:
-	AsfPacker(const std::string& fileName);
+    virtual bool LocateSlice(size_t index); 
+	virtual RtpPacket* NextRtpPacket();
+    
+private:
+    friend class AsfParser;
+    
+    // Create and destroy by media parser
+    AsfPacker(const std::string& fileName);
 	virtual ~AsfPacker();
     
-    bool LocateSlice(unsigned int index); 
-	RtpPacket* NextRtpPacket();
-
-private:
-    AsfReader _reader;
-    RtpPacket* Packet2Rtp(AsfPacket* packet); 
+    bool Initialize();
+    void SetSlicePoints(size_t count, uint64_t* points);
     
-    friend class AsfParser;
+    AsfReader _reader;
+    size_t _sliceCount;
+    uint64_t* _slicePoints;
+    uint64_t _readCount;
+    
+    RtpPacket* Packet2Rtp(AsfPacket* packet);  
 };
 
 

@@ -11,8 +11,11 @@
 
 class MediaParser;
 
+// Single MediaParser for same file
+// Reference counting management
 class MediaParserMgr
 {
+    // External reference counting
 	class ParserWrapper
 	{
 	public:
@@ -36,30 +39,27 @@ class MediaParserMgr
 			return _parser;
 		}
         
-		void Increase()
+		void AddRef()
 		{
 			_locker.Lock();
 			_reference++;
 			_locker.UnLock();
 		}
-		void  Decrease()
+		void Release()
 		{
 			_locker.Lock();
 			_reference--;
-			if(_reference == 0) 
-			{
-				if(_parser != NULL)
-				{
-					delete _parser;
-					_parser = NULL;
-				}
+			if(_reference == 0 && _parser != NULL)
+            {
+                delete _parser;
+                _parser = NULL;
 			}
 			_locker.UnLock();
 		}
         
 	private:
 		MediaParser* _parser;
-        unsigned int _reference;
+        size_t _reference;
         OSThreadLock _locker;
 	};
 

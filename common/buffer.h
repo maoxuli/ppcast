@@ -125,7 +125,7 @@ public:
         assert(_write_index + n <= _v.size());
         _write_index += n;
     }
-    
+        
     size_t write(const unsigned char* b, size_t n);
     size_t write(Buffer* buffer);
     size_t write(const Buffer& buffer);

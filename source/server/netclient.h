@@ -31,7 +31,7 @@ public:
 
     BOOL m_bReset;
 
-	UInt32L m_nSendRate;
+	size_t m_nSendRate;
 
     BOOL m_bMetaSended;
 
@@ -81,7 +81,5 @@ private:
     friend class NetClientMgr;
 
 };
-
-
 
 #endif

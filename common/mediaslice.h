@@ -10,11 +10,11 @@
 class RtpPacket;
 class PPPacket;
 
-typedef struct _slice_table {
+typedef struct SLICE_TABLE {
 	UInt32L   nLen;
 	UInt8     bKeyFrame;
 	UInt8	  bAnchor;
-} SLICE_TABLE;
+} SliceTable;
 
 // TimeSlice is tranport unit of media contents
 // Current TimeSlice hold 1 second contens in RTSP packets
@@ -26,17 +26,13 @@ public:
     
     void Delete();
 
-private:
-    size_t _index;
-    
-    size_t _packetCount;
-    std::vector<RtpPacket*> _packets;
-    
-
-public:
     bool AddPacket(RtpPacket* packet);
+    size_t GetLength();
     
     bool ToPPPacket(PPPacket* packet);
-
+    
+private:
+    size_t _index;
+    std::vector<RtpPacket*> _packets;
 };
 #endif

@@ -1,5 +1,5 @@
 //
-// MediaSlicer.h
+// mediaslicer.h
 // SDP, SliceTable, Slice
 //
 

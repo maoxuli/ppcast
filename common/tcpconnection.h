@@ -43,4 +43,4 @@ protected:
 
 };
 
-#endif//__CONNECTION_H__
+#endif

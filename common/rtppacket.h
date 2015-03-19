@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+class Buffer;
+
 class RtpPacket
 {
 public:
@@ -33,12 +35,12 @@ public:
     uint8_t*  payload;
     uint16_t  payloadSize;
 
-    uint16_t  trackID;
-    bool	  isKeyFrame;	
-
 public:
     RtpPacket(uint16_t size);
     ~RtpPacket(void);
+    
+    static RtpPacket* FromBuffer(Buffer* buffer);
+    bool ToBuffer(Buffer* buffer);
     
     bool SetFirstFlag();
     bool SetPayLoad(const uint8_t* buf,uint32_t size);

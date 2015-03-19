@@ -31,4 +31,4 @@ protected:
 
 //extern CTcpListeners TcpListeners;
 
-#endif//__TCPLISTENERS_H__
+#endif

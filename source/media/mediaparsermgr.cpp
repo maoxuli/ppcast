@@ -26,13 +26,12 @@ MediaParserMgr::~MediaParserMgr()
 MediaParser* MediaParserMgr::CreateParser(const std::string& name)
 {
     MediaParser* parser = NULL;
-    
     std::string::size_type pos = name.rfind('.');
     if(pos != std::string::npos )
     {
         std::string ext = name.substr(pos + 1);
         
-        if(ext == "asf" || ext == "wmv")
+        if (ext == "asf" || ext == "wmv" || ext == "ASF" || ext == "WMV")
         {
             parser = new AsfParser(name);
         }
@@ -44,7 +43,6 @@ MediaParser* MediaParserMgr::GetParser(const std::string& name)
 {
     MediaParser* parser = NULL;
 	_locker.Lock();
-
     std::map<std::string, ParserWrapper*>::iterator it = _parsers.find(name);
 	if(it == _parsers.end())
 	{	
@@ -66,9 +64,8 @@ MediaParser* MediaParserMgr::GetParser(const std::string& name)
 	{
         ParserWrapper* wrapper = it->second;
         parser = wrapper->GetParser();
-        wrapper->Increase();
+        wrapper->AddRef();
 	}
-
 	_locker.UnLock();
 	return parser;
 }
@@ -77,12 +74,11 @@ bool MediaParserMgr::ReleaseParser(const std::string& name)
 {
 	bool bRet = false;
 	_locker.Lock();
-    
     std::map<std::string, ParserWrapper*>::iterator it = _parsers.find(name);
 	if(it != _parsers.end())
 	{
         ParserWrapper* wrapper = it->second;
-		wrapper->Decrease();
+		wrapper->Release();
 		if(wrapper->GetParser() == NULL)
 		{
 			_parsers.erase(it);
@@ -90,7 +86,6 @@ bool MediaParserMgr::ReleaseParser(const std::string& name)
 		}
 		bRet = true;
 	}
-    
 	_locker.UnLock();
 	return bRet;
 }

@@ -5,7 +5,6 @@
 #include <wchar.h>
 
 // ASF object is identified with GUID
-
 #ifdef _WIN32
 #include <guiddef.h>
 #else
@@ -207,37 +206,5 @@ typedef struct _exStreamProperty
 } EX_STREAM_PROPERTY;
 
 #pragma pack(pop)
-
-// A wrapper of general ASF head informations
-
-class AsfHeadObject
-{
-public:
-	AsfHeadObject();
-	virtual ~AsfHeadObject();
-    
-	bool        Initialize(const uint8_t* buf, uint16_t len);
-	
-    // From content description
-	wchar_t*	Title;  
-	wchar_t*    Author;  
-	wchar_t*    Copyright;  
-	wchar_t*    Description;  
-	wchar_t*    Rating; 
-	
-    // From stream property and ex stream property
-	uint16_t	AudioNum;
-	uint16_t	VideoNum;
-	uint32_t	AudioBitrate;
-	uint32_t	VideoBitrate;
-	
-    // From file property
-	uint32_t	Start_Time;
-	uint32_t	End_Time;
-	uint32_t	Duration;
-	uint32_t    Bitrate;
-	uint32_t	PacketSize;
-	uint64_t	PacketCount;
-};
 
 #endif//__ASFOBJECT_H__

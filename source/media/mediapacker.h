@@ -9,6 +9,7 @@
 
 class RtpPacket;
 
+// RTP packet packer
 class MediaPacker
 {
 public:

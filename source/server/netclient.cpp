@@ -7,7 +7,6 @@
 #include "mediaslicer.h"
 #include "logger.h"
 
-#define DATASERVICE_INTERVAL 1000
 #define MAX_TIME_NO_REQUEST 1800000
 
 NetClient::NetClient()
@@ -24,8 +23,6 @@ NetClient::NetClient()
 
     m_bMetaSended = FALSE;
     
-    //m_mInput.pLimit     = m_mOutput.pLimit = &Settings.Bandwidth.Request;
-
     m_tLastIsNotEmtpy   = OSMilliSeconds();
 }
 
@@ -96,12 +93,7 @@ bool NetClient::OnRun()
     {
         return false;
     }
-
-	//if( m_bReset ) 
-	//{
-	//	m_nSendRate = m_nSendRate * 2;
-	//}
-
+    
 	if(m_DataRequestList.empty()) 
     {  
         UInt32L tNow = OSMilliSeconds();
@@ -114,7 +106,6 @@ bool NetClient::OnRun()
     
         return true;
     }
-    
     m_tLastIsNotEmtpy  = OSMilliSeconds();
 
 
@@ -147,13 +138,7 @@ bool NetClient::OnRun()
         }     
     }
 
-	//if( m_bReset ) 
-	//{
-	//	m_nSendRate = m_nSendRate  / 2;
-	//	m_bReset = FALSE;
-	//}
-
-    return TRUE;
+    return true;
 }
 
 // Handle message from client to source
@@ -221,13 +206,13 @@ bool NetClient::OnClientJoin(PPPacket* pPacket)
         }
     }
     
-    /*if ( _mediaSlicer == NULL ) 
+    if ( _mediaSlicer == NULL ) 
     {
         _mediaSlicer = new MediaSlicer(m_sMediaName);
         assert(_mediaSlicer != NULL);
         if ( _mediaSlicer == NULL ) 
         {
-            PSPacket* pErrorPacket = PSPacket::New( PS_PACKET_HND_RJCT ); 
+            PPPacket* pErrorPacket = PPPacket::New( PS_PACKET_HND_RJCT ); 
             pErrorPacket->writeString("Can not find media file error!");
             pErrorPacket->ToBuffer( m_pOutput );
             OnWrite();
@@ -237,10 +222,8 @@ bool NetClient::OnClientJoin(PPPacket* pPacket)
     }
     
 	m_nSendRate = _mediaSlicer->GetBitrate();
-	m_mOutput.pLimit = &m_nSendRate;
-    */
     PPPacket* pResPacket = PPPacket::New( PS_PACKET_HND_ALLW ); 
-    pResPacket->write32u(1000);
+    pResPacket->write32u((uint32_t)m_nSendRate);
     pResPacket->ToBuffer( m_pOutput );
     OnWrite();
 	pResPacket->Release();
@@ -259,7 +242,6 @@ bool NetClient::OnDataRequest(PPPacket* pPacket)
 
 	UpdateDataRequestList(new DataRequestTag(nMin, nMax));
 
-    m_bReset= false;
     return true;
 }
 
@@ -297,27 +279,22 @@ bool NetClient::OnMetaRequest(PPPacket* pPacket)
     {
         return true;
     }
-    /*
-    assert(_mediaSlicer != NULL);
     
-    PSPacket* pOutPacket = PSPacket::New( PS_PACKET_ANS_META );
-
-	size_t sliceCount = _mediaSlicer->GetSliceCount();
-
-    pOutPacket->write32u( sliceCount );
-
-	size_t bitrate = _mediaSlicer->GetBitrate();
-
-	pOutPacket->write32u( bitrate );
-
-
-	SLICE_TABLE* pTable  = _mediaSlicer->GetSliceTable();
+    assert(_mediaSlicer != NULL);
+    size_t sliceCount = _mediaSlicer->GetSliceCount();
+	SliceTable* pTable  = _mediaSlicer->GetSliceTable();
     assert(pTable != NULL);
-	if ( pTable == NULL ) return false;
+	if ( pTable == NULL ) 
+    {
+        return false;
+    }
 
+    PPPacket* pOutPacket = PPPacket::New( PS_PACKET_ANS_META );
+    pOutPacket->write32u( (uint32_t)sliceCount);
+	pOutPacket->write32u( (uint32_t)_mediaSlicer->GetBitrate() );
 	for( size_t i=0; i < sliceCount; i++)
     {
-		pOutPacket->write32u( pTable[i].nLen );
+		pOutPacket->write32u( (uint32_t)pTable[i].nLen );
         pOutPacket->write8u( pTable[i].bKeyFrame );
         pOutPacket->write8u( pTable[i].bAnchor );
     }
@@ -330,16 +307,13 @@ bool NetClient::OnMetaRequest(PPPacket* pPacket)
 	{
 		pOutPacket->write8u(1);
 
-		pFirstSlice->ToPSPacket(pOutPacket);
+		pFirstSlice->ToPPPacket(pOutPacket);
 
 		pFirstSlice->Delete();
 	}
 	else
 		pOutPacket->write8u(0);
-     */
     
-    PPPacket* pOutPacket = PPPacket::New( PS_PACKET_ANS_META );
-
     pOutPacket->ToBuffer( m_pOutput );	
 
     OnWrite();

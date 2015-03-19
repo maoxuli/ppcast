@@ -1,23 +1,16 @@
 //
-// AsfParser.h
+// asfparser.h
 // MediaParser for ASF/WMV file
 //
 
 #ifndef __ASF_PARSER_H__
 #define __ASF_PARSER_H__
 
-#include "MediaParser.h"
-#include "AsfReader.h"
+#include "mediaparser.h"
+#include "asfreader.h"
 
 class AsfParser : public MediaParser
 {
-    
-typedef struct _index
-{
-	uint64_t PackNum;
-	bool  hasKeyFrame;
-} INDEX;
-
 public:
 	AsfParser(const std::string& name);
 	virtual ~AsfParser();
@@ -28,41 +21,36 @@ public:
     virtual size_t GetBitrate();
 	virtual size_t GetDuration();
     virtual size_t GetSliceCount();
-	virtual SLICE_TABLE* GetSliceTable();
+	virtual SliceTable* GetSliceTable();
     
-    virtual MediaPacker* CreatePacker();
+    virtual MediaPacker* GetPacker();
+    virtual void ReleasePacker(MediaPacker* packer);
     
 protected:
     std::string _name;
 	AsfReader _reader;
     
+    // Parser compatibility
     unsigned short _version;
     unsigned short _system;
     
+    // Slice scheme
     size_t _sliceCount;
-    // Table
-    // Inex
-    SLICE_TABLE* _sliceTable;
-    INDEX* _sliceIndex;
+    uint64_t* _slicePoints;
+    SliceTable* _sliceTable; 
     
     std::string _sdp;
-    size_t _duration;
-    size_t _bitrate;
-    size_t _packetSize;
-    
-    uint64_t _packetCount;
-    uint64_t _packetOffset;
     
 private:
 	bool MakeIndex();
 	bool MakeSDP();
-	bool GetMetaData();
-	CSTLString GetPgmpu();
-	CSTLString PgmpuConvert( const CSTLString str);
-	CSTLString GetPgmpu2();
-
+	
+    std::string GetPgmpu();
+    std::string GetPgmpu2();
+	
+    // Persistent
 	bool Load();
 	bool Save();
 };
 
-#endif//__ASFPARSER_H__
+#endif

@@ -24,7 +24,6 @@
 		FEB443D11ABA345E008EECB3 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443BE1ABA345E008EECB3 /* tinyxml.cpp */; };
 		FEB443D21ABA345E008EECB3 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443C01ABA345E008EECB3 /* tinyxmlerror.cpp */; };
 		FEB443D31ABA345E008EECB3 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443C11ABA345E008EECB3 /* tinyxmlparser.cpp */; };
-		FEB443F31ABA3468008EECB3 /* asfobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443D71ABA3468008EECB3 /* asfobject.cpp */; };
 		FEB443F41ABA3468008EECB3 /* asfpacker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443D91ABA3468008EECB3 /* asfpacker.cpp */; };
 		FEB443F51ABA3468008EECB3 /* asfpacket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443DB1ABA3468008EECB3 /* asfpacket.cpp */; };
 		FEB443F61ABA3468008EECB3 /* asfparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443DD1ABA3468008EECB3 /* asfparser.cpp */; };
@@ -87,7 +86,6 @@
 		FEB443BF1ABA345E008EECB3 /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tinyxml.h; sourceTree = "<group>"; };
 		FEB443C01ABA345E008EECB3 /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
 		FEB443C11ABA345E008EECB3 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
-		FEB443D71ABA3468008EECB3 /* asfobject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = asfobject.cpp; sourceTree = "<group>"; };
 		FEB443D81ABA3468008EECB3 /* asfobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asfobject.h; sourceTree = "<group>"; };
 		FEB443D91ABA3468008EECB3 /* asfpacker.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = asfpacker.cpp; sourceTree = "<group>"; };
 		FEB443DA1ABA3468008EECB3 /* asfpacker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = asfpacker.h; sourceTree = "<group>"; };
@@ -115,6 +113,7 @@
 		FEB443F11ABA3468008EECB3 /* settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = settings.h; sourceTree = "<group>"; };
 		FEB443F21ABA3468008EECB3 /* source.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = source.cpp; sourceTree = "<group>"; };
 		FEB4447B1ABA3AC5008EECB3 /* tcpconnection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tcpconnection.cpp; sourceTree = "<group>"; };
+		FEB444901ABAA462008EECB3 /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +147,7 @@
 		FEB4439F1ABA345E008EECB3 /* common */ = {
 			isa = PBXGroup;
 			children = (
+				FEB444901ABAA462008EECB3 /* base64.h */,
 				FEB443A01ABA345E008EECB3 /* buffer.cpp */,
 				FEB443A11ABA345E008EECB3 /* buffer.h */,
 				FEB443A21ABA345E008EECB3 /* endpoint.cpp */,
@@ -212,7 +212,6 @@
 		FEB443D61ABA3468008EECB3 /* asf */ = {
 			isa = PBXGroup;
 			children = (
-				FEB443D71ABA3468008EECB3 /* asfobject.cpp */,
 				FEB443D81ABA3468008EECB3 /* asfobject.h */,
 				FEB443D91ABA3468008EECB3 /* asfpacker.cpp */,
 				FEB443DA1ABA3468008EECB3 /* asfpacker.h */,
@@ -328,7 +327,6 @@
 				FEB443D11ABA345E008EECB3 /* tinyxml.cpp in Sources */,
 				FEB443D21ABA345E008EECB3 /* tinyxmlerror.cpp in Sources */,
 				FEB443D31ABA345E008EECB3 /* tinyxmlparser.cpp in Sources */,
-				FEB443F31ABA3468008EECB3 /* asfobject.cpp in Sources */,
 				FEB443F41ABA3468008EECB3 /* asfpacker.cpp in Sources */,
 				FEB443F51ABA3468008EECB3 /* asfpacket.cpp in Sources */,
 				FEB443F61ABA3468008EECB3 /* asfparser.cpp in Sources */,
