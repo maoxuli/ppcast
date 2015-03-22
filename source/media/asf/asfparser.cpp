@@ -4,6 +4,7 @@
 
 #include "asfparser.h"
 #include "asfpacker.h"
+#include "asfpacket.h"
 #include "buffer.h"
 #include "base64.h"
 #include "rtppacket.h"
@@ -129,9 +130,14 @@ bool AsfParser::MakeIndex()
     // Loop from the first packet to last one
     uint64_t index = 0;
     _slicePoints[0] = 0;
+    
+    size_t packetSize = _reader.Header.PacketSize;
+    char* buf = new char[packetSize];
+    assert(buf != NULL);
+    AsfPacket* packet  = new AsfPacket();
     _reader.LocatePacket(0);
-    AsfPacket* packet = _reader.NextPacket();
-    while(packet != NULL)
+    size_t len = _reader.NextPacket(buf, packetSize);
+    while(len == packetSize && packet->Initialize(buf, packetSize))
     {
         newSec = packet->Time/1000;
         assert(newSec < _sliceCount);
@@ -163,8 +169,14 @@ bool AsfParser::MakeIndex()
         }
         
         index++;
-        packet = _reader.NextPacket();
+        len = _reader.NextPacket(buf, packetSize);
     }
+    
+    delete packet; 
+    packet = NULL;
+    delete [] buf;
+    buf = NULL;
+    
     assert(index == _reader.Header.PacketCount);
     assert(sec == _sliceCount - 1);
     _sliceTable[sec].bKeyFrame = key;
@@ -195,7 +207,7 @@ bool AsfParser::MakeSDP()
     oss << "a=maxps:" << _reader.Header.PacketSize << "\r\n"; // zero or more session attribute lines
     oss << "a=control:rtsp://127.0.0.1:9554/1" << "\r\n";
 	oss << "a=etag:{9657E110-1964-26D2-DBD8-7729E8237D58}\r\n";
-    oss << "a=range:npt=" << _reader.Header.Start_Time*1.0/1000 << "-" << _reader.Header.End_Time*1.0/1000 << "\r\n";  
+    oss << "a=range:npt=" << _reader.Header.Preroll*1.0/1000 << "-" << _reader.Header.Play_Duration*1.0/1000 << "\r\n";  
 	oss << "a=sendonly\r\n";
     oss << "a=pgmpu:data:application/x-wms-contentdesc," << GetPgmpu() << "\r\n";
 	oss << "a=pgmpu:data:application/vnd.ms.wms-hdr.asfv1;base64," << GetPgmpu2() << "\r\n";
@@ -217,13 +229,12 @@ bool AsfParser::MakeSDP()
     oss << "a=stream:" << _reader.Header.VideoNum << "\r\n";
     
 	_sdp = oss.str();
-    std::cout << _sdp << "\n";
     return true;
 }
 
 std::string	AsfParser::GetPgmpu()
 {
-    uint64_t duration = _reader.Header.End_Time - _reader.Header.Start_Time;
+    uint64_t duration = _reader.Header.Duration;
     std::ostringstream duration_oss;
     duration_oss << duration;
     std::string duration_s = duration_oss.str();
@@ -253,11 +264,11 @@ std::string	AsfParser::GetPgmpu()
 
 std::string	AsfParser::GetPgmpu2()
 {
-    uint64_t len = _reader.HeadBlock(NULL, 0);
+    size_t len = _reader.HeadBlock(NULL, 0);
     if(len > 0)
     {
-        uint8_t* buf = new uint8_t[len];
-        uint64_t n = _reader.HeadBlock(buf, len);
+        char* buf = new char[len]; // Where it is deleted? 
+        size_t n = _reader.HeadBlock(buf, len);
         
         if(n != len)
         {
@@ -302,8 +313,7 @@ bool AsfParser::Load()
 	Buffer buf;
 	while ( true )
 	{
-        buf.ensure(1024);
-        size_t nRet = fread(buf.write(), 1, buf.writable(), hFile);
+        size_t nRet = fread(buf.reserve(1024), 1, buf.writable(), hFile);
         buf.write(nRet);
         
         if(nRet < 1024)
@@ -336,7 +346,7 @@ bool AsfParser::Save()
     
     // Write into buffer
 
-	size_t nRet = fwrite( buf.read(), 1, buf.readable(), hFile );
+	size_t nRet = fwrite( buf.peek(), 1, buf.readable(), hFile );
     fclose( hFile );
     
 	return (nRet == buf.readable());

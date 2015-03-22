@@ -8,10 +8,10 @@
 #include "mediaslice.h"
 #include "mediaparsermgr.h"
 
-MediaSlicer::MediaSlicer(const std::string& name)
-: _mediaName(name)
+MediaSlicer::MediaSlicer()
 {
-
+    _parser = NULL;
+    _packer = NULL;
 }
 
 MediaSlicer::~MediaSlicer()
@@ -30,9 +30,9 @@ MediaSlicer::~MediaSlicer()
     }
 }
 
-bool MediaSlicer::Initialize() 
+bool MediaSlicer::Initialize(const std::string& name) 
 {
-    _parser = theParserMgr.GetParser(_mediaName);
+    _parser = theParserMgr.GetParser(name);
     if(_parser == NULL)
     {
         return false;

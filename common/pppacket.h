@@ -32,7 +32,6 @@ public:
     typedef struct {
         uint16_t flag;
         uint16_t type;
-        uint32_t seq;
         uint32_t length;
     } HEADER;
 #pragma pack()
@@ -69,7 +68,7 @@ protected:
     friend class PPPacketPool;
     
 public:
-    static PPPacket* New(unsigned short type = 0, unsigned int seq = 0);
+    static PPPacket* New(unsigned short type);
     static PPPacket* FromBuffer(Buffer* pBuffer);
     
     inline virtual void Delete()
@@ -88,7 +87,6 @@ protected:
     
 	unsigned short _flag;
     unsigned short _type;
-    unsigned int _seq;
 };
 
 #endif 

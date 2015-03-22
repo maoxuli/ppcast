@@ -41,13 +41,13 @@ ssize_t Buffer::send(SOCKET fd)
     ssize_t count = 0;
     while(readable() > 0)
     {
-        ssize_t n = ::send(fd, read(), readable(), 0);
+        ssize_t n = ::send(fd, peek(), readable(), 0);
         if(n <= 0)
         {
             break;
         }
     
-        read(n);
+        remove(n);
         count += n;
     }
     
@@ -75,10 +75,10 @@ ssize_t Buffer::sendTo(SOCKET fd, struct sockaddr_storage* to)
         assert(false);
     }
     
-    ssize_t n = ::sendto(fd, read(), readable(), 0, reinterpret_cast<struct sockaddr*>(to), tolen);
+    ssize_t n = ::sendto(fd, peek(), readable(), 0, reinterpret_cast<struct sockaddr*>(to), tolen);
     if(n > 0)
     {
-        read(n);
+        remove(n);
     }
     
     return n;
@@ -92,8 +92,7 @@ ssize_t Buffer::receive(SOCKET fd)
     ssize_t count = 0;
     while(true)
     {
-        ensure(1024);
-        ssize_t n = ::recv(fd, (char*)write(), writable(), 0);
+        ssize_t n = ::recv(fd, (char*)reserve(1024), writable(), 0);
         if(n <= 0)
         {
             break;
@@ -113,10 +112,9 @@ ssize_t Buffer::receiveFrom(SOCKET fd, struct sockaddr_storage* from)
     assert(fd != INVALID_SOCKET);
     assert(from != NULL);
     
-    ensure(1024);
     memset(from, 0, sizeof(struct sockaddr_storage));
     socklen_t fromlen = static_cast<socklen_t>(sizeof(sockaddr_storage));
-    ssize_t n = ::recvfrom(fd, write(), writable(), 0, reinterpret_cast<struct sockaddr*>(from), &fromlen);
+    ssize_t n = ::recvfrom(fd, reserve(1024), writable(), 0, reinterpret_cast<struct sockaddr*>(from), &fromlen);
     if(n > 0)
     {
         write(n);
@@ -130,10 +128,8 @@ size_t Buffer::write8(int8_t v)
 {
     size_t n = sizeof(v);
     assert(n == 1);
-    ensure(n);
-    assert(writable() >= n);
     
-    int8_t* dest = reinterpret_cast<int8_t*>(write());
+    int8_t* dest = reinterpret_cast<int8_t*>(reserve(n));
     *dest = v;
     write(n);
     return n;
@@ -143,10 +139,8 @@ size_t Buffer::write8u(uint8_t v)
 {
     size_t n = sizeof(v);
     assert(n == 1);
-    ensure(n);
-    assert(writable() >= n);
     
-    uint8_t* dest = reinterpret_cast<uint8_t*>(write());
+    uint8_t* dest = reinterpret_cast<uint8_t*>(reserve(n));
     *dest = v;
     write(n);
     return n;
@@ -156,10 +150,8 @@ size_t Buffer::write16(int16_t v)
 {
     size_t n = sizeof(v);
     assert(n == 2);
-    ensure(n);
-    assert(writable() >= n);
     
-    int16_t* dest = reinterpret_cast<int16_t*>(write());
+    int16_t* dest = reinterpret_cast<int16_t*>(reserve(n));
     *dest = v;
     write(n);
     return n;
@@ -169,10 +161,8 @@ size_t Buffer::write16u(uint16_t v)
 {
     size_t n = sizeof(v);
     assert(n == 2);
-    ensure(n);
-    assert(writable() >= n);
     
-    uint16_t* dest = reinterpret_cast<uint16_t*>(write());
+    uint16_t* dest = reinterpret_cast<uint16_t*>(reserve(n));
     *dest = v;    write(n);
     return n;
 }
@@ -181,10 +171,8 @@ size_t Buffer::write32(int32_t v)
 {
     size_t n = sizeof(v);
     assert(n == 4);
-    ensure(n);
-    assert(writable() >= n);
     
-    int32_t* dest = reinterpret_cast<int32_t*>(write());
+    int32_t* dest = reinterpret_cast<int32_t*>(reserve(n));
     *dest = v;
     write(n);
     return n;
@@ -194,10 +182,8 @@ size_t Buffer::write32u(uint32_t v)
 {
     size_t n = sizeof(v);
     assert(n == 4);
-    ensure(n);
-    assert(writable() >= n);
     
-    uint32_t* dest = reinterpret_cast<uint32_t*>(write());
+    uint32_t* dest = reinterpret_cast<uint32_t*>(reserve(n));
     *dest = v;
     write(n);
     return n;
@@ -207,10 +193,8 @@ size_t Buffer::write64(int64_t v)
 {
     size_t n = sizeof(v);
     assert(n == 8);
-    ensure(n);
-    assert(writable() >= n);
     
-    int64_t* dest = reinterpret_cast<int64_t*>(write());
+    int64_t* dest = reinterpret_cast<int64_t*>(reserve(n));
     *dest = v;
     write(n);
     return n;
@@ -220,10 +204,8 @@ size_t Buffer::write64u(uint64_t v)
 {
     size_t n = sizeof(v);
     assert(n == 8);
-    ensure(n);
-    assert(writable() >= n);
     
-    uint64_t* dest = reinterpret_cast<uint64_t*>(write());
+    uint64_t* dest = reinterpret_cast<uint64_t*>(reserve(n));
     *dest = v;
     write(n);
     return n;
@@ -238,10 +220,8 @@ size_t Buffer::writeFloat(float v)
 {
     size_t n = sizeof(v);
     assert(n == 4);
-    ensure(n);
-    assert(writable() >= n);
     
-    float* dest = reinterpret_cast<float*>(write());
+    float* dest = reinterpret_cast<float*>(reserve(n));
     *dest = v;
     write(n);
     return n;
@@ -251,10 +231,8 @@ size_t Buffer::writeDouble(double v)
 {
     size_t n = sizeof(v);
     assert(n == 8);
-    ensure(n);
-    assert(writable() >= n);
     
-    double* dest = reinterpret_cast<double*>(write());
+    double* dest = reinterpret_cast<double*>(reserve(n));
     *dest = v;
     write(n);
     return n;
@@ -264,11 +242,9 @@ size_t Buffer::writeDouble(double v)
 size_t Buffer::writeString(const std::string& v)
 {
     size_t n = v.size();
-    ensure(n);
-    assert(writable() >= n);
     if(n > 0)
     {
-        memcpy(write(), v.data(), n);
+        memcpy(reserve(n), v.data(), n);
         write(n);
     }
     return n;
@@ -304,21 +280,20 @@ size_t Buffer::writeString(const std::string& v, const std::string& delim)
 // Write with a byte array
 size_t Buffer::write(const unsigned char* b, size_t n)
 {
-    ensure(n);
-    assert(writable() >= n);
-    memcpy(write(), b, n);
+    assert(b != NULL);
+    memcpy(reserve(n), b, n);
     write(n);
     return n;
 }
 
 size_t Buffer::write(Buffer* buffer)
 {
-    return write(buffer->read(), buffer->readable());
+    return write(buffer->peek(), buffer->readable());
 }
 
 size_t Buffer::write(const Buffer& buffer)
 {
-    return write(buffer.read(), buffer.readable());
+    return write(buffer.peek(), buffer.readable());
 }
 
 // Read particular data type
@@ -329,9 +304,9 @@ int8_t Buffer::read8()
     assert(n == 1);
     assert(readable() >= n);
     
-    const int8_t* src = reinterpret_cast<const int8_t*>(read());
+    const int8_t* src = reinterpret_cast<const int8_t*>(peek(0, n));
     v = *src;
-    read(n);
+    remove(n);
     return v;
 }
 
@@ -342,9 +317,9 @@ uint8_t Buffer::read8u()
     assert(n == 1);
     assert(readable() >= n);
     
-    const uint8_t* src = reinterpret_cast<const uint8_t*>(read());
+    const uint8_t* src = reinterpret_cast<const uint8_t*>(peek(0, n));
     v = *src;
-    read(n);
+    remove(n);
     return v;
 }
 
@@ -355,9 +330,9 @@ int16_t Buffer::read16()
     assert(n == 2);
     assert(readable() >= n);
     
-    const int16_t* src = reinterpret_cast<const int16_t*>(read());
+    const int16_t* src = reinterpret_cast<const int16_t*>(peek(0, n));
     v = *src;
-    read(n);
+    remove(n);
     return v;
 }
 
@@ -368,9 +343,9 @@ uint16_t Buffer::read16u()
     assert(n == 2);
     assert(readable() >= n);
     
-    const uint16_t* src = reinterpret_cast<const uint16_t*>(read());
+    const uint16_t* src = reinterpret_cast<const uint16_t*>(peek(0, n));
     v = *src;
-    read(n);
+    remove(n);
     return v;
 }
 
@@ -381,9 +356,9 @@ int32_t Buffer::read32()
     assert(n == 4);
     assert(readable() >= n);
     
-    const int32_t* src = reinterpret_cast<const int32_t*>(read());
+    const int32_t* src = reinterpret_cast<const int32_t*>(peek(0, n));
     v = *src;
-    read(n);
+    remove(n);
     return v;
 }
 
@@ -394,9 +369,9 @@ uint32_t Buffer::read32u()
     assert(n == 4);
     assert(readable() >= n);
     
-    const uint32_t* src = reinterpret_cast<const uint32_t*>(read());
+    const uint32_t* src = reinterpret_cast<const uint32_t*>(peek(0, n));
     v = *src;
-    read(n);
+    remove(n);
     return v;
 }
 
@@ -407,9 +382,9 @@ int64_t Buffer::read64()
     assert(n == 8);
     assert(readable() >= n);
     
-    const int64_t* src = reinterpret_cast<const int64_t*>(read());
+    const int64_t* src = reinterpret_cast<const int64_t*>(peek(0, n));
     v = *src;
-    read(n);
+    remove(n);
     return v;
 }
 
@@ -420,9 +395,9 @@ uint64_t Buffer::read64u()
     assert(n == 8);
     assert(readable() >= n);
     
-    const uint64_t* src = reinterpret_cast<const uint64_t*>(read());
+    const uint64_t* src = reinterpret_cast<const uint64_t*>(peek(0, n));
     v = *src;
-    read(n);
+    remove(n);
     return v;
 }
 
@@ -433,9 +408,9 @@ float Buffer::readFloat()
     assert(n == 4);
     assert(readable() >= n);
     
-    const float* src = reinterpret_cast<const float*>(read());
+    const float* src = reinterpret_cast<const float*>(peek(0, n));
     v = *src;
-    read(n);
+    remove(n);
     return v;
 }
 
@@ -446,9 +421,9 @@ double Buffer::readDouble()
     assert(n == 8);
     assert(readable() >= n);
     
-    const double* src = reinterpret_cast<const double*>(read());
+    const double* src = reinterpret_cast<const double*>(peek(0, n));
     v = *src;
-    read(n);
+    remove(n);
     return v;
 }
 
@@ -459,9 +434,9 @@ bool Buffer::readString(std::string& s, size_t n)
         return false;
     }
     
-    const char* p = reinterpret_cast<const char*>(read());
+    const char* p = reinterpret_cast<const char*>(peek(0, n));
     std::string(p, p + n).swap(s);
-    read(n);
+    remove(n);
     return true;
 }
 
@@ -472,15 +447,15 @@ bool Buffer::readString(std::string& s, const char delim)
         return false;
     }
     
-    const char* p1 = reinterpret_cast<const char*>(read());
-    const char* p2 = std::find(p1, reinterpret_cast<const char*>(write()), delim);
-    if(p2 == reinterpret_cast<const char*>(write()))
+    const char* p1 = reinterpret_cast<const char*>(peek());
+    const char* p2 = std::find(p1, reinterpret_cast<const char*>(reserve(0)), delim);
+    if(p2 == reinterpret_cast<const char*>(reserve(0)))
     {
         return false;
     }
     
     std::string(p1, p2).swap(s);
-    read(p2 + sizeof(delim) - p1);
+    remove(p2 + sizeof(delim) - p1);
     return true;
 }
 
@@ -491,15 +466,15 @@ bool Buffer::readString(std::string& s, const std::string& delim)
         return false;
     }
     
-    const char* p1 = reinterpret_cast<const char*>(read());
-    const char* p2 = std::find_first_of(p1, reinterpret_cast<const char*>(write()), delim.begin(), delim.end());
-    if(p2 == reinterpret_cast<const char*>(write()))
+    const char* p1 = reinterpret_cast<const char*>(peek());
+    const char* p2 = std::find_first_of(p1, reinterpret_cast<const char*>(reserve(0)), delim.begin(), delim.end());
+    if(p2 == reinterpret_cast<const char*>(reserve(0)))
     {
         return false;
     }
     
     std::string(p1, p2).swap(s);
-    read(p2 + delim.size() - p1);
+    remove(p2 + delim.size() - p1);
     return true;
 }
 
@@ -511,8 +486,8 @@ bool Buffer::read(unsigned char* b, size_t n)
         return false;
     }
     
-    memcpy(b, read(), n);
-    read(n);
+    memcpy(b, peek(), n);
+    remove(n);
     return true;
 }
 
@@ -663,8 +638,8 @@ bool Buffer::peekString(std::string& s, const char delim, size_t offset) const
     }
     
     const char* p1 = reinterpret_cast<const char*>(peek(offset));
-    const char* p2 = std::find(p1, reinterpret_cast<const char*>(write()), delim);
-    if(p2 == reinterpret_cast<const char*>(write()))
+    const char* p2 = std::find(p1, reinterpret_cast<const char*>(_begin() + _write_index), delim);
+    if(p2 == reinterpret_cast<const char*>(_begin() + _write_index))
     {
         return false;
     }
@@ -681,8 +656,8 @@ bool Buffer::peekString(std::string& s, const std::string& delim, size_t offset)
     }
     
     const char* p1 = reinterpret_cast<const char*>(peek(offset));
-    const char* p2 = std::find_first_of(p1, reinterpret_cast<const char*>(write()), delim.begin(), delim.end());
-    if(p2 == reinterpret_cast<const char*>(write()))
+    const char* p2 = std::find_first_of(p1, reinterpret_cast<const char*>(_begin() + _write_index), delim.begin(), delim.end());
+    if(p2 == reinterpret_cast<const char*>(_begin() + _write_index))
     {
         return false;
     }

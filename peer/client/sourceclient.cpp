@@ -165,7 +165,7 @@ bool SourceClient::SendMetaRequest( )
 	if( state() != kConnected )  return false;
     
     PPPacket* pPacket = PPPacket::New( PS_PACKET_REQ_META );
-    pPacket->writeString( "test.asf", '\0' ); 
+    pPacket->writeString( "Low5MB.wmv", '\0' ); 
     pPacket->ToBuffer( m_pOutput );
 	pPacket->Release();
     OnWrite();
@@ -181,7 +181,7 @@ bool SourceClient::SendJoinRequest( )
 	if( state() != kConnected  ) return false;
 
     PPPacket* pPacket = PPPacket::New( PS_PACKET_HND_JOIN );
-    pPacket->writeString( "test.asf", '\0'); 
+    pPacket->writeString( "Low5MB.wmv", '\0'); 
     pPacket->ToBuffer( m_pOutput );
     pPacket->Release();
     OnWrite();

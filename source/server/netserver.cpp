@@ -87,6 +87,8 @@ void NetServer::CreateClient(SOCKET hSocket)
         UInt32L i = m_nAcceptedClientsCount % _processorCount;
         _clientMgrList[i]->AddClient(client);
     }
+    
+    std:: cout << " 2 ";
 }
 
 // Count of peer client

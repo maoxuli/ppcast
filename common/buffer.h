@@ -23,7 +23,7 @@ class Buffer
 public:
     Buffer(size_t limit = 0); // limit the max size of buffer
     Buffer(const unsigned char* b, size_t n); // Create with a memory block
-    ~Buffer();
+    virtual ~Buffer();
     
     // Empty the buffer
     void clear()
@@ -57,6 +57,7 @@ public:
     }
     
     // Discard bytes from the begining of readalbe bytes
+    // forward read pos with n
     void remove(size_t n)
     {
         if(readable() > n)
@@ -76,55 +77,39 @@ public:
         return _v.size() - _write_index;
     }
     
-    // Ensure a writable bytes
-    size_t ensure(size_t n)
+    // Forward write pos with n
+    void write(size_t n)
     {
-        if(n == 0 || writable() >= n)
-        {
-            return writable();
-        }
-        
+        assert(_write_index + n <= _v.size());
+        _write_index += n;
+    }
+    
+    // Ensure writalbe size more than n
+    // Return write pointer for external use
+    
+    // unsigned char src[100];
+    // memcpy(buf.reserve(100), src, 100);
+    // buf.write(100);
+    
+    unsigned char* reserve(size_t n)
+    {
         if(_max_size > 0 && (_v.size() + n) > _max_size)
         {
-            _v.resize(_max_size);
+            return NULL;
         }
-        else
+        
+        if(writable() < n)
         {
             _v.resize(_v.size() + n);
         }
         
-        return writable();
+        return _begin() + _write_index;
     }
     
     //
     // Write data to buffer
     // Always append data immediately after readable data
     //
-    
-    // unsigned char src[100];
-    // buf.Reserve(100);
-    // memcpy(buf.Write(), src, 100);
-    // buf.write(100);
-    //
-    // or:
-    // unsigned char src[100];
-    // buf.write(src, 100);
-    
-    const unsigned char* write() const
-    {
-        return _begin() + _write_index;
-    }
-    
-    unsigned char* write()
-    {
-        return _begin() + _write_index;
-    }
-    
-    void write(size_t n)
-    {
-        assert(_write_index + n <= _v.size());
-        _write_index += n;
-    }
         
     size_t write(const unsigned char* b, size_t n);
     size_t write(Buffer* buffer);
@@ -157,25 +142,6 @@ public:
     // The data will be removed from buffer after read
     //
     
-    // unsigned char dst[20];
-    // memcpy(dst, buf.read(), 20);
-    // buf.read(20);
-    // [or buf.remove(20);]
-    //
-    // or:
-    // unsigned char dst[20];
-    // buf.read(dst, 20);
-    
-    const unsigned char* read() const
-    {
-        return _begin() + _read_index;
-    }
-    
-    void read(size_t n)
-    {
-        remove(n);
-    }
-    
     bool read(unsigned char* b, size_t n);
 
     // Read with particular data type
@@ -205,9 +171,10 @@ public:
     // Can peek data at a random position
     //
     
-    const unsigned char* peek(size_t offset = 0) const
+    // n is the least bytes available to read
+    const unsigned char* peek(size_t offset = 0, size_t n = 0) const
     {
-        return readable() > offset ? read() + offset : NULL;
+        return readable() >= (offset + n) ? (_begin() + _read_index + offset) : NULL;
     }
     
     // Peek particular data type

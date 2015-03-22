@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Source>
 	<LocalDirs>
-		<dir>d:\movies</dir>
+		<dir>/Users/Maoxu/Downloads/</dir>
 	</LocalDirs>
 	<LocalIP>192.168.1.5</LocalIP>
 	<anchor_interval>60</anchor_interval>

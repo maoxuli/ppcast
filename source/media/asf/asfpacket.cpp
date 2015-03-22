@@ -7,10 +7,10 @@
 #include <arpa/inet.h>
 #endif
 
-AsfPacket::AsfPacket(const uint8_t* buf, uint32_t len)
+AsfPacket::AsfPacket()
 {
-	Buf = buf;
-	Len = len;
+	Buf = NULL;
+	Len = 0;
     
     ErrorFlags = 0;
 	
@@ -33,18 +33,19 @@ AsfPacket::AsfPacket(const uint8_t* buf, uint32_t len)
 	HasMultiple = false;
 }
 
-AsfPacket::~AsfPacket(void)
+AsfPacket::~AsfPacket()
 {
-    
+
 }
 
 // | ErrorFlags | ErrorData | LenFlags | PropFlags | Length | TimeStamp | Duration | Payload |
 // |     1      |   EDLen   |    1     |     1     |  1,2,4 |     4     |     2    |         |
 
-bool AsfPacket::Initialize()
+bool AsfPacket::Initialize(const char* buf, size_t n)
 {
-    const uint8_t* pBuf;
-    pBuf = Buf;
+    Len = n;
+    Buf = buf;
+    const char* pBuf = Buf;
 
     ErrorFlags = *pBuf;
     pBuf += 1;
@@ -56,6 +57,7 @@ bool AsfPacket::Initialize()
 
     if( (ErrorFlags&0xf0) != (uint8_t)0x80 )   // assert that it has error data and no Opaque data
     {
+        assert(false);
         return false;
     }
 
@@ -101,10 +103,10 @@ bool AsfPacket::Initialize()
             case 4 : PadLen = *(uint32_t *) (pBuf); pBuf += 4; break;
     }
 
-    Time = *(uint32_t*)(pBuf );
+    Time = *(uint32_t*)(pBuf);
     pBuf += 4;
     
-    Duration =*(uint16_t*)(pBuf );
+    Duration =*(uint16_t*)(pBuf);
     pBuf += 2;
     
     Payload = pBuf;
@@ -115,11 +117,11 @@ bool AsfPacket::Initialize()
     return true;
 }
 
-AsfPacket* AsfPacket::CreatePacket(const uint8_t* buf, uint32_t size)
+AsfPacket* AsfPacket::CreatePacket(const char* buf, size_t len)
 {
-	AsfPacket* pack = new AsfPacket(buf, size);
+	AsfPacket* pack = new AsfPacket();
     
-	if( !pack->Initialize() )
+	if( !pack->Initialize(buf, len) )
 	{
 		delete pack;
 		return NULL;
@@ -187,7 +189,7 @@ bool AsfPacket::ParserMultiplePayload()
 {
 	assert(this->PropFlags == 0x5D);
 
-	const uint8_t* pBuf = this->Payload;
+	const char* pBuf = this->Payload;
 	PayloadFlags* pf = (PayloadFlags*) pBuf;
 	pBuf += sizeof(PayloadFlags);
 	assert(pf->PayloadLengthType == 0x2);

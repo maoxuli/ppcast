@@ -11,7 +11,6 @@ PPPacket::PPPacket()
 {
 	_flag = 0;
     _type = 0;
-    _seq = 0;
 }
 
 PPPacket::~PPPacket()
@@ -19,14 +18,13 @@ PPPacket::~PPPacket()
 
 }
 
-PPPacket* PPPacket::New(unsigned short type, unsigned int seq)
+PPPacket* PPPacket::New(unsigned short type)
 {
 	PPPacket* packet = (PPPacket*)POOL.New();
-	
-    packet->_flag = 0;
+    // All members should be reset here
+    // The base class has reset buffer though
+	packet->_flag = 0;
 	packet->_type = (uint16_t)type;
-    packet->_seq = (uint32_t)seq;
-	
 	return packet;
 }
 
@@ -37,38 +35,34 @@ PPPacket* PPPacket::FromBuffer(Buffer* buffer)
         return NULL;
     }
     
-    HEADER* header = (HEADER*)buffer->peek();
+    PPPacket::HEADER* header = (HEADER*)buffer->peek();
     size_t length = header->length;
 	if( buffer->readable() < (sizeof(HEADER) + length)) 
     {
         return NULL;
     }
-    header = NULL;
 
 	PPPacket* packet = (PPPacket*)POOL.New();
-    // Header
-    packet->_flag = buffer->read16u();
-    packet->_type = buffer->read16u();
-    packet->_seq = buffer->read32u();
-    length = buffer->read32u();
-
+    packet->_flag = header->flag;
+    packet->_type = header->type;
+    buffer->remove(sizeof(PPPacket::HEADER));
     // Buffer
-    packet->write(buffer->read(), length);
-    buffer->read(length);
+    packet->write(buffer->peek(0, length), length);
+    buffer->remove(length);
     
 	return packet;	
 }
 
 bool PPPacket::ToBuffer(Buffer* pBuffer) const
 {
-    // Header
-    pBuffer->write16u(_flag);
-    pBuffer->write16u(_type);
-    pBuffer->write32u(_seq);
-    pBuffer->write32u((uint32_t)readable());
+    PPPacket::HEADER header;
+    header.flag = _flag;
+    header.type = _type;
+    header.length = (uint32_t)readable();
     
-    // Buffer
-    pBuffer->write(read(), readable());
+    pBuffer->write((uint8_t*)&header, sizeof(PPPacket::HEADER));
+    
+    pBuffer->write(peek(), readable());
     
     return true;
 }

@@ -15,8 +15,9 @@ AsfHeader::AsfHeader()
 	AudioBitrate = 0;  
 	VideoBitrate = 0;  
     
-	Start_Time = 0;    
-	End_Time = 0;      
+	Play_Duration = 0; 
+    Preroll = 0;
+	Send_Duration = 0; 
 	Duration = 0;      
 	Bitrate = 0;     
 	PacketSize = 0;    
@@ -66,11 +67,10 @@ bool AsfHeader::Initialize(const uint8_t* buf, uint16_t len)
 		if( pObj->ObjectID == FILE_PROPERTY_ID )
 		{
 			FILE_OBJECT* pFile =(FILE_OBJECT*) pBuf;
-			End_Time = pFile->Play_Duration/ 10000;	//100-nanosecond   changed to ms
-			Start_Time = pFile->Preroll;			//ms
-			Duration = End_Time - Start_Time;
-			Bitrate = pFile->Maximum_Bitrate;
-			PacketSize = pFile->Maximum_Data_Packet_Size;
+			Play_Duration = pFile->Play_Duration / 10000;	//100-nanosecond   changed to ms
+			Preroll = pFile->Preroll; //ms
+			Send_Duration = pFile->Play_Duration / 10000;
+            Duration = Send_Duration;
 			assert( pFile->Maximum_Data_Packet_Size == pFile->Minimum_Data_Packet_Size );
 			PacketCount = pFile->Data_Packets_Count;
 		}
@@ -194,7 +194,7 @@ bool AsfReader::Initialize()
 	fp.open( fileName.c_str(), std::ios::in|std::ios::binary );
 	if ( !fp.is_open() )  
     {
-        printf("Asf open file failed.\n");
+        printf("Asf open file failed: %s\n", fileName.c_str());
         return false;
     }
     
@@ -243,7 +243,7 @@ bool AsfReader::Initialize()
     return true;
 }
 
-uint64_t AsfReader::HeadBlock(uint8_t* buf, uint64_t n)
+size_t AsfReader::HeadBlock(char* buf, size_t n)
 {
     if(buf == NULL)
     {
@@ -251,8 +251,13 @@ uint64_t AsfReader::HeadBlock(uint8_t* buf, uint64_t n)
     }
     
     assert(n >= PacketOffset);
+    if( n < PacketOffset )
+    {
+        return 0;
+    }
+    
     fp.seekg(0, std::ios::beg );
-	fp.read((char*)buf, PacketOffset);
+	fp.read(buf, PacketOffset);
 	return fp.gcount();
 }
 
@@ -266,26 +271,28 @@ bool AsfReader::LocatePacket(uint64_t index)
 	return true;
 }
 
-AsfPacket* AsfReader::NextPacket()
+size_t AsfReader::NextPacket(char* buf, size_t n)
 {
+    if(buf == NULL)
+    {
+        return Header.PacketSize;
+    }
+    
 	if( ReadCount >= Header.PacketCount)
 	{
-		return NULL;
+		return 0;
 	}
 	
-	uint8_t* buf = new uint8_t[Header.PacketSize];
-	fp.read( (char*)buf, Header.PacketSize );
-	size_t readLen = fp.gcount();
-	if( readLen != Header.PacketSize ) 
-	{
-        delete[] buf;
-		return  NULL;
-	} 
-   
-    ReadCount++;
-	AsfPacket* packet = AsfPacket::CreatePacket( buf, Header.PacketSize );
-    assert(packet != NULL);
+	assert(n >= Header.PacketSize);
+    if(n < Header.PacketSize)
+    {
+        return 0;
+    }
     
-    delete[] buf;
-    return packet;    
+	fp.read( buf, Header.PacketSize );
+	size_t len = fp.gcount();
+	assert( len == Header.PacketSize ); 
+    ReadCount++;
+    
+	return len;  
 }

@@ -2,7 +2,6 @@
 #define	__ASFREADER_H__
 
 #include "asfobject.h"
-#include "asfpacket.h"
 #include <string>
 #include <fstream>
 
@@ -29,8 +28,9 @@ public:
     uint32_t	VideoBitrate;
     
     // From file property
-    uint64_t	Start_Time;
-    uint64_t	End_Time;
+    uint64_t	Play_Duration;
+    uint64_t    Send_Duration;
+    uint64_t	Preroll;
     uint64_t	Duration; // ms
     uint32_t    Bitrate;
     
@@ -50,19 +50,16 @@ public:
     AsfHeader Header;
     
     // Full head block
-    uint64_t HeadBlock(uint8_t* buf, uint64_t n);
+    size_t HeadBlock(char* buf, size_t n);
     
     // Locate to a asf packet
     // Asf packet is a equal size packet
     // so index and packet size can be used to locate
     bool LocatePacket(uint64_t index);
     
-    // For non equal size packet file
-    // offset may be used to locate
-    // bool Locate(uint64_t offset);
-    
     // Loop to read data packets
-    AsfPacket* NextPacket();
+    // Neet to be delete by users
+    size_t NextPacket(char* buf, size_t n);
     
 private:
     std::ifstream fp;
@@ -72,4 +69,4 @@ private:
     uint64_t ReadCount;
 };
 
-#endif//__ASFREADER_H__
+#endif

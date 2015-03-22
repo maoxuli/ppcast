@@ -8,12 +8,22 @@ AsfPacker::AsfPacker(const std::string& fileName)
 , _slicePoints(NULL)
 , _readCount(0)
 {
-	
+    _bufSize = 0;
+    _buf = NULL;
+    _packet = NULL;
 }
 
 AsfPacker::~AsfPacker ()
 {
-
+    if(_packet != NULL)
+    {
+        delete _packet;
+    }
+    
+    if(_buf != NULL)
+    {
+        delete _buf;
+    }
 }
 
 bool AsfPacker::LocateSlice(size_t index)
@@ -41,17 +51,25 @@ RtpPacket* AsfPacker::NextRtpPacket()
     }
 
     _readCount--;
-    AsfPacket* asfPacket = _reader.NextPacket();
-    assert(asfPacket != NULL);
-    if(asfPacket == NULL)
+    
+    // First read asf packet data block
+    assert(_buf != NULL);
+    assert(_bufSize >= _reader.Header.PacketSize);
+    size_t len = _reader.NextPacket(_buf, _bufSize);
+    assert(len == _reader.Header.PacketSize);
+    
+    assert(_packet != NULL);
+    if(!_packet->Initialize(_buf, len))
     {
         return NULL;
-        
     }
-    return Packet2Rtp(asfPacket);
+    
+    return MakeRtpPacket(_packet);
 }
 
-RtpPacket* AsfPacker::Packet2Rtp(AsfPacket* packet)
+// RtpPacket must duplicate asf data block hold by AsfPacket
+// RtpPacket has its own memory block to hold payload
+RtpPacket* AsfPacker::MakeRtpPacket(AsfPacket* packet)
 {
     assert(packet != NULL);
     if( packet->PadLen == 0 ) 
@@ -127,7 +145,21 @@ RtpPacket* AsfPacker::Packet2Rtp(AsfPacket* packet)
 
 bool AsfPacker::Initialize()
 {
-    return _reader.Initialize();
+    if(!_reader.Initialize())
+    {
+        return false;
+    }
+    
+    assert(_buf == NULL);
+    _bufSize = _reader.Header.PacketSize;
+    _buf = new char[_bufSize];
+    assert(_buf != NULL);
+    
+    assert(_packet == NULL);
+    _packet = new AsfPacket();
+    assert(_packet != NULL);
+    
+    return true;
 }
 
 void AsfPacker::SetSlicePoints(size_t count, uint64_t* points)

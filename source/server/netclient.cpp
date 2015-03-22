@@ -6,6 +6,7 @@
 #include "pppacket.h"
 #include "mediaslicer.h"
 #include "logger.h"
+#include "settings.h"
 
 #define MAX_TIME_NO_REQUEST 1800000
 
@@ -177,7 +178,6 @@ bool NetClient::OnClientJoin(PPPacket* pPacket)
         assert(false);
         return false;
     }
-
     
 #if _OS_WINDOWS
 	std::string::size_type idx = mediaName.find( '/' );
@@ -208,10 +208,30 @@ bool NetClient::OnClientJoin(PPPacket* pPacket)
     
     if ( _mediaSlicer == NULL ) 
     {
-        _mediaSlicer = new MediaSlicer(m_sMediaName);
-        assert(_mediaSlicer != NULL);
-        if ( _mediaSlicer == NULL ) 
+        MediaSlicer* slicer = new MediaSlicer();
+        assert(slicer != NULL);
+        
+        // MediaSlicer use full path name
+        std::string path_name;
+        std::vector<std::string> dirs = theSettings.System.LocalDirs;
+        
+        std::vector<std::string>::iterator it = dirs.begin();
+        for ( ; it != dirs.end(); ++it )
         {
+            path_name = *it;
+            path_name.append( m_sMediaName );
+            
+            if(slicer->Initialize(path_name))
+            {
+                break;
+            }
+        }
+        
+        if(it == dirs.end())
+        {
+            // No file found
+            delete slicer;
+            
             PPPacket* pErrorPacket = PPPacket::New( PS_PACKET_HND_RJCT ); 
             pErrorPacket->writeString("Can not find media file error!");
             pErrorPacket->ToBuffer( m_pOutput );
@@ -219,6 +239,8 @@ bool NetClient::OnClientJoin(PPPacket* pPacket)
 			pErrorPacket->Release();
             return false;
         }
+
+        _mediaSlicer = slicer;
     }
     
 	m_nSendRate = _mediaSlicer->GetBitrate();

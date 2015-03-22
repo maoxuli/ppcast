@@ -33,7 +33,12 @@ private:
     uint64_t* _slicePoints;
     uint64_t _readCount;
     
-    RtpPacket* Packet2Rtp(AsfPacket* packet);  
+    // A buffer used to load asf packet
+    size_t _bufSize;
+    char* _buf;
+    AsfPacket* _packet;
+    
+    RtpPacket* MakeRtpPacket(AsfPacket* packet);  
 };
 
 

@@ -16,10 +16,10 @@ class MediaSlice;
 class MediaSlicer
 {
 public:
-	MediaSlicer(const std::string& name);
+	MediaSlicer();
 	virtual ~MediaSlicer();
     
-	bool Initialize();
+	bool Initialize(const std::string& name);
     
     std::string GetSDP();
     size_t GetBitrate();
@@ -29,9 +29,7 @@ public:
     
     MediaSlice* GetSlice(size_t index);
 
-private:
-    std::string _mediaName;
-    
+private:    
 	MediaParser* _parser;
 	MediaPacker* _packer;
 };
