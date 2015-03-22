@@ -1,7 +1,7 @@
 *.log
 
-ppsource/ppsourced
-ppsource/ppsource
+source/ppsourced
+source/ppsource
 
-pppeer/pppeerd
-pppeer/pppeer
+peer/pppeerd
+peer/pppeer

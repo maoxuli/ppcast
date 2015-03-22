@@ -118,7 +118,7 @@ bool AsfParser::MakeIndex()
 {
     assert(_slicePoints == NULL);
     assert(_sliceTable == NULL);
-    _sliceCount = _reader.Header.Duration/1000 + 1;
+    _sliceCount = _reader.Header.Duration/1000 + 16;
     _slicePoints = new uint64_t[_sliceCount];
     _sliceTable = new SliceTable[_sliceCount];
 
@@ -178,16 +178,17 @@ bool AsfParser::MakeIndex()
     buf = NULL;
     
     assert(index == _reader.Header.PacketCount);
-    assert(sec == _sliceCount - 1);
+    //assert(sec == _sliceCount - 1);
     _sliceTable[sec].bKeyFrame = key;
     _sliceTable[sec].nLen = (index - _slicePoints[sec]) * (_reader.Header.PacketSize + RtpPacket::RTP_HEAD_LEN);
+    _sliceCount = sec + 1;
  
-#ifdef DEBUG
+/*#ifdef DEBUG
 	for( size_t i = 0; i < _sliceCount; i++ ) 
     {
 		printf("%lu %llu %u\n",i, _slicePoints[i], _sliceTable[i].bKeyFrame );		
 	}	
-#endif
+#endif*/
     
 	return true;
 }

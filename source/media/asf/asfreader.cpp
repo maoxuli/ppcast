@@ -1,6 +1,7 @@
 #include "asfreader.h"
 #include <assert.h>
 #include <memory.h>
+#include "iostream"
 
 AsfHeader::AsfHeader()
 {
@@ -70,9 +71,10 @@ bool AsfHeader::Initialize(const uint8_t* buf, uint16_t len)
 			Play_Duration = pFile->Play_Duration / 10000;	//100-nanosecond   changed to ms
 			Preroll = pFile->Preroll; //ms
 			Send_Duration = pFile->Play_Duration / 10000;
-            Duration = Send_Duration;
+            Duration = Send_Duration; // ???
 			assert( pFile->Maximum_Data_Packet_Size == pFile->Minimum_Data_Packet_Size );
-			PacketCount = pFile->Data_Packets_Count;
+            PacketSize = pFile->Maximum_Data_Packet_Size;
+			PacketCount = pFile->Data_Packets_Count;            
 		}
 		if( pObj->ObjectID == STREAM_PROPERTY_ID )
 		{
@@ -210,7 +212,7 @@ bool AsfReader::Initialize()
         return false;
     }
     
-    // Jump to data head object
+    // Head Objects
     uint64_t HeadObjSize = obj.ObjectSize;
     uint8_t* buf;
     buf = new uint8_t[HeadObjSize];
@@ -235,6 +237,7 @@ bool AsfReader::Initialize()
         printGUID(DATA_OBJECT_ID);
         return false;
     }
+    
     assert(DataObj.TotalDataPackets == Header.PacketCount);
     
     // Offset of reading packets
