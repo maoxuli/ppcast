@@ -30,8 +30,8 @@
 		FEB443F71ABA3468008EECB3 /* asfreader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443DF1ABA3468008EECB3 /* asfreader.cpp */; };
 		FEB443F81ABA3468008EECB3 /* mediaparsermgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443E31ABA3468008EECB3 /* mediaparsermgr.cpp */; };
 		FEB443F91ABA3468008EECB3 /* mediaslicer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443E51ABA3468008EECB3 /* mediaslicer.cpp */; };
-		FEB443FA1ABA3468008EECB3 /* netclient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443E81ABA3468008EECB3 /* netclient.cpp */; };
-		FEB443FB1ABA3468008EECB3 /* netclientmgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443EA1ABA3468008EECB3 /* netclientmgr.cpp */; };
+		FEB443FA1ABA3468008EECB3 /* peerclient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443E81ABA3468008EECB3 /* peerclient.cpp */; };
+		FEB443FB1ABA3468008EECB3 /* peerclientmgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443EA1ABA3468008EECB3 /* peerclientmgr.cpp */; };
 		FEB443FC1ABA3468008EECB3 /* netserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443EC1ABA3468008EECB3 /* netserver.cpp */; };
 		FEB443FD1ABA3468008EECB3 /* netservermgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443EE1ABA3468008EECB3 /* netservermgr.cpp */; };
 		FEB443FE1ABA3468008EECB3 /* settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443F01ABA3468008EECB3 /* settings.cpp */; };
@@ -101,10 +101,10 @@
 		FEB443E41ABA3468008EECB3 /* mediaparsermgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mediaparsermgr.h; sourceTree = "<group>"; };
 		FEB443E51ABA3468008EECB3 /* mediaslicer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mediaslicer.cpp; sourceTree = "<group>"; };
 		FEB443E61ABA3468008EECB3 /* mediaslicer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mediaslicer.h; sourceTree = "<group>"; };
-		FEB443E81ABA3468008EECB3 /* netclient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = netclient.cpp; sourceTree = "<group>"; };
-		FEB443E91ABA3468008EECB3 /* netclient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = netclient.h; sourceTree = "<group>"; };
-		FEB443EA1ABA3468008EECB3 /* netclientmgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = netclientmgr.cpp; sourceTree = "<group>"; };
-		FEB443EB1ABA3468008EECB3 /* netclientmgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = netclientmgr.h; sourceTree = "<group>"; };
+		FEB443E81ABA3468008EECB3 /* peerclient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = peerclient.cpp; sourceTree = "<group>"; };
+		FEB443E91ABA3468008EECB3 /* peerclient.h */ = {isa = PBXFileReference; fileEncoding = 4; path = peerclient.h; sourceTree = "<group>"; };
+		FEB443EA1ABA3468008EECB3 /* peerclientmgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = peerclientmgr.cpp; sourceTree = "<group>"; };
+		FEB443EB1ABA3468008EECB3 /* peerclientmgr.h */ = {isa = PBXFileReference; fileEncoding = 4; path = peerclientmgr.h; sourceTree = "<group>"; };
 		FEB443EC1ABA3468008EECB3 /* netserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = netserver.cpp; sourceTree = "<group>"; };
 		FEB443ED1ABA3468008EECB3 /* netserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = netserver.h; sourceTree = "<group>"; };
 		FEB443EE1ABA3468008EECB3 /* netservermgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = netservermgr.cpp; sourceTree = "<group>"; };
@@ -228,10 +228,10 @@
 		FEB443E71ABA3468008EECB3 /* server */ = {
 			isa = PBXGroup;
 			children = (
-				FEB443E81ABA3468008EECB3 /* netclient.cpp */,
-				FEB443E91ABA3468008EECB3 /* netclient.h */,
-				FEB443EA1ABA3468008EECB3 /* netclientmgr.cpp */,
-				FEB443EB1ABA3468008EECB3 /* netclientmgr.h */,
+				FEB443E81ABA3468008EECB3 /* peerclient.cpp */,
+				FEB443E91ABA3468008EECB3 /* peerclient.h */,
+				FEB443EA1ABA3468008EECB3 /* peerclientmgr.cpp */,
+				FEB443EB1ABA3468008EECB3 /* peerclientmgr.h */,
 				FEB443EC1ABA3468008EECB3 /* netserver.cpp */,
 				FEB443ED1ABA3468008EECB3 /* netserver.h */,
 				FEB443EE1ABA3468008EECB3 /* netservermgr.cpp */,
@@ -333,8 +333,8 @@
 				FEB443F71ABA3468008EECB3 /* asfreader.cpp in Sources */,
 				FEB443F81ABA3468008EECB3 /* mediaparsermgr.cpp in Sources */,
 				FEB443F91ABA3468008EECB3 /* mediaslicer.cpp in Sources */,
-				FEB443FA1ABA3468008EECB3 /* netclient.cpp in Sources */,
-				FEB443FB1ABA3468008EECB3 /* netclientmgr.cpp in Sources */,
+				FEB443FA1ABA3468008EECB3 /* peerclient.cpp in Sources */,
+				FEB443FB1ABA3468008EECB3 /* peerclientmgr.cpp in Sources */,
 				FEB443FC1ABA3468008EECB3 /* netserver.cpp in Sources */,
 				FEB443FD1ABA3468008EECB3 /* netservermgr.cpp in Sources */,
 				FEB443FE1ABA3468008EECB3 /* settings.cpp in Sources */,

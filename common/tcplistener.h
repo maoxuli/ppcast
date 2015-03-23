@@ -10,8 +10,8 @@
 class TcpListener : public Socket
 {
 public:
-	TcpListener(void);
-	virtual ~TcpListener(void);
+	TcpListener();
+	virtual ~TcpListener();
     
     bool DoBind(const Endpoint& endpoint);    
     bool DoListen(int backlog);

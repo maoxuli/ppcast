@@ -1,8 +1,8 @@
 //
-// netclient.cpp
+// peerclient.cpp
 //
 
-#include "netclient.h"
+#include "peerclient.h"
 #include "pppacket.h"
 #include "mediaslicer.h"
 #include "logger.h"
@@ -10,7 +10,7 @@
 
 #define MAX_TIME_NO_REQUEST 1800000
 
-NetClient::NetClient()
+PeerClient::PeerClient()
 {
     m_tLastServTime	= OSMilliSeconds();
     m_nRunCookie = 0;
@@ -27,7 +27,7 @@ NetClient::NetClient()
     m_tLastIsNotEmtpy   = OSMilliSeconds();
 }
 
-NetClient::~NetClient()
+PeerClient::~PeerClient()
 {
     if(m_hSocket != INVALID_SOCKET)
     {
@@ -43,7 +43,7 @@ NetClient::~NetClient()
 	m_sendList.clear();
 }
 
-void NetClient::Send(PPPacket* pPacket)
+void PeerClient::Send(PPPacket* pPacket)
 {
     assert(m_hSocket != INVALID_SOCKET);
 
@@ -59,7 +59,7 @@ void NetClient::Send(PPPacket* pPacket)
     pPacket->Release();
 }
 
-bool NetClient::OnRead()
+bool PeerClient::OnRead()
 {
     bool bSuccess = true;
 
@@ -82,13 +82,13 @@ bool NetClient::OnRead()
     return bSuccess;
 }
 
-void NetClient::OnDropped(int nError)
+void PeerClient::OnDropped(int nError)
 {
 	TcpConnection::Close();
 }
 
 // 
-bool NetClient::OnRun()
+bool PeerClient::OnRun()
 {   
 	if ( m_nState == kClosed )	
     {
@@ -143,7 +143,7 @@ bool NetClient::OnRun()
 }
 
 // Handle message from client to source
-bool NetClient::OnPacket(PPPacket* pPacket)
+bool PeerClient::OnPacket(PPPacket* pPacket)
 {
     switch(pPacket->type())
     {
@@ -164,7 +164,7 @@ bool NetClient::OnPacket(PPPacket* pPacket)
     }	
 }
 
-bool NetClient::OnClientJoin(PPPacket* pPacket)
+bool PeerClient::OnClientJoin(PPPacket* pPacket)
 {
     if(pPacket == NULL)
     {
@@ -255,7 +255,7 @@ bool NetClient::OnClientJoin(PPPacket* pPacket)
     return true;
 }
 
-bool NetClient::OnDataRequest(PPPacket* pPacket)
+bool PeerClient::OnDataRequest(PPPacket* pPacket)
 {
     size_t nMin = pPacket->read32u();
     size_t nMax = pPacket->read32u(); 
@@ -267,7 +267,7 @@ bool NetClient::OnDataRequest(PPPacket* pPacket)
     return true;
 }
 
-void NetClient::UpdateDataRequestList(DataRequestTag* requestTag)
+void PeerClient::UpdateDataRequestList(DataRequestTag* requestTag)
 {
     DataRequestTagList::iterator it = m_DataRequestList.begin(); 
    
@@ -286,7 +286,7 @@ void NetClient::UpdateDataRequestList(DataRequestTag* requestTag)
 
 }
 
-bool NetClient::OnResetRequest(PPPacket* pPacket)
+bool PeerClient::OnResetRequest(PPPacket* pPacket)
 {
     m_bReset = true;
     m_DataRequestList.clear();
@@ -295,7 +295,7 @@ bool NetClient::OnResetRequest(PPPacket* pPacket)
     return true;
 }
 
-bool NetClient::OnMetaRequest(PPPacket* pPacket)
+bool PeerClient::OnMetaRequest(PPPacket* pPacket)
 {   
     if(m_bMetaSended == true)
     {
@@ -347,7 +347,7 @@ bool NetClient::OnMetaRequest(PPPacket* pPacket)
     return true;
 }
 
-bool NetClient::ServeDataRequest(size_t index)
+bool PeerClient::ServeDataRequest(size_t index)
 {
     assert(_mediaSlicer != NULL);
 

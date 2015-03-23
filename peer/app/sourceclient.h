@@ -36,9 +36,6 @@ public:
 private:
     Endpoint _endpoint;
     unsigned int m_nRunCookie;
-    
-    friend class SourceClientMgr;
-
 };
 
 #endif 

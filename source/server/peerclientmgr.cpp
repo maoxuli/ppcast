@@ -1,47 +1,46 @@
 //
-// netclientmgr.cpp
+// peerclientmgr.cpp
 //
 
-#include "netclientmgr.h"
-#include "netclient.h"
+#include "peerclientmgr.h"
+#include "peerclient.h"
 #include "logger.h"
 #include "settings.h"
-
 #include "os.h"
 
-NetClientMgr::NetClientMgr()
+PeerClientMgr::PeerClientMgr()
 {
 	m_nRunCookie = 0;	
 }
 
-NetClientMgr::~NetClientMgr()
+PeerClientMgr::~PeerClientMgr()
 {
 
 }
 
-void NetClientMgr::AddClient(NetClient* pClient)
+void PeerClientMgr::AddClient(PeerClient* pClient)
 {
     assert(pClient->fd() != INVALID_SOCKET && pClient->state() == kConnected);
 	Add( pClient );
 	//theLogger.Message(MSG_DEBUG,"Add One Peer Client %s", pPeerClient->m_RemoteHost.GetIPAddressString());
 }
 
-void NetClientMgr::RemoveClient(NetClient* pClient)
+void PeerClientMgr::RemoveClient(PeerClient* pClient)
 {
     Remove( pClient );
 	//theLogger.Message(MSG_DEBUG,"Remove One Peer Client %s", pPeerClient->m_RemoteHost.GetIPAddressString());
 }
 
-NetClient* NetClientMgr::GetNextClient(UInt32L nCookie)
+PeerClient* PeerClientMgr::GetNextClient(UInt32L nCookie)
 {
-	NetClient* pClient = NULL;
+	PeerClient* pClient = NULL;
 	BOOL bFound = FALSE;
 
 	m_pLock.Lock();
 	
 	for(CPointList::iterator it = m_pList.begin(); it != m_pList.end(); it++)
 	{
-		pClient = (NetClient*)(*it);
+		pClient = (PeerClient*)(*it);
 
 		if(pClient->m_nRunCookie != nCookie)
 		{
@@ -55,13 +54,13 @@ NetClient* NetClientMgr::GetNextClient(UInt32L nCookie)
 	return bFound == TRUE ? pClient : NULL;
 }
 
-void NetClientMgr::RunClients()
+void PeerClientMgr::RunClients()
 {
     m_nRunCookie++;
 
     while(TRUE)
     {
-		NetClient* pClient = GetNextClient(m_nRunCookie);
+		PeerClient* pClient = GetNextClient(m_nRunCookie);
 		if(!pClient) 
         {
             break;
@@ -75,7 +74,7 @@ void NetClientMgr::RunClients()
     }
 }
 
-void NetClientMgr::OnRun()
+void PeerClientMgr::OnRun()
 {
     while(m_bThread)
     {

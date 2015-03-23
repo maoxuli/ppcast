@@ -3,8 +3,8 @@
 //
 
 #include "netserver.h"
-#include "netclientmgr.h"
-#include "netclient.h"
+#include "peerclientmgr.h"
+#include "peerclient.h"
 #include "endpoint.h"
 #include "logger.h"
 #include "settings.h"
@@ -26,7 +26,7 @@ NetServer::~NetServer()
     {
         for(int i =0; i < m_nProcessor; i++)
         {
-            NetClientMgr* clientMgr = _clientMgrList[i];
+            PeerClientMgr* clientMgr = _clientMgrList[i];
             delete clientMgr;
         }
     }
@@ -48,11 +48,11 @@ bool NetServer::Start()
     //Processor number
 	_processorCount = (UInt16)OSGetNumberOfProcessors();
     assert(_processorCount > 0);
-    _clientMgrList = new NetClientMgr*[_processorCount];
+    _clientMgrList = new PeerClientMgr*[_processorCount];
 
 	for(UInt16 i =0; i < _processorCount; i++)
 	{
-		_clientMgrList[i] = new NetClientMgr();
+		_clientMgrList[i] = new PeerClientMgr();
 		_clientMgrList[i]->StartThread();
 	}
 
@@ -79,7 +79,7 @@ bool NetServer::OnAccept()
 
 void NetServer::CreateClient(SOCKET hSocket)
 {
-    NetClient* client = new NetClient();
+    PeerClient* client = new PeerClient();
     client->AttachTo(hSocket);
 
     if(client)

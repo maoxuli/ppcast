@@ -2,8 +2,8 @@
 // peer.cpp
 //
 
-#include "sourceclientmgr.h"
-#include "sourceclient.h"
+#include "settings.h"
+#include "channelmgr.h"
 #include "os.h"
 
 void usage()
@@ -57,21 +57,15 @@ int run()
 	signal(SIGPIPE,SIG_IGN); //Broken pipe: write to pipe with no readers
 #endif
     
+    // Load settings
+    theSettings.Load();
+    
     // Init socket
     OSInitialSocket();
     
-    Endpoint endpoint;
-    endpoint.Set("192.168.1.5", 5315);
-    
-    SourceClient* pClient = new SourceClient(endpoint);
-    if(pClient->Initialize() == false)
+    // Initialize peer 
+    if(theChannelMgr.Initialize() == false)
     {
-        return -1;
-    }
-    theClientMgr.AddClient(pClient);
-    if(!theClientMgr.StartThread())
-    {
-        theClientMgr.RemoveAll();
         return -1;
     }
     
@@ -85,8 +79,7 @@ int run()
     }
     
     // Exit
-    theClientMgr.RemoveAll();
-    theClientMgr.StopThread();
+    theChannelMgr.Shutdown();
     OSUninitialSocket();
     
     return 0;

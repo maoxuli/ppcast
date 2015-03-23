@@ -7,7 +7,7 @@
 
 #include "tcplistener.h"
 
-class NetClientMgr;
+class PeerClientMgr;
 
 // A NetServer is listeningsocket
 // Runing in a selecting thread (NetServerMgr)
@@ -34,7 +34,7 @@ private:
     
     // Threads for tcp transport sockets (PeerClientMgr)
     // Determined by processor count
-    NetClientMgr** _clientMgrList;
+    PeerClientMgr** _clientMgrList;
     unsigned short _processorCount;
     
     UInt32L				m_nAcceptedClientsCount;

@@ -1,20 +1,20 @@
 //
-// netclient.h
+// peerclient.h
 //
 
-#ifndef __NET_CLIENT_H__
-#define __NET_CLIENT_H__
+#ifndef __PEER_CLIENT_H__
+#define __PEER_CLIENT_H__
 
 #include "TcpConnection.h"
 
 class PPPacket;
 class MediaSlicer;
 
-class NetClient : public TcpConnection
+class PeerClient : public TcpConnection
 {
 public:
-    NetClient();
-    ~NetClient();
+    PeerClient();
+    ~PeerClient();
 
 public:
     GGUID m_nGUID;
@@ -78,7 +78,7 @@ private:
     
     bool ServeDataRequest( size_t index );
 
-    friend class NetClientMgr;
+    friend class PeerClientMgr;
 
 };
 

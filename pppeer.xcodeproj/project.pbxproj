@@ -25,9 +25,18 @@
 		FEB444381ABA34C9008EECB3 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB444261ABA34C9008EECB3 /* tinyxmlerror.cpp */; };
 		FEB444391ABA34C9008EECB3 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB444271ABA34C9008EECB3 /* tinyxmlparser.cpp */; };
 		FEB444611ABA34D0008EECB3 /* peer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB4443C1ABA34D0008EECB3 /* peer.cpp */; };
-		FEB444651ABA34D0008EECB3 /* sourceclient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB444441ABA34D0008EECB3 /* sourceclient.cpp */; };
-		FEB444661ABA34D0008EECB3 /* sourceclientmgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB444461ABA34D0008EECB3 /* sourceclientmgr.cpp */; };
 		FEB4447A1ABA3963008EECB3 /* tcpconnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB444791ABA3962008EECB3 /* tcpconnection.cpp */; };
+		FEB444EB1ABFD814008EECB3 /* sourceclient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB444E71ABFD814008EECB3 /* sourceclient.cpp */; };
+		FEB444F11ABFD89C008EECB3 /* channel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB444ED1ABFD89C008EECB3 /* channel.cpp */; };
+		FEB444F21ABFD89C008EECB3 /* channelmgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB444EF1ABFD89C008EECB3 /* channelmgr.cpp */; };
+		FEB444F51AC07C5A008EECB3 /* settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB444F31AC07C58008EECB3 /* settings.cpp */; };
+		FEB4450E1AC085D8008EECB3 /* rtspconnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB445041AC085D8008EECB3 /* rtspconnection.cpp */; };
+		FEB4450F1AC085D8008EECB3 /* rtspmessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB445061AC085D8008EECB3 /* rtspmessage.cpp */; };
+		FEB445101AC085D8008EECB3 /* rtspserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB445081AC085D8008EECB3 /* rtspserver.cpp */; };
+		FEB445111AC085D8008EECB3 /* rtspsession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB4450A1AC085D8008EECB3 /* rtspsession.cpp */; };
+		FEB445121AC085D8008EECB3 /* rtspstream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB4450C1AC085D8008EECB3 /* rtspstream.cpp */; };
+		FEB445161AC08A65008EECB3 /* httpmessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB445141AC08A65008EECB3 /* httpmessage.cpp */; };
+		FEB445291AC09B18008EECB3 /* rtsplistener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB445271AC09B16008EECB3 /* rtsplistener.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -78,11 +87,30 @@
 		FEB444261ABA34C9008EECB3 /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlerror.cpp; sourceTree = "<group>"; };
 		FEB444271ABA34C9008EECB3 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
 		FEB4443C1ABA34D0008EECB3 /* peer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = peer.cpp; sourceTree = "<group>"; };
-		FEB444441ABA34D0008EECB3 /* sourceclient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sourceclient.cpp; sourceTree = "<group>"; };
-		FEB444451ABA34D0008EECB3 /* sourceclient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sourceclient.h; sourceTree = "<group>"; };
-		FEB444461ABA34D0008EECB3 /* sourceclientmgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sourceclientmgr.cpp; sourceTree = "<group>"; };
-		FEB444471ABA34D0008EECB3 /* sourceclientmgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sourceclientmgr.h; sourceTree = "<group>"; };
 		FEB444791ABA3962008EECB3 /* tcpconnection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tcpconnection.cpp; sourceTree = "<group>"; };
+		FEB444E71ABFD814008EECB3 /* sourceclient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sourceclient.cpp; sourceTree = "<group>"; };
+		FEB444E81ABFD814008EECB3 /* sourceclient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sourceclient.h; sourceTree = "<group>"; };
+		FEB444ED1ABFD89C008EECB3 /* channel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = channel.cpp; sourceTree = "<group>"; };
+		FEB444EE1ABFD89C008EECB3 /* channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = channel.h; sourceTree = "<group>"; };
+		FEB444EF1ABFD89C008EECB3 /* channelmgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = channelmgr.cpp; sourceTree = "<group>"; };
+		FEB444F01ABFD89C008EECB3 /* channelmgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = channelmgr.h; sourceTree = "<group>"; };
+		FEB444F31AC07C58008EECB3 /* settings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = settings.cpp; sourceTree = "<group>"; };
+		FEB444F41AC07C59008EECB3 /* settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = settings.h; sourceTree = "<group>"; };
+		FEB445041AC085D8008EECB3 /* rtspconnection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rtspconnection.cpp; sourceTree = "<group>"; };
+		FEB445051AC085D8008EECB3 /* rtspconnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rtspconnection.h; sourceTree = "<group>"; };
+		FEB445061AC085D8008EECB3 /* rtspmessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rtspmessage.cpp; sourceTree = "<group>"; };
+		FEB445071AC085D8008EECB3 /* rtspmessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rtspmessage.h; sourceTree = "<group>"; };
+		FEB445081AC085D8008EECB3 /* rtspserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rtspserver.cpp; sourceTree = "<group>"; };
+		FEB445091AC085D8008EECB3 /* rtspserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rtspserver.h; sourceTree = "<group>"; };
+		FEB4450A1AC085D8008EECB3 /* rtspsession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rtspsession.cpp; sourceTree = "<group>"; };
+		FEB4450B1AC085D8008EECB3 /* rtspsession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rtspsession.h; sourceTree = "<group>"; };
+		FEB4450C1AC085D8008EECB3 /* rtspstream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rtspstream.cpp; sourceTree = "<group>"; };
+		FEB4450D1AC085D8008EECB3 /* rtspstream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rtspstream.h; sourceTree = "<group>"; };
+		FEB445131AC08A65008EECB3 /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
+		FEB445141AC08A65008EECB3 /* httpmessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = httpmessage.cpp; sourceTree = "<group>"; };
+		FEB445151AC08A65008EECB3 /* httpmessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = httpmessage.h; sourceTree = "<group>"; };
+		FEB445271AC09B16008EECB3 /* rtsplistener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rtsplistener.cpp; sourceTree = "<group>"; };
+		FEB445281AC09B17008EECB3 /* rtsplistener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rtsplistener.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +144,9 @@
 		FEB444051ABA34C9008EECB3 /* common */ = {
 			isa = PBXGroup;
 			children = (
+				FEB445131AC08A65008EECB3 /* base64.h */,
+				FEB445141AC08A65008EECB3 /* httpmessage.cpp */,
+				FEB445151AC08A65008EECB3 /* httpmessage.h */,
 				FEB444061ABA34C9008EECB3 /* buffer.cpp */,
 				FEB444071ABA34C9008EECB3 /* buffer.h */,
 				FEB444081ABA34C9008EECB3 /* endpoint.cpp */,
@@ -157,8 +188,8 @@
 		FEB4443A1ABA34D0008EECB3 /* peer */ = {
 			isa = PBXGroup;
 			children = (
+				FEB444CE1ABFD7DB008EECB3 /* rtsp */,
 				FEB4443B1ABA34D0008EECB3 /* app */,
-				FEB4443D1ABA34D0008EECB3 /* client */,
 			);
 			path = peer;
 			sourceTree = "<group>";
@@ -166,20 +197,36 @@
 		FEB4443B1ABA34D0008EECB3 /* app */ = {
 			isa = PBXGroup;
 			children = (
+				FEB444ED1ABFD89C008EECB3 /* channel.cpp */,
+				FEB444EE1ABFD89C008EECB3 /* channel.h */,
+				FEB444EF1ABFD89C008EECB3 /* channelmgr.cpp */,
+				FEB444F01ABFD89C008EECB3 /* channelmgr.h */,
+				FEB444E71ABFD814008EECB3 /* sourceclient.cpp */,
+				FEB444E81ABFD814008EECB3 /* sourceclient.h */,
+				FEB444F31AC07C58008EECB3 /* settings.cpp */,
+				FEB444F41AC07C59008EECB3 /* settings.h */,
 				FEB4443C1ABA34D0008EECB3 /* peer.cpp */,
 			);
 			path = app;
 			sourceTree = "<group>";
 		};
-		FEB4443D1ABA34D0008EECB3 /* client */ = {
+		FEB444CE1ABFD7DB008EECB3 /* rtsp */ = {
 			isa = PBXGroup;
 			children = (
-				FEB444441ABA34D0008EECB3 /* sourceclient.cpp */,
-				FEB444451ABA34D0008EECB3 /* sourceclient.h */,
-				FEB444461ABA34D0008EECB3 /* sourceclientmgr.cpp */,
-				FEB444471ABA34D0008EECB3 /* sourceclientmgr.h */,
+				FEB445271AC09B16008EECB3 /* rtsplistener.cpp */,
+				FEB445281AC09B17008EECB3 /* rtsplistener.h */,
+				FEB445041AC085D8008EECB3 /* rtspconnection.cpp */,
+				FEB445051AC085D8008EECB3 /* rtspconnection.h */,
+				FEB445061AC085D8008EECB3 /* rtspmessage.cpp */,
+				FEB445071AC085D8008EECB3 /* rtspmessage.h */,
+				FEB445081AC085D8008EECB3 /* rtspserver.cpp */,
+				FEB445091AC085D8008EECB3 /* rtspserver.h */,
+				FEB4450A1AC085D8008EECB3 /* rtspsession.cpp */,
+				FEB4450B1AC085D8008EECB3 /* rtspsession.h */,
+				FEB4450C1AC085D8008EECB3 /* rtspstream.cpp */,
+				FEB4450D1AC085D8008EECB3 /* rtspstream.h */,
 			);
-			path = client;
+			path = rtsp;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -267,9 +314,18 @@
 				FEB444381ABA34C9008EECB3 /* tinyxmlerror.cpp in Sources */,
 				FEB444391ABA34C9008EECB3 /* tinyxmlparser.cpp in Sources */,
 				FEB444611ABA34D0008EECB3 /* peer.cpp in Sources */,
-				FEB444651ABA34D0008EECB3 /* sourceclient.cpp in Sources */,
-				FEB444661ABA34D0008EECB3 /* sourceclientmgr.cpp in Sources */,
 				FEB4447A1ABA3963008EECB3 /* tcpconnection.cpp in Sources */,
+				FEB444EB1ABFD814008EECB3 /* sourceclient.cpp in Sources */,
+				FEB444F11ABFD89C008EECB3 /* channel.cpp in Sources */,
+				FEB444F21ABFD89C008EECB3 /* channelmgr.cpp in Sources */,
+				FEB444F51AC07C5A008EECB3 /* settings.cpp in Sources */,
+				FEB4450E1AC085D8008EECB3 /* rtspconnection.cpp in Sources */,
+				FEB4450F1AC085D8008EECB3 /* rtspmessage.cpp in Sources */,
+				FEB445101AC085D8008EECB3 /* rtspserver.cpp in Sources */,
+				FEB445111AC085D8008EECB3 /* rtspsession.cpp in Sources */,
+				FEB445121AC085D8008EECB3 /* rtspstream.cpp in Sources */,
+				FEB445161AC08A65008EECB3 /* httpmessage.cpp in Sources */,
+				FEB445291AC09B18008EECB3 /* rtsplistener.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
