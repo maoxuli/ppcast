@@ -151,11 +151,14 @@ bool AsfParser::MakeIndex()
             assert(newSec < (sec + 10));
             if(newSec > sec + 1)
             {
+                // Current packet hold contents more than one second
+                // All table point to current packet
+                // This make slice talbe contains adjcent slices has same start points 
                 for(size_t i = sec + 1; i < newSec; i++)
                 {
-                    _slicePoints[i] = _slicePoints[sec];
-                    _sliceTable[i].bKeyFrame = _sliceTable[sec].bKeyFrame; 
-                    _sliceTable[i].nLen = _sliceTable[sec].nLen;
+                    _slicePoints[i] = index;
+                    _sliceTable[i].bKeyFrame = packet->HasKeyFrame; 
+                    _sliceTable[i].nLen = _reader.Header.PacketSize + RtpPacket::RTP_HEAD_LEN;
                 }
             }
             

@@ -40,7 +40,7 @@ public:
 	
     uint8_t     ErrorFlags;
 	uint8_t     ErrorDataLen;
-    const char*  ErrorData;
+    const char* ErrorData;
     
     uint8_t     LenFlags; // Length of seq, pad, packet
     uint8_t     PropFlags;
@@ -51,7 +51,7 @@ public:
     uint32_t	Time;
     uint32_t	Duration;
     
-    size_t        PayloadSize;
+    size_t       PayloadSize;
     const char*  Payload;
     
 	bool	HasKeyFrame;

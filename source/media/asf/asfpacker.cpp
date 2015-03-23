@@ -37,6 +37,10 @@ bool AsfPacker::LocateSlice(size_t index)
     else
     {
         _readCount = _slicePoints[index + 1] - _slicePoints[index];
+        if(_readCount == 0) // Adjcent slices are in same packet
+        {
+            _readCount = 1;
+        }
     }
     
     // Locate to the first packet
@@ -72,7 +76,22 @@ RtpPacket* AsfPacker::NextRtpPacket()
 RtpPacket* AsfPacker::MakeRtpPacket(AsfPacket* packet)
 {
     assert(packet != NULL);
-    if( packet->PadLen == 0 ) 
+    uint16_t rtpSize = RtpPacket::RTP_HEAD_LEN + 4 + packet->Len; 
+    RtpPacket* rtpPacket = new RtpPacket( rtpSize );
+    uint8_t* p = rtpPacket->payload;
+    
+    *(uint16_t*) p = htons(0x4000);
+    p += 2;
+    
+    *(uint16_t*) p = htons(rtpPacket->payloadSize);
+    p += 2;
+    
+    memcpy( p, packet->Buf, packet->Len );
+    assert ( packet->Len + 4 == rtpPacket->payloadSize );
+    rtpPacket->SetTimeStamp( packet->Time );
+    return rtpPacket;
+    
+    /*if( packet->PadLen == 0 ) 
     {
         uint16_t rtpSize = RtpPacket::RTP_HEAD_LEN + 4 + packet->PacketLen; 
         RtpPacket* rtpPacket = new RtpPacket( rtpSize );
@@ -140,7 +159,7 @@ RtpPacket* AsfPacker::MakeRtpPacket(AsfPacket* packet)
         delete buf;
         return rtpPacket;
     }
-    return NULL;
+    return NULL;*/
 }
 
 bool AsfPacker::Initialize()

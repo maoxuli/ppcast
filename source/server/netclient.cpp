@@ -257,8 +257,8 @@ bool NetClient::OnClientJoin(PPPacket* pPacket)
 
 bool NetClient::OnDataRequest(PPPacket* pPacket)
 {
-    size_t nMin = pPacket->read16u();
-    size_t nMax = pPacket->read16u(); 
+    size_t nMin = pPacket->read32u();
+    size_t nMax = pPacket->read32u(); 
 
 	theLogger.Message(MSG_SYSTEM,"Get a Data Request:(%d,%d)", nMin,nMax);
 
@@ -313,12 +313,10 @@ bool NetClient::OnMetaRequest(PPPacket* pPacket)
 
     PPPacket* pOutPacket = PPPacket::New( PS_PACKET_ANS_META );
     pOutPacket->write32u( (uint32_t)sliceCount);
-	pOutPacket->write32u( (uint32_t)_mediaSlicer->GetBitrate() );
 	for( size_t i=0; i < sliceCount; i++)
     {
 		pOutPacket->write32u( (uint32_t)pTable[i].nLen );
         pOutPacket->write8u( pTable[i].bKeyFrame );
-        pOutPacket->write8u( pTable[i].bAnchor );
     }
 
     std::string sdp = _mediaSlicer->GetSDP();
@@ -329,7 +327,7 @@ bool NetClient::OnMetaRequest(PPPacket* pPacket)
 	{
 		pOutPacket->write8u(1);
 
-		pFirstSlice->ToPPPacket(pOutPacket);
+		pFirstSlice->ToBuffer(pOutPacket);
 
 		pFirstSlice->Delete();
 	}
@@ -353,7 +351,7 @@ bool NetClient::ServeDataRequest(size_t index)
 {
     assert(_mediaSlicer != NULL);
 
-	std::map<UInt16,UInt16>::iterator it = m_sendList.find( index );
+	std::map<size_t,size_t>::iterator it = m_sendList.find( index );
 	if( it != m_sendList.end() ) 
     {
         return true;
@@ -368,7 +366,7 @@ bool NetClient::ServeDataRequest(size_t index)
 
     PPPacket* pPacket = PPPacket::New( PS_PACKET_ANS_DATA );
 
-    slice->ToPPPacket( pPacket );
+    slice->ToBuffer( pPacket );
 
     pPacket->ToBuffer( m_pOutput );
 

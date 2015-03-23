@@ -7,6 +7,7 @@
 #include "mediapacker.h"
 #include "mediaslice.h"
 #include "mediaparsermgr.h"
+#include "rtppacket.h"
 
 MediaSlicer::MediaSlicer()
 {

@@ -39,9 +39,6 @@ public:
     RtpPacket(uint16_t size);
     ~RtpPacket(void);
     
-    static RtpPacket* FromBuffer(Buffer* buffer);
-    bool ToBuffer(Buffer* buffer);
-    
     bool SetFirstFlag();
     bool SetPayLoad(const uint8_t* buf,uint32_t size);
 

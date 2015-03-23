@@ -37,16 +37,16 @@ public:
 
     UInt32L m_nRunCookie;
 
-	std::map<UInt16, UInt16>  m_sendList;
+	std::map<size_t, size_t>  m_sendList;
 
 protected:
     struct DataRequestTag
     {
 
-        UInt16 m_nMin;
-        UInt16 m_nMax;
+        size_t m_nMin;
+        size_t m_nMax;
         
-        DataRequestTag(UInt16 nStart, UInt16 nEnd)
+        DataRequestTag(size_t nStart, size_t nEnd)
         {
             m_nMin = nStart;
             m_nMax = nEnd;

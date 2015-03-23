@@ -30,27 +30,6 @@ RtpPacket::~RtpPacket(void)
 	}
 }
 
-RtpPacket* RtpPacket::FromBuffer(Buffer* buffer)
-{
-    size_t len = buffer->peek32u();
-    if(buffer->readable() < len + sizeof(uint32_t))
-    {
-        return NULL;
-    }
-    
-    len = buffer->read32u();
-    RtpPacket* packet = new RtpPacket(len);
-    buffer->read((unsigned char*)packet->buffer, (size_t)len);
-    return packet;
-}
-
-bool RtpPacket::ToBuffer(Buffer* buffer)
-{
-    buffer->write32u(bufferSize);
-    buffer->write((const unsigned char*)buffer, (size_t)bufferSize);
-    return true;
-}
-
 bool RtpPacket::SetPayLoad(const uint8_t * buf, uint32_t size) 
 {
 	assert ( size == payloadSize );

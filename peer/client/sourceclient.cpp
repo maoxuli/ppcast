@@ -1,5 +1,6 @@
 #include "sourceclient.h"
 #include "pppacket.h"
+#include "mediaslice.h"
 #include "logger.h"
 
 SourceClient::SourceClient(const Endpoint& endpoint)
@@ -95,18 +96,18 @@ bool SourceClient::OnPacket(PPPacket* pPacket)
 
 bool SourceClient::OnDataPacket( PPPacket * pPacket )
 {
-    /*
-    MediaSlice* pSlice = MediaSlice::FromPacket( pPacket );
+    MediaSlice* pSlice = MediaSlice::FromBuffer( pPacket );
 	
 	size_t index = pSlice->GetIndex();
 	theLogger.Message(MSG_ERROR,"Get Data(Sec. %d) From SourceClient----------", index);
-*/
+
     return true;
 }
 
 bool SourceClient::OnMetaPacket( PPPacket * pPacket )
 {
     theLogger.Message(MSG_ERROR,"Meta data");
+    SendDataRequest(0, 138);
 	return true;
 }
 
@@ -135,28 +136,17 @@ bool SourceClient::OnRun()
 
 bool SourceClient::SendDataRequest( size_t nMin, size_t nMax )
 {
-/*	if( m_bConnected == FALSE  ) return FALSE;
+    if( state() != kConnected )  return false;
+    
+    PPPacket* pPacket = PPPacket::New( PS_PACKET_REQ_DATA );
 
-    CPSPacket* pPacket = CPSPacket::New( PS_PACKET_REQ_DATA );
-
-    pPacket->WriteShortLE( nMin ); 
-    pPacket->WriteShortLE( nMax ); 
+    pPacket->write32u((uint32_t)nMin); 
+    pPacket->write32u((uint32_t)nMax); 
 
     pPacket->ToBuffer( m_pOutput );
     pPacket->Release();
     OnWrite();
 
-	//Log Event
-	CEventLog * pEventLog = new CEventLog(DATA_REQUEST);
-	pEventLog->m_chunk.nIsSource = 1;
-	pEventLog->m_chunk.nFrom = nMin;
-	pEventLog->m_chunk.nTo = nMax;
-	pEventLog->m_chunk.nObj = m_nCookie;
-	if( m_pChannel ) m_pChannel->EventReport( pEventLog );
-	else delete pEventLog;		
-
-    theApp.Message(MSG_SCHEDULE,"Request Data (%d,%d) from Source Server %s", nMin, nMax, m_sAddress);
-*/
 	return true;
 }
 
