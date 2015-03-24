@@ -35,6 +35,7 @@ bool TcpConnection::DoBind(Endpoint ep)
 	if(bind(m_hSocket, (SOCKADDR*)&ep.m_sockaddr, ep.m_socklen ) == SOCKET_ERROR)	
 	{
 		printf("\n TcpConnection bind error : %d\n", OSGetLastError());
+        OSCloseSocket(m_hSocket);
 		m_hSocket = INVALID_SOCKET;
 		return false;
 	}

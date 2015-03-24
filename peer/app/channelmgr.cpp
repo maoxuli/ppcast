@@ -36,6 +36,7 @@ bool ChannelMgr::Initialize()
     }
     
     // 
+    return true;
 }
 
 void ChannelMgr::Shutdown()
@@ -56,7 +57,7 @@ void ChannelMgr::Shutdown()
     }
 }
 
-Channel* ChannelMgr::GetChannel(const int &url)
+Channel* ChannelMgr::GetChannel(const ChannelUrl& url)
 {
     return NULL;
 }

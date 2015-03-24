@@ -37,6 +37,8 @@
 		FEB445121AC085D8008EECB3 /* rtspstream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB4450C1AC085D8008EECB3 /* rtspstream.cpp */; };
 		FEB445161AC08A65008EECB3 /* httpmessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB445141AC08A65008EECB3 /* httpmessage.cpp */; };
 		FEB445291AC09B18008EECB3 /* rtsplistener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB445271AC09B16008EECB3 /* rtsplistener.cpp */; };
+		FEB4453E1AC145B6008EECB3 /* udpsocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB4453C1AC145B4008EECB3 /* udpsocket.cpp */; };
+		FEB445421AC14A3C008EECB3 /* channelurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB445401AC14A3A008EECB3 /* channelurl.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -111,6 +113,10 @@
 		FEB445151AC08A65008EECB3 /* httpmessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = httpmessage.h; sourceTree = "<group>"; };
 		FEB445271AC09B16008EECB3 /* rtsplistener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rtsplistener.cpp; sourceTree = "<group>"; };
 		FEB445281AC09B17008EECB3 /* rtsplistener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rtsplistener.h; sourceTree = "<group>"; };
+		FEB4453C1AC145B4008EECB3 /* udpsocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = udpsocket.cpp; sourceTree = "<group>"; };
+		FEB4453D1AC145B5008EECB3 /* udpsocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = udpsocket.h; sourceTree = "<group>"; };
+		FEB445401AC14A3A008EECB3 /* channelurl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = channelurl.cpp; sourceTree = "<group>"; };
+		FEB445411AC14A3B008EECB3 /* channelurl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = channelurl.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +150,8 @@
 		FEB444051ABA34C9008EECB3 /* common */ = {
 			isa = PBXGroup;
 			children = (
+				FEB4453C1AC145B4008EECB3 /* udpsocket.cpp */,
+				FEB4453D1AC145B5008EECB3 /* udpsocket.h */,
 				FEB445131AC08A65008EECB3 /* base64.h */,
 				FEB445141AC08A65008EECB3 /* httpmessage.cpp */,
 				FEB445151AC08A65008EECB3 /* httpmessage.h */,
@@ -197,6 +205,8 @@
 		FEB4443B1ABA34D0008EECB3 /* app */ = {
 			isa = PBXGroup;
 			children = (
+				FEB445401AC14A3A008EECB3 /* channelurl.cpp */,
+				FEB445411AC14A3B008EECB3 /* channelurl.h */,
 				FEB444ED1ABFD89C008EECB3 /* channel.cpp */,
 				FEB444EE1ABFD89C008EECB3 /* channel.h */,
 				FEB444EF1ABFD89C008EECB3 /* channelmgr.cpp */,
@@ -326,6 +336,8 @@
 				FEB445121AC085D8008EECB3 /* rtspstream.cpp in Sources */,
 				FEB445161AC08A65008EECB3 /* httpmessage.cpp in Sources */,
 				FEB445291AC09B18008EECB3 /* rtsplistener.cpp in Sources */,
+				FEB4453E1AC145B6008EECB3 /* udpsocket.cpp in Sources */,
+				FEB445421AC14A3C008EECB3 /* channelurl.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

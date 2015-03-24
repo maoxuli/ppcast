@@ -6,6 +6,7 @@
 #define __RTSP_CONNECTION_H__
 
 #include "tcpconnection.h"
+#include "rtspmessage.h"
 
 // 
 // RtspConnection is extension of TcpConnection
@@ -17,34 +18,26 @@ class RtspServer;
 class RtspConnection : public TcpConnection
 {
 public:
-    RtspConnection(); // For client 
-    RtspConnection(pputil::SOCKET fd, RtspServer* server); // For server
+    RtspConnection(RtspServer* server); 
     virtual ~RtspConnection();
 
-    // For client, send request to server
-    bool sendRequest(RtspRequest* msg);
-    
     // For server, send response to client
     // send interleaved data to client
-    bool sendResponse(RtspResponse* msg);
-    bool sendData(byte* b, size_t n);
+    bool SendResponse(RtspResponse* msg);
+    bool SendData(unsigned char* buf, size_t len);
     
 private:
     // From Connection
-    virtual void onReceive();
+    virtual bool OnRead();
         
     // Parse packet
-    void readType();
-    void readData();
-    void readInitial();
-    void readHeader();
-    void readBody();
-    void onMessage();
+    void ReadType();
+    void ReadData();
+    void ReadInitial();
+    void ReadHeader();
+    void ReadBody();
+    void OnMessage();
     
-    // For client, receive data and response
-    virtual onData(Buffer* buffer) = 0;
-    virtual onResponse(RtspResponse* msg) = 0;
-
 private:
     // Owner RTSP server
     RtspServer* _server;
@@ -63,7 +56,7 @@ private:
     RTSP_MESSAGE_STATE _state;
 
     // Incoming Message packet
-    Message* _message;  // RtspRequest or RtspResponse message
+    RtspMessage* _message;  // RtspRequest or RtspResponse message
     size_t _bodyLen;	// Length of body
 };
 

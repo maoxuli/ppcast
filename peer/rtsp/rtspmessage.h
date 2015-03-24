@@ -7,7 +7,7 @@
 
 #include "httpmessage.h"
 
-typedef HttpMessage RtspMessage;
+typedef class HttpMessage RtspMessage;
 
 class RtspRequest : public HttpRequest
 {

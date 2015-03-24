@@ -33,6 +33,7 @@ bool TcpListener::DoBind(const Endpoint& endpoint)
 	if(::bind(m_hSocket, (SOCKADDR*)&addr, len) == SOCKET_ERROR)	
 	{
 		printf("\nTcpListener bind error : %d\n",OSGetLastError() );
+        OSCloseSocket(m_hSocket);
 		m_hSocket = INVALID_SOCKET;
 		return false;
 	}
