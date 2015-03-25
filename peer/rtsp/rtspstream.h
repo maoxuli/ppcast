@@ -6,13 +6,13 @@
 #define __RTSP_STREAM_H__
 
 #include "udpsocket.h"
-#include "rtspconnection.h"
 
-// 
+class RtspConnection;
+
 // RTSP server using a session to keep state of a presentation
 // A RTSPSession using one or more streams to send media to client
 // The stream may be RTP based or TCP based
-//
+
 class RtspStream
 {
 public:
@@ -28,7 +28,7 @@ public:
     unsigned int seq(bool update = true);
 
     // Data send interface
-    virtual bool SendData(unsigned char* buf, size_t len) = 0;
+    virtual bool sendData(unsigned char* buf, size_t len) = 0;
 
 protected:
     std::string _name;

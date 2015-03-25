@@ -3,6 +3,7 @@
 //
 
 #include "rtspstream.h"
+#include "rtspconnection.h"
 
 RtspStream::RtspStream(const std::string& name)
 : _name(name)

@@ -5,28 +5,29 @@
 #ifndef __RTSP_SESSION_H__
 #define __RTSP_SESSION_H__
 
-#include "rtspconnection.h"
-#include "rtspstream.h"
+#include "os.h"
 
+class RtspStream;
+class RtspConnection;
 
-// 
 // RTSP server using a session to keep state of a presentation
 // A RtspSession using one or more streams to send media to client
 // The stream may be RTP based or TCP based
-//
 
 class RtspSession
 {  
 public:
-    RtspSession(const std::string& sid, const std::string& mid);
+    RtspSession(const std::string& sid, const std::string& media);
     virtual ~RtspSession();
 
-    // Close session
+    // Driven by external to run
+    // if return false, the session will be deleted by external
+    bool run();
     void close();
     
     // Identifier
-    std::string sid();
-    std::string mid();
+    std::string id();
+    std::string media();
 
     // Get all streams info	(for RTSP response)	
     std::string streamsInfo();
@@ -43,27 +44,24 @@ public:
 
     // Seek to a position, return actual result position 
     // With -1 to return current position
-    virtual int seek(int pos = -1) = 0;
+    virtual long seek(long pos = -1);
 
     // Playing control
     virtual void play();
     virtual void pause();
     virtual void teardown();
-        
-    // Driven by external thread
-    virtual bool run() = 0;
 
 protected:
     // Identifier
-    std::string m_sid;
-    std::string m_mid;
+    std::string _sid;
+    std::string _media;
 
     // State of session
     enum {INIT, READY, PLAYING};
-    int m_state;
+    int _state;
 
     // One or more streams
-    std::vector<RtspStream*> m_streams;			
+    std::vector<RtspStream*> _streams;			
 };
 
 #endif 

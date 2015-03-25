@@ -64,7 +64,7 @@ public:
     // Body section
     size_t bodyLen() const;
     char* body() const;
-    void setBody(char* buf, size_t len);
+    void setBody(const char* buf, size_t len);
 
 protected:
     std::string		_protocol;		// "HTTP", "RTSP", ...

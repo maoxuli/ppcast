@@ -198,7 +198,7 @@ char* HttpMessage::body() const
     return _body;
 }
 
-void HttpMessage::setBody(char* buf, size_t len)
+void HttpMessage::setBody(const char* buf, size_t len)
 {
     if(_body != NULL)
     {

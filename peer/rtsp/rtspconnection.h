@@ -8,12 +8,10 @@
 #include "tcpconnection.h"
 #include "rtspmessage.h"
 
-// 
+class RtspServer;
+
 // RtspConnection is extension of TcpConnection
 // Handle RTSP packet and forward to RtspServer
-//
-
-class RtspServer;
 
 class RtspConnection : public TcpConnection
 {

@@ -4,6 +4,8 @@
 
 #include "channelmgr.h"
 
+ChannelMgr theChannelMgr;
+
 ChannelMgr::ChannelMgr()
 {
     _rtspServer = NULL;
@@ -55,6 +57,11 @@ void ChannelMgr::Shutdown()
         delete _channel;
         _channel = NULL;
     }
+}
+
+bool ChannelMgr::StartChannel(const ChannelUrl& url)
+{
+    return true;
 }
 
 Channel* ChannelMgr::GetChannel(const ChannelUrl& url)

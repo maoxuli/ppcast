@@ -4,7 +4,7 @@
 
 #include "channelurl.h"
 
-ChannelUrl::ChannelUrl()
+ChannelUrl::ChannelUrl(const std::string& url)
 {
 
 }

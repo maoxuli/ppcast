@@ -27,14 +27,11 @@ public:
     void Stop();
     
 protected:
-    // Override Selector::OnRun()
-    // Thread running
-    virtual void OnRun();
-        
-protected:
-    //
     friend class RtspListener;
     friend class RtspConnection;
+    
+    //
+    ChannelMgr* _channelMgr;
     
     // Listener
     RtspListener* _listener;
@@ -43,6 +40,10 @@ protected:
     // Receive a connection request from rtsp client
     void OnConnection(SOCKET fd);
     
+    // Override Selector::OnRun()
+    // Thread running
+    virtual void OnRun();
+        
     // Receive a rtsp request from a rtsp connection
     void OnRequest(RtspRequest* msg, RtspConnection* conn);
 
@@ -59,7 +60,7 @@ protected:
 
     // RtspServer need to know some media info
     // that is bound to medias managed by application
-    virtual std::string mediaSDP(const std::string& mid);
+    std::string mediaSDP(const std::string& mid);
 
 protected:
     // Session based stream managements
@@ -70,17 +71,17 @@ protected:
 
     // A session is identified with sid
     RtspSession* findSession(const std::string& sid);
-
+    
     // A RTSP server is resided between media and player
     // A session is linked to a player with session ID
     // A session is linked to a media with media ID
     void removeSession(const std::string& sid);
-    void removeMedia(const std::string& mid);
+    void removeMedia(const std::string& media);
 
     // RTSPSession is linked to client player with RTSP session ID (sid)
     // RTSPSession is linked to local media with media ID (mid)
     // Medias are managed by application
-    virtual RtspSession* createSession(const std::string& sid, const std::string& mid);
+    RtspSession* createSession(const std::string& media);
 };
 
 #endif 

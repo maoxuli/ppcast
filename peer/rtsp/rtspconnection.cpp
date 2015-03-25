@@ -142,7 +142,7 @@ void RtspConnection::ReadInitial()
 
     // Read a line
     std::string initialLine;
-    m_pInput->readString(initialLine, "\n");
+    m_pInput->readString(initialLine, "\r\n");
     if(initialLine.empty())
     {
         return;
@@ -190,7 +190,7 @@ void RtspConnection::ReadHeader()
     while(true)
     {
         std::string line;
-        m_pInput->readString(line, "\n");
+        m_pInput->readString(line, "\r\n");
         
         if(line.empty())
         {
@@ -254,7 +254,7 @@ void RtspConnection::OnMessage()
         }
         case RtspMessage::RESPONSE_MESSAGE:
         {
-            RtspResponse* pmsg = dynamic_cast<RtspResponse*>(_message);
+            //RtspResponse* pmsg = dynamic_cast<RtspResponse*>(_message);
             //OnResponse(pmsg);
             break;
         }

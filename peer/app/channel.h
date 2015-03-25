@@ -15,6 +15,8 @@ public:
 	Channel();
 	virtual ~Channel();
     
+    std::string GetSDP();
+    
     // Override from Selector
     virtual void OnRun();
 

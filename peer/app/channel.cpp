@@ -14,3 +14,12 @@ Channel::~Channel()
     
 }
 
+void Channel::OnRun()
+{
+    
+}
+
+std::string Channel::GetSDP()
+{
+    return "";
+}

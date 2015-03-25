@@ -21,6 +21,7 @@ public:
     bool Initialize();
     void Shutdown();
     
+    bool StartChannel(const ChannelUrl& url);
     Channel* GetChannel(const ChannelUrl& url);
     
 private:

@@ -3,19 +3,26 @@
 //
 
 #include "rtspsession.h"
+#include "rtspconnection.h"
+#include "rtspstream.h"
 #include <sstream>
 
-RtspSession::RtspSession(const std::string& sid, const std::string& mid)
-: m_sid(sid)
-, m_mid(mid)
-, m_state(INIT)
+RtspSession::RtspSession(const std::string& sid, const std::string& media)
+: _sid(sid)
+, _media(media)
+, _state(INIT)
 {
 
 }
 
 RtspSession::~RtspSession()
 {
-    std::cout << "RtspSession::~RtspSession() " << m_sid << "\n";
+    std::cout << "RtspSession::~RtspSession() " << _sid << "\n";
+}
+
+bool RtspSession::run()
+{
+    return true;
 }
 
 void RtspSession::close()
@@ -23,29 +30,29 @@ void RtspSession::close()
     
 }
     
-std::string RtspSession::sid()
+std::string RtspSession::id()
 {
-    return m_sid;
+    return _sid;
 }
 
-std::string RtspSession::mid()
+std::string RtspSession::media()
 {
-    return m_mid;
+    return _media;
 }
 
 std::string RtspSession::streamsInfo()
 {
     std::ostringstream oss;
 
-    for(std::vector<RtspStream*>::iterator it = m_streams.begin(); it != m_streams.end(); ++it)
+    for(std::vector<RtspStream*>::iterator it = _streams.begin(); it != _streams.end(); ++it)
     {
         RtspStream* p = *it;
         if(p != NULL)
         {
-            oss << "url=rtsp://127.0.0.1/" << m_mid << "/" << p->name() << ";seq=" << p->seq(false) << ";rtptime=0";
+            oss << "url=rtsp://127.0.0.1/" << _media << "/" << p->name() << ";seq=" << p->seq(false) << ";rtptime=0";
         }
 
-        if(it != m_streams.end())
+        if(it != _streams.end())
         {
             oss << ",";
         }
@@ -56,7 +63,7 @@ std::string RtspSession::streamsInfo()
 
 RtspStream* RtspSession::findStream(const std::string& name)
 {
-    for(std::vector<RtspStream*>::iterator it = m_streams.begin(); it != m_streams.end(); ++it)
+    for(std::vector<RtspStream*>::iterator it = _streams.begin(); it != _streams.end(); ++it)
     {
         RtspStream* p = *it;
         if(p != NULL && p->name() == name)
@@ -71,13 +78,13 @@ RtspStream* RtspSession::findStream(const std::string& name)
 void RtspSession::removeStream(const std::string& name)
 {
     // Delete existing stream
-    for(std::vector<RtspStream*>::iterator it = m_streams.begin(); it != m_streams.end(); )
+    for(std::vector<RtspStream*>::iterator it = _streams.begin(); it != _streams.end(); )
     {
         RtspStream* p = *it;
         if(p != NULL && p->name() == name)
         {
             delete p;
-            it = m_streams.erase(it);
+            it = _streams.erase(it);
         }
         else
         {
@@ -94,11 +101,11 @@ bool RtspSession::setupStream(const std::string& name, unsigned short& serverPor
     removeStream(name);
 
     // Add a new stream
-    RTPStream* pStream = new RTPStream(name);
+    RtpStream* pStream =new RtpStream(name);
     if(pStream != NULL && pStream->init(serverPort, clientPort))
     {
-        m_streams.push_back(pStream);
-        m_state = READY;
+        _streams.push_back(pStream);
+        _state = READY;
 
         return true;
     }
@@ -112,11 +119,11 @@ bool RtspSession::setupStream(const std::string& name, RtspConnection* connectio
     removeStream(name);
 
     // Add a new stream
-    TCPStream* pStream = new TCPStream(name);
+    TcpStream* pStream = new TcpStream(name);
     if(pStream != NULL && pStream->init(connection))
     {
-        m_streams.push_back(pStream);
-        m_state = READY;
+        _streams.push_back(pStream);
+        _state = READY;
 
         return true;
     }
@@ -124,17 +131,22 @@ bool RtspSession::setupStream(const std::string& name, RtspConnection* connectio
     return false;
 }
 
+long RtspSession::seek(long pos)
+{
+    return 0;
+}
+
 void RtspSession::play()
 {
-    m_state = PLAYING;
+    _state = PLAYING;
 }
 
 void RtspSession::pause()
 {
-    m_state = READY;
+    _state = READY;
 }
 
 void RtspSession::teardown()
 {
-    m_state = INIT;
+    _state = INIT;
 }

@@ -10,7 +10,7 @@
 class ChannelUrl
 {
 public:
-	ChannelUrl();
+	ChannelUrl(const std::string& url);
 	virtual ~ChannelUrl();
     
 

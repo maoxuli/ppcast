@@ -7,10 +7,14 @@
 #include "rtspconnection.h"
 #include "rtspsession.h"
 #include "rtspmessage.h"
+#include "channelmgr.h"
+#include "channelurl.h"
 #include <sstream>
 
 RtspServer::RtspServer(ChannelMgr* channelMgr)
+: _channelMgr(channelMgr)
 {
+    assert(_channelMgr != NULL);
     _listener = NULL;
 }
 
@@ -92,11 +96,8 @@ void RtspServer::OnRun()
         {
             ++it;
         }
-    }
-    
-    return true;
+    }    
 }
-
 
 void RtspServer::OnConnection(SOCKET fd)
 {
@@ -115,7 +116,7 @@ void RtspServer::removeSession(const std::string& sid)
     for(std::vector<RtspSession*>::iterator it = _sessions.begin(); it != _sessions.end(); )
     {
         RtspSession* p = *it;
-        if(p != NULL && p->sid() == sid)
+        if(p != NULL && p->id() == sid)
         {
             p->close();
             delete p;
@@ -134,7 +135,7 @@ void RtspServer::removeMedia(const std::string& mid)
     for(std::vector<RtspSession*>::iterator it = _sessions.begin(); it != _sessions.end(); )
     {
         RtspSession* p = *it;
-        if(p != NULL && p->mid() == mid)
+        if(p != NULL && p->media() == mid)
         {
             p->close();
             delete p;
@@ -152,7 +153,7 @@ RtspSession* RtspServer::findSession(const std::string& sid)
     for(std::vector<RtspSession*>::iterator it = _sessions.begin(); it != _sessions.end(); )
     {
         RtspSession* p = *it;
-        if(p != NULL && p->sid() == sid)
+        if(p != NULL && p->id() == sid)
         {
             return p;
         }
@@ -161,339 +162,315 @@ RtspSession* RtspServer::findSession(const std::string& sid)
     return NULL;
 }
 
-// Receive Rtsp request
-void RtspServer::OnRequest(RtspRequest* msg, RtspConnection* conn)
+RtspSession* RtspServer::createSession(const std::string& mediaName)
 {
-    assert(msg != NULL);
-    assert(conn != NULL);
-    assert(msg->type() == RtspMessage::REQUEST_MESSAGE);
+    // Next session ID
+    _sid ++;
+    std::ostringstream oss;
+    oss << _sid;
+    std::string sid = oss.str();
+    
+    RtspSession* session = new RtspSession(sid, mediaName);
+    assert(session != NULL);
+    _sessions.push_back(session);
+    
+    return session;
+}
 
-    /*
-    switch(msg->method())
-    {
-        case VERB_OPTIONS:  OnOptionsRequest( msg, conn );	break;
-        case VERB_DESCRIBE: OnDescribeRequest( msg, conn );	break;
-        case VERB_GETPARAM: OnGetParamRequest( msg, conn );	break;
-        case VERB_SETPARAM: OnSetParamRequest( msg, conn );	break;
-        case VERB_PAUSE:    OnPauseRequest( msg, conn );	break;
-        case VERB_PLAY:     OnPlayRequest( msg, conn );		break;
-        case VERB_SETUP:    OnSetupRequest( msg, conn );	break;
-        case VERB_TEARDOWN: OnTeardownRequest( msg, conn );	break;
-        default: assert(false);                             break;
-    }
-     */
+// Handle a RTSP request message
+void RtspServer::OnRequest(RtspRequest* request, RtspConnection* conn)
+{
+    assert(request != NULL);
+    assert(conn != NULL);
+    std::string method = request->method();
+    
+    if(method == "OPTIONS") OnOptionsRequest(request, conn);
+    else if(method == "DESCRIBE") OnDescribeRequest(request, conn);
+    else if(method == "SETUP") OnSetupRequest(request, conn);
+    else if(method == "GET_PARAMETER") OnGetParamRequest(request, conn);
+    else if(method == "SET_PARAMETER") OnSetParamRequest(request, conn);
+    else if(method == "PLAY") OnPlayRequest(request, conn);
+    else if(method == "PAUSE") OnPauseRequest(request, conn);
+    else if(method == "TEARDOWN") OnTeardownRequest(request, conn);
+    else assert(false);
 }
 
 // Query supported commands
 // Not affect session state
-void RtspServer::OnOptionsRequest(RtspRequest* pmsg, RtspConnection* conn)
+void RtspServer::OnOptionsRequest(RtspRequest* request, RtspConnection* conn)
 {
-    assert(pmsg != NULL);
+    assert(request != NULL);
     assert(conn != NULL);
-
-    RtspResponse *pResponse	= new RtspResponse();
-
-    pResponse->setStatus(200);
-    pResponse->setVersion("1.0");
-    pResponse->setHeader("CSeq", pmsg->header("CSeq"));
-
-    pResponse->setHeader("Server", "Helix Server Version 9.0.8.1427 (linux-2.2-libc6-i586-server) (RealServer compatible)");
-    pResponse->setHeader("Public", "OPTIONS, DESCRIBE, SETUP, GET_PARAMETER, SET_PARAMETER, PLAY, PAUSE, TEARDOWN");
     
-    pResponse->setHeader("RealChallenge1", "d12f6756d0027a12ee0afbfd64a5cedd");
-
-    conn->SendResponse(pResponse);
-    delete pResponse;
+    // URL: rtsp:// 127.0.0.1:9960/movies/test.wmv?source=...&tracker=...&...
+    ChannelUrl url(request->url());
+    _channelMgr->StartChannel(url);
+    
+    RtspResponse response;
+    response.setStatus(200);
+    response.setHeader("CSeq", request->header("CSeq"));
+    response.setHeader("Server", "Helix Server Version 9.0.8.1427 (linux-2.2-libc6-i586-server) (RealServer compatible)");
+    response.setHeader("Public", "OPTIONS, DESCRIBE, SETUP, GET_PARAMETER, SET_PARAMETER, PLAY, PAUSE, TEARDOWN");
+    response.setHeader("RealChallenge1", "d12f6756d0027a12ee0afbfd64a5cedd");
+    
+    conn->SendResponse(&response);
 }
 
 // Query SDP of media
 // Not affect session state
-void RtspServer::OnDescribeRequest(RtspRequest* pmsg, RtspConnection* conn)
+void RtspServer::OnDescribeRequest(RtspRequest* request, RtspConnection* conn)
 {
-    assert(pmsg != NULL);
+    assert(request != NULL);
     assert(conn != NULL);
-
-    // URL: rtsp://127.0.0.1:9960/3012
-    std::string url = pmsg->url(); 
-    int midStartPos = url.rfind("/");
-    std::string mid = url.substr(midStartPos + 1);
+    
+    // URL: rtsp:// 127.0.0.1:9960/movies/test.wmv?
+    ChannelUrl url(request->url());
+    Channel* channel = _channelMgr->GetChannel(url);
     
     // SDP
-    std::string sdp = mediaSDP(mid);
-    assert(!sdp.empty());
-
-    std::ostringstream oss;
-    oss << sdp.size();
-    std::string sdpLen = oss.str();
-
-    // Response
-    RtspResponse *pResponse	= new RtspResponse();
+    assert(channel != NULL);
+    std::string sdp = channel->GetSDP();
+    if(sdp.empty())
+    {
+        // Let rtsp client retry
+        return;
+    }
     
-    pResponse->setStatus(200);
-    pResponse->setVersion("1.0");
-    pResponse->setHeader("CSeq", pmsg->header("CSeq"));    
-    pResponse->setHeader("Content-base", url);
-    pResponse->setHeader("Content-type","application/sdp");
-    pResponse->setHeader("Content-length",sdpLen);
-    pResponse->setBody((char*)sdp.c_str(),sdp.size());
-
-    conn->SendResponse(pResponse);
-    delete pResponse;
+    // Response with sdp
+    RtspResponse response;
+    response.setStatus(200);
+    response.setHeader("CSeq", request->header("CSeq"));
+    response.setHeader("Content-base", request->url());
+    response.setHeader("Content-type","application/sdp");
+    response.setBody(sdp.c_str(),sdp.size());
+    
+    conn->SendResponse(&response);
 }
 
 // Rtsp SETUP request
 // Negotiation to establish a session and the streams in the session
-void RtspServer::OnSetupRequest(RtspRequest* pmsg, RtspConnection* conn)
-{	
-    assert(pmsg != NULL);
+void RtspServer::OnSetupRequest(RtspRequest* request, RtspConnection* conn)
+{
+    assert(request != NULL);
     assert(conn != NULL);
-
-    // URL: rtsp://127.0.0.1:9960/3201/(rtx/audio/video)
-    std::string url = pmsg->url(); 
-
-    // mid and stream name
-    int urlEndPos = url.rfind("/");
-    std::string streamName = url.substr(urlEndPos + 1);
-    url = url.erase(urlEndPos);
-    int midStartPos = url.rfind("/");
-    std::string mid = url.substr(midStartPos + 1);
-
-    // Session
-    std::string sid = pmsg->header("Session");
-    RtspSession* pSession = NULL;
-
-    // Session exist already
+    
+    // URL: rtsp: //127.0.0.1:9960/movies/test.wmv/[rtx/audio/video]
+    std::string url = request->url();
+    size_t pos = url.rfind("/");
+    std::string streamName = url.substr(pos + 1);
+    std::string mediaName = url.erase(pos);
+    
+    // At this point, 
+    // if it is first setup command, should no session id assigned
+    // otherwise, a session id should exist
+    RtspSession* session = NULL;
+    std::string sid = request->header("Session");
     if(!sid.empty())
     {
-        pSession = findSession(sid);
-        if(pSession != NULL)
-        {
-            assert(mid == pSession->mid());
-        }
-    }
-
-    // Create new session
-    if(pSession == NULL)
-    {
-        _sid ++;
-        std::ostringstream oss;
-        oss << _sid;
-        sid = oss.str();
-
-        // Create new session
-        pSession = createSession(sid, mid);
-        if(pSession != NULL)
-        {
-            _sessions.push_back(pSession);
-        }
-    }
-
-    assert(pSession != NULL);
-
-    /*
-    // Setup stream for session
-    unsigned short serverPort = _port + 10;
-
-    unsigned short  clientPort = 0;
-    int nPorts = 0;
-    std::string strTran = pmsg->header( "Transport" );
-    CRequestTransportHdr rqtHdr(strTran);
-    rqtHdr.GetBasePort(&clientPort, &nPorts );
-
-    if( rqtHdr.CanUDP() )
-    {
-        // Over UDP
-        pSession->setupStream(streamName, serverPort, clientPort);
+        session = findSession(sid);
+        assert(session != NULL);
+        assert(sid == session->id());
+        assert(mediaName == session->media());
     }
     else
-    {	
-        // Over TCP
-        pSession->setupStream(streamName, conn);		
-    }
-     */
-    // Response
-    RtspResponse *pResponse	= new RtspResponse();
-
-    pResponse->setStatus(200);
-    pResponse->setVersion("1.0");
-    pResponse->setHeader("CSeq",pmsg->header("CSeq"));
-    pResponse->setHeader("Date","Thu, 15 Dec 2005 03:00:04 GMT");
-    pResponse->setHeader("Session", sid);
-
-    // Stream name: rtx, audio, video 
-    if( streamName == "rtx" ) 
     {
-        pResponse->setHeader("RealChallenge3","d67b8f21bf272fd5020e9fbb08428cfa4f213d09,sdr=abcdabcd");
-
+        session = createSession(mediaName);
+        assert(session != NULL);
+        sid = session->id();
+    }
+    
+    // Setup stream for session
+    unsigned short serverPort = 9920;
+    unsigned short  clientPort = 0;
+    int nPorts = 0;
+    std::string strTran = request->header( "Transport" );
+    //CRequestTransportHdr rqtHdr(strTran);
+    //rqtHdr.GetBasePort(&clientPort, &nPorts );
+    
+    //if( rqtHdr.CanUDP() )
+    {
+        // Over UDP
+        session->setupStream(streamName, serverPort, clientPort);
+    }
+    //else
+    {
+        // Over TCP
+        session->setupStream(streamName, conn);
+    }
+    
+    // Response
+    RtspResponse response;
+    response.setStatus(200);
+    response.setHeader("CSeq",request->header("CSeq"));
+    response.setHeader("Date","Thu, 15 Sep 2010 03:00:04 GMT");
+    response.setHeader("Session", sid);
+    
+    // Stream name: rtx, audio, video
+    if( streamName == "rtx" )
+    {
+        response.setHeader("RealChallenge3","d67b8f21bf272fd5020e9fbb08428cfa4f213d09,sdr=abcdabcd");
+        
         std::ostringstream oss;
-        oss << "RTP/AVP/UDP;unicast;server_port=" << serverPort << "-" << serverPort + 1 
-            << ";client_port=" << clientPort << "-" << clientPort + 1 << ";ssrc=f2bde83e;mode=PLAY";
-        pResponse->setHeader("Transport",oss.str());
-    } 
+        oss << "RTP/AVP/UDP;unicast;server_port=" << serverPort << "-" << serverPort + 1
+        << ";client_port=" << clientPort << "-" << clientPort + 1 << ";ssrc=f2bde83e;mode=PLAY";
+        response.setHeader("Transport",oss.str());
+    }
     else if(streamName == "audio" )
     {
-        pResponse->setHeader("RealChallenge3","d67b8f21bf272fd5020e9fbb08428cfa4f213d09,sdr=abcdabcd");
-        pResponse->setHeader("Transport","RTP/AVP/TCP;unicast;interleaved=2-3;ssrc=bedf8d08;mode=PLAY");
+        response.setHeader("RealChallenge3","d67b8f21bf272fd5020e9fbb08428cfa4f213d09,sdr=abcdabcd");
+        response.setHeader("Transport","RTP/AVP/TCP;unicast;interleaved=2-3;ssrc=bedf8d08;mode=PLAY");
     }
-    else if(streamName == "video" ) 
+    else if(streamName == "video" )
     {
-        pResponse->setHeader("Transport","RTP/AVP/TCP;unicast;interleaved=4-5;ssrc=bedf8d2d;mode=PLAY");
+        response.setHeader("Transport","RTP/AVP/TCP;unicast;interleaved=4-5;ssrc=bedf8d2d;mode=PLAY");
     }
     else
     {
         assert(false);
     }
-
-    conn->SendResponse(pResponse);
-    delete pResponse;
+    
+    conn->SendResponse(&response);
 }
 
-
-// Get parameter of stream 
-void RtspServer::OnGetParamRequest(RtspRequest* pmsg, RtspConnection* conn)
+// Get parameter of stream
+void RtspServer::OnGetParamRequest(RtspRequest* request, RtspConnection* conn)
 {
-    assert(pmsg != NULL);
+    assert(request != NULL);
     assert(conn != NULL);
- 
-    std::string sid = pmsg->header("Session");
     
-    RtspResponse* pResponse = new RtspResponse();
-    pResponse->setStatus(200);
-    pResponse->setVersion("1.0");
-    pResponse->setHeader("CSeq", pmsg->header("CSeq"));
-    pResponse->setHeader("Session", sid);
-
-    conn->SendResponse(pResponse);
-    delete pResponse; 
+    RtspResponse response;
+    response.setStatus(200);
+    response.setHeader("CSeq", request->header("CSeq"));
+    response.setHeader("Session", request->header("Session"));
+    
+    conn->SendResponse(&response);
 }
 
 // Set parameter of stream
-void RtspServer::OnSetParamRequest(RtspRequest* pmsg, RtspConnection* conn)
+void RtspServer::OnSetParamRequest(RtspRequest* request, RtspConnection* conn)
 {
-    assert(pmsg != NULL);
+    assert(request != NULL);
     assert(conn != NULL);
-
-    std::string sid = pmsg->header("Session");
-
-    RtspResponse *	pResponse	= new RtspResponse();
-
-    std::string ping = pmsg->header("Ping");
-    if( ping.empty())
-        pResponse->setStatus(200);
-    else
-        pResponse->setStatus( 451 );
-
-    pResponse->setVersion("1.0");
-    pResponse->setHeader("CSeq", pmsg->header("CSeq"));
-    pResponse->setHeader("Session", sid);
-
-    conn->SendResponse( pResponse );
-    delete pResponse;
+    
+    RtspResponse response;
+    std::string ping = request->header("Ping");
+    response.setStatus(ping.empty() ? 200 : 451);
+    response.setHeader("CSeq", request->header("CSeq"));
+    response.setHeader("Session", request->header("Session"));
+    
+    conn->SendResponse(&response);
 }
 
 // Start to play
-void RtspServer::OnPlayRequest(RtspRequest* pmsg, RtspConnection* conn)
+void RtspServer::OnPlayRequest(RtspRequest* request, RtspConnection* conn)
 {
-    assert(pmsg != NULL);
+    assert(request != NULL);
     assert(conn != NULL);
-
-    std::string sid = pmsg->header("Session");
-
+    
+    // Session
+    std::string sid = request->header("Session");
+    assert(!sid.empty());
+    if(sid.empty())
+    {
+        return;
+    }
+    
+    RtspSession* session = findSession(sid);
+    assert(session != NULL);
+    if(session == NULL)
+    {
+        return;
+    }
+    
     // Start position
-    int nStartTime = -1;
-    std::string strTime = pmsg->header("Range");
+    long nStartTime = -1;
+    std::string strTime = request->header("Range");
     if( !strTime.empty() )
     {
         strTime = strTime.substr(4);
-        int nPos = strTime.find("-");
+        size_t nPos = strTime.find("-");
         std::string strStartTime = strTime.substr(0, nPos);
         nStartTime = atoi(strStartTime.c_str());
     }
-
+    
     // Seek to pos
-    RtspSession* pSession = findSession(sid);
-    assert(pSession != NULL);
-    if(pSession != NULL)
-    {
-        pSession->seek(nStartTime);
-    }
-
-    // RTP Info
-    std::string rtpInfo;
-    if(pSession != NULL)
-    {
-        rtpInfo = pSession->streamsInfo();
-    }
-
+    session->seek(nStartTime);
+    
     // Response
-    RtspResponse* pResponse	= new RtspResponse();
-
-    pResponse->setStatus(200);
-    pResponse->setVersion("1.0");
-    pResponse->setHeader("CSeq", pmsg->header("CSeq"));
-    pResponse->setHeader("Session", sid);
-    pResponse->setHeader("RTP-Info",rtpInfo);
-
-    conn->SendResponse(pResponse);
-    delete pResponse;
-
+    RtspResponse response;
+    response.setStatus(200);
+    response.setHeader("CSeq", request->header("CSeq"));
+    response.setHeader("Session", request->header("Session"));
+    std::string rtpInfo = session->streamsInfo();
+    response.setHeader("RTP-Info",rtpInfo);
+    
+    conn->SendResponse(&response);
+    
     // Play
-    if(pSession != NULL)
-    {
-        pSession->play(); 
-    }
+    session->play();
 }
 
-void RtspServer::OnPauseRequest(RtspRequest* pmsg, RtspConnection* conn)
+void RtspServer::OnPauseRequest(RtspRequest* request, RtspConnection* conn)
 {
-    assert(pmsg != NULL);
+    assert(request != NULL);
     assert(conn != NULL);
-
-    std::string sid = pmsg->header("Session");
-
-    // Pause
-    RtspSession* pSession = findSession(sid);
-    assert(pSession != NULL);
-    if(pSession != NULL)
+    
+    // Session
+    std::string sid = request->header("Session");
+    assert(!sid.empty());
+    if(sid.empty())
     {
-        pSession->pause();
+        return;
+    }
+    
+    RtspSession* session = findSession(sid);
+    assert(session != NULL);
+    if(session == NULL)
+    {
+        return;
     }
 
+    // Pause
+    session->pause();
+    
     // Response
-    RtspResponse* pResponse	= new RtspResponse();
-    pResponse->setStatus(200);
-    pResponse->setVersion("1.0");
-    pResponse->setHeader("CSeq", pmsg->header("CSeq"));
-    pResponse->setHeader("Session",sid);
-
-    conn->SendResponse(pResponse);
-    delete pResponse;
+    RtspResponse response;
+    response.setStatus(200);
+    response.setHeader("CSeq", request->header("CSeq"));
+    response.setHeader("Session",request->header("Session"));
+    
+    conn->SendResponse(&response);
 }
 
 // Close session
-void RtspServer::OnTeardownRequest(RtspRequest* pmsg, RtspConnection* conn)
+void RtspServer::OnTeardownRequest(RtspRequest* request, RtspConnection* conn)
 {
-    assert(pmsg != NULL);
+    assert(request != NULL);
     assert(conn != NULL);
-
-    std::string sid = pmsg->header("Session");
-
-    // Stop and remove
-    RtspSession* pSession = findSession(sid);
-    assert(pSession != NULL);
-    if(pSession != NULL)
+    
+    // Session
+    std::string sid = request->header("Session");
+    assert(!sid.empty());
+    if(sid.empty())
     {
-        pSession->teardown();
-        removeSession(sid);
+        return;
     }
-
+    
+    RtspSession* session = findSession(sid);
+    assert(session != NULL);
+    if(session == NULL)
+    {
+        return;
+    }
+    
     // Response
-    RtspResponse* pResponse	= new RtspResponse();
-    pResponse->setStatus(200);
-    pResponse->setVersion("1.0");
-    pResponse->setHeader("CSeq", pmsg->header("CSeq"));
-    pResponse->setHeader("Session",sid);
-
-    conn->SendResponse(pResponse);
-    delete pResponse;
+    RtspResponse response;
+    response.setStatus(200);
+    response.setHeader("CSeq", request->header("CSeq"));
+    response.setHeader("Session",request->header("Session"));
+    
+    conn->SendResponse(&response);
+    
+    // Teardown
+    session->teardown();
 }
