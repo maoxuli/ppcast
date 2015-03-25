@@ -42,11 +42,11 @@ bool RtspConnection::SendResponse(RtspResponse* msg)
 {
     assert(msg != NULL);
 
-#ifdef _DEBUG
+//#ifdef _DEBUG
     std::cout << ">>> " << msg->dump();
-#endif
+//#endif
     
-    msg->toBuffer(m_pInput);
+    msg->toBuffer(m_pOutput);
     
     OnWrite();
     return true;
@@ -56,25 +56,36 @@ bool RtspConnection::SendResponse(RtspResponse* msg)
 // Parse RtspRequest, forward to RtspServer to handle
 bool RtspConnection::OnRead()
 {
-    switch(_state) 
+    if(!TcpConnection::OnRead())
     {
-        case RMS_READY:
-            ReadType();
-            break;
-        case RMS_READ_DATA:
-            ReadData();
-            break;
-        case RMS_READ_INITIAL:
-            ReadInitial();
-            break;
-        case RMS_READ_HEADER:
-            ReadHeader();
-            break;
-        case RMS_READ_BODY:
-            ReadBody();
-            break;
-        default:
-            break;
+        return false;
+    }
+    
+    std::cout << "RtspConnection:: OnRead()\n";
+    bool ret = true;
+    while (ret) 
+    {
+        switch(_state) 
+        {
+            case RMS_READY:
+                ret = ReadType();
+                break;
+            case RMS_READ_DATA:
+                ret = ReadData();
+                break;
+            case RMS_READ_INITIAL:
+                ret = ReadInitial();
+                break;
+            case RMS_READ_HEADER:
+                ret = ReadHeader();
+                break;
+            case RMS_READ_BODY:
+                ret = ReadBody();
+                break;
+            default:
+                ret = false;
+                break;
+        }
     }
     
     if(_state == RMS_READ_OK)
@@ -88,22 +99,28 @@ bool RtspConnection::OnRead()
 // First two bytes marks the type of data
 // $$ leads to a raw data packet (2 bytes dataLen + data)
 // otherwise RTSP message packet
-void RtspConnection::ReadType()
+bool RtspConnection::ReadType()
 {
+    std::cout << "read type\n";
     assert(_state == RMS_READY);
     assert(_message == NULL);
     assert(_bodyLen == 0);
     
-    if(m_pInput->readable() >= 1)
+    if(m_pInput->readable() < 1)
     {
-        _state = (m_pInput->peek8u() == '$') ? RMS_READ_DATA : RMS_READ_INITIAL;
+        return false;
     }
+    
+    _state = (m_pInput->peek8u() == '$') ? RMS_READ_DATA : RMS_READ_INITIAL;
+    return true;
 }
 
 // Read raw data packet  
-void RtspConnection::ReadData()
+bool RtspConnection::ReadData()
 {
+    std::cout << "read data\n";
     assert(_state == RMS_READ_DATA);
+    assert(m_pInput->readable() >= 1);
     assert(m_pInput->peek8u() == '$');
     assert(_message == NULL);
     assert(_bodyLen == 0);
@@ -111,31 +128,35 @@ void RtspConnection::ReadData()
     // Check data length and availability in buffer
     if(m_pInput->readable() < 4)
     {
-       return;
+       return false;
     }
 
     size_t dataLen = m_pInput->peek16u(2);
     assert(dataLen > 0);
 
-    if(m_pInput->readable() >= dataLen + 4)
+    if(m_pInput->readable() < dataLen + 4)
     {
-        // Read data
-        m_pInput->remove(4);
-
-        Buffer dataBuffer;
-        dataBuffer.write(m_pInput->peek(), dataLen);
-        m_pInput->remove(dataLen);
-        //OnData(&dataBuffer);
-       
-       _state = RMS_READY;
+        return false;
     }
+    
+    // Read data
+    m_pInput->remove(4);
+
+    Buffer dataBuffer;
+    dataBuffer.write(m_pInput->peek(), dataLen);
+    m_pInput->remove(dataLen);
+    //OnData(&dataBuffer);
+   
+    _state = RMS_READY;
+    return true;
 }
 
 // Read initial line of RTSP message
 // Request: <verb> <url> RTSP/1.0
 // Response: RTSP/1.0 <code> <reason>
-void RtspConnection::ReadInitial()
+bool RtspConnection::ReadInitial()
 {
+    std::cout << "read initial\n";
     assert(_state == RMS_READ_INITIAL);
     assert(_message == NULL);
     assert(_bodyLen == 0);
@@ -145,7 +166,7 @@ void RtspConnection::ReadInitial()
     m_pInput->readString(initialLine, "\r\n");
     if(initialLine.empty())
     {
-        return;
+        return false;
     }
 
     // Split string with space
@@ -176,66 +197,84 @@ void RtspConnection::ReadInitial()
     }
     
     _state = RMS_READ_HEADER;
+    std::cout << "initial line: " << initialLine << "\n";
+    std::cout << "size: " << m_pInput->readable() << "\n";
+    return true;
 }
 
 // Read header lines
 // Read each complete line, until a blank line
-void RtspConnection::ReadHeader()
+bool RtspConnection::ReadHeader()
 {
+    std::cout << "read header\n";
     assert(_state == RMS_READ_HEADER);
     assert(_message != NULL);
     assert(_bodyLen == 0);
 
-    // Read all complete lines
-    while(true)
+    // Read a lines each time
+    std::string line;
+    
+    if(!m_pInput->readString(line, "\r\n"))
     {
-        std::string line;
-        m_pInput->readString(line, "\r\n");
-        
-        if(line.empty())
-        {
-            // Separator line of headers and body
-            std::string sBodyLen = _message->header("Content-Length");
-            _bodyLen = atoi(sBodyLen.c_str());
-            _state = _bodyLen > 0 ? RMS_READ_BODY : RMS_READ_OK;
-            break;
-        }
-        else if(line.size() > 512)
-        {
-           // Line is too long
-           std::cout << "RtspConnection::readHeader() too long line.\n";
-        }
-        else
-        {
-            // Key and value
-            size_t pos = line.find(":");
-            assert(pos != std::string::npos);
-            std::string key = line.substr(0, pos);
-            std::string value = line.substr(pos + 1);
-            _message->setHeader(key, value);
-        }
+        return false;
     }
+    
+    std::cout << line << "\n";
+    if(line.empty())
+    {
+        // Separator line of headers and body
+        std::string sBodyLen = _message->header("Content-Length");
+        if(!sBodyLen.empty())
+        {
+            _bodyLen = atoi(sBodyLen.c_str());
+        }
+        _state = _bodyLen > 0 ? RMS_READ_BODY : RMS_READ_OK;
+        return true;
+    }
+    
+    if(line.size() > 512)
+    {
+        // Line is too long
+        std::cout << "RtspConnection::readHeader() too long line.\n";
+        return false;
+    }
+
+    // Key and value
+    size_t pos = line.find(":");
+    assert(pos != std::string::npos);
+    std::string key = line.substr(0, pos);
+    std::string value = line.substr(pos + 1);
+    _message->setHeader(key, value);
+
+    std::cout << "head line: " << line << "\n";
+    std::cout << "size: " << m_pInput->readable() << "\n";
+
+    return true;
 }
 
-void RtspConnection::ReadBody()
+bool RtspConnection::ReadBody()
 {
+    std::cout << "read body\n";
     assert(_state == RMS_READ_BODY);
     assert(_message != NULL);
     assert(_bodyLen > 0);
     
-    if(m_pInput->readable() >= _bodyLen)
+    if(m_pInput->readable() < _bodyLen)
     {
-        _message->setBody((char*)m_pInput->peek(), _bodyLen);
-        m_pInput->remove(_bodyLen);
-        
-        _state = RMS_READ_OK;
+        return false;
     }
+    
+    _message->setBody((char*)m_pInput->peek(), _bodyLen);
+    m_pInput->remove(_bodyLen);
+    _state = RMS_READ_OK;
+    return true;
 }
 
 // Called when a RTSP message is parsed
 // Forward to RtspServer
 void RtspConnection::OnMessage()
 {
+    std::cout << "On message\n";
     assert(_state = RMS_READ_OK);
     assert(_message != NULL);
     
@@ -254,7 +293,7 @@ void RtspConnection::OnMessage()
         }
         case RtspMessage::RESPONSE_MESSAGE:
         {
-            //RtspResponse* pmsg = dynamic_cast<RtspResponse*>(_message);
+            RtspResponse* pmsg = dynamic_cast<RtspResponse*>(_message);
             //OnResponse(pmsg);
             break;
         }

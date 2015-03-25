@@ -41,7 +41,7 @@ bool RtspServer::Start()
     
     assert(_listener != NULL);
     Endpoint endpoint;
-    endpoint.Set("127.0.0.1", 534);
+    endpoint.Set("127.0.0.1", 1534);
     if(!_listener->DoBind(endpoint) || !_listener->DoListen(10))
     {
         return false;
@@ -79,28 +79,34 @@ void RtspServer::Stop()
 // Run sessions
 void RtspServer::OnRun()
 {
-    // Schedule streaming over sessions
-    // If a session work failed, close the session
-    for(std::vector<RtspSession*>::iterator it = _sessions.begin(); it != _sessions.end(); )
+    while (m_bThread)
     {
-        RtspSession* p = *it;
-        assert(p != NULL);
+        DoSelect();
         
-        if(!p->run())
+        // Schedule streaming over sessions
+        // If a session work failed, close the session
+        for(std::vector<RtspSession*>::iterator it = _sessions.begin(); it != _sessions.end(); )
         {
-            p->close();
-            delete p;
-            it = _sessions.erase(it);
-        }
-        else
-        {
-            ++it;
-        }
-    }    
+            RtspSession* p = *it;
+            assert(p != NULL);
+            
+            if(!p->run())
+            {
+                p->close();
+                delete p;
+                it = _sessions.erase(it);
+            }
+            else
+            {
+                ++it;
+            }
+        }   
+    }
 }
 
 void RtspServer::OnConnection(SOCKET fd)
 {
+    std::cout << "RtspServer accept a connection.\n";
     assert(fd != INVALID_SOCKET);
     RtspConnection* conn = new RtspConnection(this);
     assert(conn != NULL);
@@ -180,6 +186,7 @@ RtspSession* RtspServer::createSession(const std::string& mediaName)
 // Handle a RTSP request message
 void RtspServer::OnRequest(RtspRequest* request, RtspConnection* conn)
 {
+    std::cout << "On request\n";
     assert(request != NULL);
     assert(conn != NULL);
     std::string method = request->method();
@@ -209,10 +216,8 @@ void RtspServer::OnOptionsRequest(RtspRequest* request, RtspConnection* conn)
     RtspResponse response;
     response.setStatus(200);
     response.setHeader("CSeq", request->header("CSeq"));
-    response.setHeader("Server", "Helix Server Version 9.0.8.1427 (linux-2.2-libc6-i586-server) (RealServer compatible)");
-    response.setHeader("Public", "OPTIONS, DESCRIBE, SETUP, GET_PARAMETER, SET_PARAMETER, PLAY, PAUSE, TEARDOWN");
-    response.setHeader("RealChallenge1", "d12f6756d0027a12ee0afbfd64a5cedd");
-    
+    response.setHeader("Public", "OPTIONS, DESCRIBE, SETUP, TEARDOWN, PLAY, PAUSE, GET_PARAMETER, SET_PARAMETER");
+
     conn->SendResponse(&response);
 }
 
@@ -236,12 +241,17 @@ void RtspServer::OnDescribeRequest(RtspRequest* request, RtspConnection* conn)
         return;
     }
     
+    // 
+    std::ostringstream oss;
+    oss << sdp.size();
+    
     // Response with sdp
     RtspResponse response;
     response.setStatus(200);
     response.setHeader("CSeq", request->header("CSeq"));
     response.setHeader("Content-base", request->url());
     response.setHeader("Content-type","application/sdp");
+    response.setHeader("Content-Length", oss.str());
     response.setBody(sdp.c_str(),sdp.size());
     
     conn->SendResponse(&response);

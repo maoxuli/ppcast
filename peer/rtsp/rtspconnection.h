@@ -29,11 +29,11 @@ private:
     virtual bool OnRead();
         
     // Parse packet
-    void ReadType();
-    void ReadData();
-    void ReadInitial();
-    void ReadHeader();
-    void ReadBody();
+    bool ReadType();
+    bool ReadData();
+    bool ReadInitial();
+    bool ReadHeader();
+    bool ReadBody();
     void OnMessage();
     
 private:

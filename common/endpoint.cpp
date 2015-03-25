@@ -6,7 +6,8 @@
 
 Endpoint::Endpoint()
 {
-    
+    m_socklen = sizeof(m_sockaddr);
+    memset(&m_sockaddr, 0, m_socklen);
 }
 
 Endpoint::~Endpoint()

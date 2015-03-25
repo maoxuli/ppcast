@@ -333,46 +333,31 @@ std::string HttpResponse::dump() const
 
 bool HttpResponse::toBuffer(Buffer* buffer) const
 {
-    /*
-    unsigned int nCode = msg->code();
-    std::string sReason = msg->message();
-    size_t nHdrLen = msg->headerLen();
-    size_t nBufLen = msg->bufferLen();
+    // <protocol>/<version> code message CRLF
+    // <header> CRLF 
+    // <header> CRLF
+    //
+    // <boday>
     
-    // "RTSP/1.0" SP <code> SP <reason> CRLF
-    // <headers> CRLF
-    // <buf> (or terminating NULL from sprintf() if no buffer)
-    size_t size = 8 + 1 + 3 + 1 + sReason.length() + 2 + nHdrLen + 2;
-    size += nBufLen != 0 ? nBufLen : 1;
+    std::ostringstream oss;
+    oss << _protocol << "/" << _version << " " << _code << " " << _reason << "\r\n";
+    buffer->writeString(oss.str());
     
-    char* buf = new char[size];
-    assert(buf != NULL);
-    if(buf == NULL)
+    for(size_t i = 0; i < headerCount(); i++)
     {
-        std::cout << "RTSPServer send response out of memory.\n";
-        return false;
+        oss.clear();
+        MessageHeader* pHeader = header(i);
+        oss << pHeader->key() << ": " << pHeader->value() << "\r\n";
+        buffer->writeString(oss.str());
     }
     
-    char* p = buf;
-    p += sprintf(p, "RTSP/1.0 %u %s\r\n", nCode, sReason.c_str());
+    buffer->writeString("\r\n");
     
-    for(UINT n = 0; n < msg->headerCount(); n++ )
+    if(_bodyLen > 0)
     {
-        RTSPHeader* pHeader = msg->header(n);
-        p += sprintf(p, "%s: %s\r\n", pHeader->key().c_str(), pHeader->value().c_str());
-    }
-    p += sprintf(p, "\r\n");
-    
-    if( nBufLen )
-    {
-        memcpy(p, msg->buffer(), nBufLen );
-        p += nBufLen;
+        buffer->write((unsigned char*)_body, _bodyLen);
     }
     
-    m_pOutput->Add(buf, p - buf);
-    OnWrite();
-    delete[] buf;
-*/
     return true;
 }
 

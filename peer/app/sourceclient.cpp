@@ -107,6 +107,10 @@ bool SourceClient::OnDataPacket( PPPacket * pPacket )
 bool SourceClient::OnMetaPacket( PPPacket * pPacket )
 {
     theLogger.Message(MSG_ERROR,"Meta data");
+    
+    
+    
+    
     SendDataRequest(0, 138);
 	return true;
 }

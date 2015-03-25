@@ -54,6 +54,7 @@ void ChannelMgr::Shutdown()
     //
     if(_channel != NULL)
     {
+        _channel->Stop();
         delete _channel;
         _channel = NULL;
     }
@@ -61,10 +62,13 @@ void ChannelMgr::Shutdown()
 
 bool ChannelMgr::StartChannel(const ChannelUrl& url)
 {
+    _channel = new Channel(url);
+    _channel->Start();
     return true;
 }
 
 Channel* ChannelMgr::GetChannel(const ChannelUrl& url)
 {
+    return _channel;
     return NULL;
 }
