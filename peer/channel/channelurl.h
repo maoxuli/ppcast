@@ -13,7 +13,10 @@ public:
 	ChannelUrl(const std::string& url);
 	virtual ~ChannelUrl();
     
-
+    std::string cid() const;
+    
+private:
+    std::string _cid;
 };
 
 #endif 

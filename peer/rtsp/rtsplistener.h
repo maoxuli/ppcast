@@ -9,14 +9,13 @@
 
 class RtspServer;
 
-//
-// RTSP listener is extension of a TCP listener
-// Handle RTSP connection requests from multiple RtspConnections
-// 
+// TCP Listener for RTSP server
+// Accept connection from RTSP clients 
+// and pass the connections to RTSP server
+
 class RtspListener : public TcpListener
 {
 public:
-    
     RtspListener(RtspServer* server);
     virtual ~RtspListener();
     

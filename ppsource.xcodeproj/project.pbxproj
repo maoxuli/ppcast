@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		FEB443C21ABA345E008EECB3 /* buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443A01ABA345E008EECB3 /* buffer.cpp */; };
 		FEB443C31ABA345E008EECB3 /* endpoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443A21ABA345E008EECB3 /* endpoint.cpp */; };
-		FEB443C41ABA345E008EECB3 /* logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443A41ABA345E008EECB3 /* logger.cpp */; };
 		FEB443C51ABA345E008EECB3 /* mediaslice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443A61ABA345E008EECB3 /* mediaslice.cpp */; };
 		FEB443C61ABA345E008EECB3 /* network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443A81ABA345E008EECB3 /* network.cpp */; };
 		FEB443C71ABA345E008EECB3 /* os.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443AA1ABA345E008EECB3 /* os.cpp */; };
@@ -37,6 +36,7 @@
 		FEB443FE1ABA3468008EECB3 /* settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443F01ABA3468008EECB3 /* settings.cpp */; };
 		FEB443FF1ABA3468008EECB3 /* source.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB443F21ABA3468008EECB3 /* source.cpp */; };
 		FEB4447C1ABA3AC6008EECB3 /* tcpconnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB4447B1ABA3AC5008EECB3 /* tcpconnection.cpp */; };
+		FEB4455A1AC3EC30008EECB3 /* logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB445581AC3EC2F008EECB3 /* logger.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -57,8 +57,6 @@
 		FEB443A11ABA345E008EECB3 /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
 		FEB443A21ABA345E008EECB3 /* endpoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = endpoint.cpp; sourceTree = "<group>"; };
 		FEB443A31ABA345E008EECB3 /* endpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endpoint.h; sourceTree = "<group>"; };
-		FEB443A41ABA345E008EECB3 /* logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = logger.cpp; sourceTree = "<group>"; };
-		FEB443A51ABA345E008EECB3 /* logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logger.h; sourceTree = "<group>"; };
 		FEB443A61ABA345E008EECB3 /* mediaslice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mediaslice.cpp; sourceTree = "<group>"; };
 		FEB443A71ABA345E008EECB3 /* mediaslice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mediaslice.h; sourceTree = "<group>"; };
 		FEB443A81ABA345E008EECB3 /* network.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = network.cpp; sourceTree = "<group>"; };
@@ -102,9 +100,9 @@
 		FEB443E51ABA3468008EECB3 /* mediaslicer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mediaslicer.cpp; sourceTree = "<group>"; };
 		FEB443E61ABA3468008EECB3 /* mediaslicer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mediaslicer.h; sourceTree = "<group>"; };
 		FEB443E81ABA3468008EECB3 /* peerclient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = peerclient.cpp; sourceTree = "<group>"; };
-		FEB443E91ABA3468008EECB3 /* peerclient.h */ = {isa = PBXFileReference; fileEncoding = 4; path = peerclient.h; sourceTree = "<group>"; };
+		FEB443E91ABA3468008EECB3 /* peerclient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = peerclient.h; sourceTree = "<group>"; };
 		FEB443EA1ABA3468008EECB3 /* peerclientmgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = peerclientmgr.cpp; sourceTree = "<group>"; };
-		FEB443EB1ABA3468008EECB3 /* peerclientmgr.h */ = {isa = PBXFileReference; fileEncoding = 4; path = peerclientmgr.h; sourceTree = "<group>"; };
+		FEB443EB1ABA3468008EECB3 /* peerclientmgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = peerclientmgr.h; sourceTree = "<group>"; };
 		FEB443EC1ABA3468008EECB3 /* netserver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = netserver.cpp; sourceTree = "<group>"; };
 		FEB443ED1ABA3468008EECB3 /* netserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = netserver.h; sourceTree = "<group>"; };
 		FEB443EE1ABA3468008EECB3 /* netservermgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = netservermgr.cpp; sourceTree = "<group>"; };
@@ -114,6 +112,8 @@
 		FEB443F21ABA3468008EECB3 /* source.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = source.cpp; sourceTree = "<group>"; };
 		FEB4447B1ABA3AC5008EECB3 /* tcpconnection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tcpconnection.cpp; sourceTree = "<group>"; };
 		FEB444901ABAA462008EECB3 /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
+		FEB445581AC3EC2F008EECB3 /* logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = logger.cpp; sourceTree = "<group>"; };
+		FEB445591AC3EC30008EECB3 /* logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logger.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,8 +152,6 @@
 				FEB443A11ABA345E008EECB3 /* buffer.h */,
 				FEB443A21ABA345E008EECB3 /* endpoint.cpp */,
 				FEB443A31ABA345E008EECB3 /* endpoint.h */,
-				FEB443A41ABA345E008EECB3 /* logger.cpp */,
-				FEB443A51ABA345E008EECB3 /* logger.h */,
 				FEB443A61ABA345E008EECB3 /* mediaslice.cpp */,
 				FEB443A71ABA345E008EECB3 /* mediaslice.h */,
 				FEB443A81ABA345E008EECB3 /* network.cpp */,
@@ -228,6 +226,8 @@
 		FEB443E71ABA3468008EECB3 /* server */ = {
 			isa = PBXGroup;
 			children = (
+				FEB445581AC3EC2F008EECB3 /* logger.cpp */,
+				FEB445591AC3EC30008EECB3 /* logger.h */,
 				FEB443E81ABA3468008EECB3 /* peerclient.cpp */,
 				FEB443E91ABA3468008EECB3 /* peerclient.h */,
 				FEB443EA1ABA3468008EECB3 /* peerclientmgr.cpp */,
@@ -312,7 +312,6 @@
 			files = (
 				FEB443C21ABA345E008EECB3 /* buffer.cpp in Sources */,
 				FEB443C31ABA345E008EECB3 /* endpoint.cpp in Sources */,
-				FEB443C41ABA345E008EECB3 /* logger.cpp in Sources */,
 				FEB443C51ABA345E008EECB3 /* mediaslice.cpp in Sources */,
 				FEB443C61ABA345E008EECB3 /* network.cpp in Sources */,
 				FEB443C71ABA345E008EECB3 /* os.cpp in Sources */,
@@ -340,6 +339,7 @@
 				FEB443FE1ABA3468008EECB3 /* settings.cpp in Sources */,
 				FEB443FF1ABA3468008EECB3 /* source.cpp in Sources */,
 				FEB4447C1ABA3AC6008EECB3 /* tcpconnection.cpp in Sources */,
+				FEB4455A1AC3EC30008EECB3 /* logger.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

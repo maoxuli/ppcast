@@ -9,12 +9,13 @@
 #include "rtspmessage.h"
 #include "channelmgr.h"
 #include "channelurl.h"
+#include "channel.h"
 #include <sstream>
 
-RtspServer::RtspServer(ChannelMgr* channelMgr)
-: _channelMgr(channelMgr)
+RtspServer theRtspServer;
+
+RtspServer::RtspServer()
 {
-    assert(_channelMgr != NULL);
     _listener = NULL;
 }
 
@@ -135,25 +136,6 @@ void RtspServer::removeSession(const std::string& sid)
     }
 }
 
-// Close all sessions related to the given media
-void RtspServer::removeMedia(const std::string& mid)
-{
-    for(std::vector<RtspSession*>::iterator it = _sessions.begin(); it != _sessions.end(); )
-    {
-        RtspSession* p = *it;
-        if(p != NULL && p->media() == mid)
-        {
-            p->close();
-            delete p;
-            it = _sessions.erase(it);
-        }
-        else
-        {
-            ++it;
-        }
-    }
-}
-
 RtspSession* RtspServer::findSession(const std::string& sid)
 {
     for(std::vector<RtspSession*>::iterator it = _sessions.begin(); it != _sessions.end(); )
@@ -211,7 +193,7 @@ void RtspServer::OnOptionsRequest(RtspRequest* request, RtspConnection* conn)
     
     // URL: rtsp:// 127.0.0.1:9960/movies/test.wmv?source=...&tracker=...&...
     ChannelUrl url(request->url());
-    _channelMgr->StartChannel(url);
+    theChannelMgr.StartChannel(url);
     
     RtspResponse response;
     response.setStatus(200);
@@ -230,11 +212,14 @@ void RtspServer::OnDescribeRequest(RtspRequest* request, RtspConnection* conn)
     
     // URL: rtsp:// 127.0.0.1:9960/movies/test.wmv?
     ChannelUrl url(request->url());
-    Channel* channel = _channelMgr->GetChannel(url);
+    Channel* channel = theChannelMgr.GetChannel(url.cid());
+    if(channel == NULL)
+    {
+        return;
+    }
     
-    // SDP
-    assert(channel != NULL);
-    std::string sdp = channel->GetSDP();
+    std::string sdp = channel->sdp();
+    theChannelMgr.ReleaseChannel(channel->id());
     if(sdp.empty())
     {
         // Let rtsp client retry

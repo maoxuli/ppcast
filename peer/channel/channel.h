@@ -8,6 +8,7 @@
 #include "selector.h"
 #include "channelurl.h"
 
+class RtspSession;
 class SourceClient;
 
 class Channel : public Selector
@@ -19,15 +20,17 @@ public:
     bool Start();
     void Stop();
     
-    std::string GetSDP();
+    std::string id();
+    
+    std::string sdp();
     
     // Override from Selector
     virtual void OnRun();
 
 protected:
-    // Media
+    // 
     ChannelUrl _url;
-    
+    bool _stopped;
     std::string _sdp;
     
     // As a client of source server

@@ -6,9 +6,11 @@
 #define __RTSP_SESSION_H__
 
 #include "os.h"
+#include "osthreadlock.h"
 
 class RtspStream;
 class RtspConnection;
+class Channel;
 
 // RTSP server using a session to keep state of a presentation
 // A RtspSession using one or more streams to send media to client
@@ -17,9 +19,9 @@ class RtspConnection;
 class RtspSession
 {  
 public:
-    RtspSession(const std::string& sid, const std::string& media);
+    RtspSession(const std::string& sid, const std::string& cid);
     virtual ~RtspSession();
-
+    
     // Driven by external to run
     // if return false, the session will be deleted by external
     bool run();
@@ -54,14 +56,17 @@ public:
 protected:
     // Identifier
     std::string _sid;
-    std::string _media;
 
     // State of session
     enum {INIT, READY, PLAYING};
     int _state;
 
     // One or more streams
-    std::vector<RtspStream*> _streams;			
+    std::vector<RtspStream*> _streams;
+    
+    // Associated channel
+    // Protected by reference counting
+    Channel* _channel;
 };
 
 #endif 

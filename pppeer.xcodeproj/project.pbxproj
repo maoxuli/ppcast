@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		FEB444281ABA34C9008EECB3 /* buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB444061ABA34C9008EECB3 /* buffer.cpp */; };
 		FEB444291ABA34C9008EECB3 /* endpoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB444081ABA34C9008EECB3 /* endpoint.cpp */; };
-		FEB4442A1ABA34C9008EECB3 /* logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB4440A1ABA34C9008EECB3 /* logger.cpp */; };
 		FEB4442B1ABA34C9008EECB3 /* mediaslice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB4440C1ABA34C9008EECB3 /* mediaslice.cpp */; };
 		FEB4442C1ABA34C9008EECB3 /* network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB4440E1ABA34C9008EECB3 /* network.cpp */; };
 		FEB4442D1ABA34C9008EECB3 /* os.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB444101ABA34C9008EECB3 /* os.cpp */; };
@@ -26,9 +25,6 @@
 		FEB444391ABA34C9008EECB3 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB444271ABA34C9008EECB3 /* tinyxmlparser.cpp */; };
 		FEB444611ABA34D0008EECB3 /* peer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB4443C1ABA34D0008EECB3 /* peer.cpp */; };
 		FEB4447A1ABA3963008EECB3 /* tcpconnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB444791ABA3962008EECB3 /* tcpconnection.cpp */; };
-		FEB444EB1ABFD814008EECB3 /* sourceclient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB444E71ABFD814008EECB3 /* sourceclient.cpp */; };
-		FEB444F11ABFD89C008EECB3 /* channel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB444ED1ABFD89C008EECB3 /* channel.cpp */; };
-		FEB444F21ABFD89C008EECB3 /* channelmgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB444EF1ABFD89C008EECB3 /* channelmgr.cpp */; };
 		FEB444F51AC07C5A008EECB3 /* settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB444F31AC07C58008EECB3 /* settings.cpp */; };
 		FEB4450E1AC085D8008EECB3 /* rtspconnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB445041AC085D8008EECB3 /* rtspconnection.cpp */; };
 		FEB4450F1AC085D8008EECB3 /* rtspmessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB445061AC085D8008EECB3 /* rtspmessage.cpp */; };
@@ -38,7 +34,11 @@
 		FEB445161AC08A65008EECB3 /* httpmessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB445141AC08A65008EECB3 /* httpmessage.cpp */; };
 		FEB445291AC09B18008EECB3 /* rtsplistener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB445271AC09B16008EECB3 /* rtsplistener.cpp */; };
 		FEB4453E1AC145B6008EECB3 /* udpsocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB4453C1AC145B4008EECB3 /* udpsocket.cpp */; };
-		FEB445421AC14A3C008EECB3 /* channelurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB445401AC14A3A008EECB3 /* channelurl.cpp */; };
+		FEB445621AC3EC68008EECB3 /* logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB445601AC3EC67008EECB3 /* logger.cpp */; };
+		FEB4456C1AC3EC75008EECB3 /* channel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB445641AC3EC75008EECB3 /* channel.cpp */; };
+		FEB4456D1AC3EC75008EECB3 /* channelmgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB445661AC3EC75008EECB3 /* channelmgr.cpp */; };
+		FEB4456E1AC3EC75008EECB3 /* channelurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB445681AC3EC75008EECB3 /* channelurl.cpp */; };
+		FEB4456F1AC3EC75008EECB3 /* sourceclient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FEB4456A1AC3EC75008EECB3 /* sourceclient.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -59,8 +59,6 @@
 		FEB444071ABA34C9008EECB3 /* buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffer.h; sourceTree = "<group>"; };
 		FEB444081ABA34C9008EECB3 /* endpoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = endpoint.cpp; sourceTree = "<group>"; };
 		FEB444091ABA34C9008EECB3 /* endpoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = endpoint.h; sourceTree = "<group>"; };
-		FEB4440A1ABA34C9008EECB3 /* logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = logger.cpp; sourceTree = "<group>"; };
-		FEB4440B1ABA34C9008EECB3 /* logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logger.h; sourceTree = "<group>"; };
 		FEB4440C1ABA34C9008EECB3 /* mediaslice.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mediaslice.cpp; sourceTree = "<group>"; };
 		FEB4440D1ABA34C9008EECB3 /* mediaslice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mediaslice.h; sourceTree = "<group>"; };
 		FEB4440E1ABA34C9008EECB3 /* network.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = network.cpp; sourceTree = "<group>"; };
@@ -90,12 +88,6 @@
 		FEB444271ABA34C9008EECB3 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tinyxmlparser.cpp; sourceTree = "<group>"; };
 		FEB4443C1ABA34D0008EECB3 /* peer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = peer.cpp; sourceTree = "<group>"; };
 		FEB444791ABA3962008EECB3 /* tcpconnection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = tcpconnection.cpp; sourceTree = "<group>"; };
-		FEB444E71ABFD814008EECB3 /* sourceclient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sourceclient.cpp; sourceTree = "<group>"; };
-		FEB444E81ABFD814008EECB3 /* sourceclient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sourceclient.h; sourceTree = "<group>"; };
-		FEB444ED1ABFD89C008EECB3 /* channel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = channel.cpp; sourceTree = "<group>"; };
-		FEB444EE1ABFD89C008EECB3 /* channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = channel.h; sourceTree = "<group>"; };
-		FEB444EF1ABFD89C008EECB3 /* channelmgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = channelmgr.cpp; sourceTree = "<group>"; };
-		FEB444F01ABFD89C008EECB3 /* channelmgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = channelmgr.h; sourceTree = "<group>"; };
 		FEB444F31AC07C58008EECB3 /* settings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = settings.cpp; sourceTree = "<group>"; };
 		FEB444F41AC07C59008EECB3 /* settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = settings.h; sourceTree = "<group>"; };
 		FEB445041AC085D8008EECB3 /* rtspconnection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = rtspconnection.cpp; sourceTree = "<group>"; };
@@ -115,8 +107,16 @@
 		FEB445281AC09B17008EECB3 /* rtsplistener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = rtsplistener.h; sourceTree = "<group>"; };
 		FEB4453C1AC145B4008EECB3 /* udpsocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = udpsocket.cpp; sourceTree = "<group>"; };
 		FEB4453D1AC145B5008EECB3 /* udpsocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = udpsocket.h; sourceTree = "<group>"; };
-		FEB445401AC14A3A008EECB3 /* channelurl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = channelurl.cpp; sourceTree = "<group>"; };
-		FEB445411AC14A3B008EECB3 /* channelurl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = channelurl.h; sourceTree = "<group>"; };
+		FEB445601AC3EC67008EECB3 /* logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = logger.cpp; sourceTree = "<group>"; };
+		FEB445611AC3EC67008EECB3 /* logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = logger.h; sourceTree = "<group>"; };
+		FEB445641AC3EC75008EECB3 /* channel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = channel.cpp; sourceTree = "<group>"; };
+		FEB445651AC3EC75008EECB3 /* channel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = channel.h; sourceTree = "<group>"; };
+		FEB445661AC3EC75008EECB3 /* channelmgr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = channelmgr.cpp; sourceTree = "<group>"; };
+		FEB445671AC3EC75008EECB3 /* channelmgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = channelmgr.h; sourceTree = "<group>"; };
+		FEB445681AC3EC75008EECB3 /* channelurl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = channelurl.cpp; sourceTree = "<group>"; };
+		FEB445691AC3EC75008EECB3 /* channelurl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = channelurl.h; sourceTree = "<group>"; };
+		FEB4456A1AC3EC75008EECB3 /* sourceclient.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sourceclient.cpp; sourceTree = "<group>"; };
+		FEB4456B1AC3EC75008EECB3 /* sourceclient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sourceclient.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,8 +159,6 @@
 				FEB444071ABA34C9008EECB3 /* buffer.h */,
 				FEB444081ABA34C9008EECB3 /* endpoint.cpp */,
 				FEB444091ABA34C9008EECB3 /* endpoint.h */,
-				FEB4440A1ABA34C9008EECB3 /* logger.cpp */,
-				FEB4440B1ABA34C9008EECB3 /* logger.h */,
 				FEB4440C1ABA34C9008EECB3 /* mediaslice.cpp */,
 				FEB4440D1ABA34C9008EECB3 /* mediaslice.h */,
 				FEB4440E1ABA34C9008EECB3 /* network.cpp */,
@@ -196,6 +194,7 @@
 		FEB4443A1ABA34D0008EECB3 /* peer */ = {
 			isa = PBXGroup;
 			children = (
+				FEB445631AC3EC74008EECB3 /* channel */,
 				FEB444CE1ABFD7DB008EECB3 /* rtsp */,
 				FEB4443B1ABA34D0008EECB3 /* app */,
 			);
@@ -205,14 +204,8 @@
 		FEB4443B1ABA34D0008EECB3 /* app */ = {
 			isa = PBXGroup;
 			children = (
-				FEB445401AC14A3A008EECB3 /* channelurl.cpp */,
-				FEB445411AC14A3B008EECB3 /* channelurl.h */,
-				FEB444ED1ABFD89C008EECB3 /* channel.cpp */,
-				FEB444EE1ABFD89C008EECB3 /* channel.h */,
-				FEB444EF1ABFD89C008EECB3 /* channelmgr.cpp */,
-				FEB444F01ABFD89C008EECB3 /* channelmgr.h */,
-				FEB444E71ABFD814008EECB3 /* sourceclient.cpp */,
-				FEB444E81ABFD814008EECB3 /* sourceclient.h */,
+				FEB445601AC3EC67008EECB3 /* logger.cpp */,
+				FEB445611AC3EC67008EECB3 /* logger.h */,
 				FEB444F31AC07C58008EECB3 /* settings.cpp */,
 				FEB444F41AC07C59008EECB3 /* settings.h */,
 				FEB4443C1ABA34D0008EECB3 /* peer.cpp */,
@@ -237,6 +230,21 @@
 				FEB4450D1AC085D8008EECB3 /* rtspstream.h */,
 			);
 			path = rtsp;
+			sourceTree = "<group>";
+		};
+		FEB445631AC3EC74008EECB3 /* channel */ = {
+			isa = PBXGroup;
+			children = (
+				FEB445641AC3EC75008EECB3 /* channel.cpp */,
+				FEB445651AC3EC75008EECB3 /* channel.h */,
+				FEB445661AC3EC75008EECB3 /* channelmgr.cpp */,
+				FEB445671AC3EC75008EECB3 /* channelmgr.h */,
+				FEB445681AC3EC75008EECB3 /* channelurl.cpp */,
+				FEB445691AC3EC75008EECB3 /* channelurl.h */,
+				FEB4456A1AC3EC75008EECB3 /* sourceclient.cpp */,
+				FEB4456B1AC3EC75008EECB3 /* sourceclient.h */,
+			);
+			path = channel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -308,7 +316,6 @@
 			files = (
 				FEB444281ABA34C9008EECB3 /* buffer.cpp in Sources */,
 				FEB444291ABA34C9008EECB3 /* endpoint.cpp in Sources */,
-				FEB4442A1ABA34C9008EECB3 /* logger.cpp in Sources */,
 				FEB4442B1ABA34C9008EECB3 /* mediaslice.cpp in Sources */,
 				FEB4442C1ABA34C9008EECB3 /* network.cpp in Sources */,
 				FEB4442D1ABA34C9008EECB3 /* os.cpp in Sources */,
@@ -325,9 +332,6 @@
 				FEB444391ABA34C9008EECB3 /* tinyxmlparser.cpp in Sources */,
 				FEB444611ABA34D0008EECB3 /* peer.cpp in Sources */,
 				FEB4447A1ABA3963008EECB3 /* tcpconnection.cpp in Sources */,
-				FEB444EB1ABFD814008EECB3 /* sourceclient.cpp in Sources */,
-				FEB444F11ABFD89C008EECB3 /* channel.cpp in Sources */,
-				FEB444F21ABFD89C008EECB3 /* channelmgr.cpp in Sources */,
 				FEB444F51AC07C5A008EECB3 /* settings.cpp in Sources */,
 				FEB4450E1AC085D8008EECB3 /* rtspconnection.cpp in Sources */,
 				FEB4450F1AC085D8008EECB3 /* rtspmessage.cpp in Sources */,
@@ -337,7 +341,11 @@
 				FEB445161AC08A65008EECB3 /* httpmessage.cpp in Sources */,
 				FEB445291AC09B18008EECB3 /* rtsplistener.cpp in Sources */,
 				FEB4453E1AC145B6008EECB3 /* udpsocket.cpp in Sources */,
-				FEB445421AC14A3C008EECB3 /* channelurl.cpp in Sources */,
+				FEB445621AC3EC68008EECB3 /* logger.cpp in Sources */,
+				FEB4456C1AC3EC75008EECB3 /* channel.cpp in Sources */,
+				FEB4456D1AC3EC75008EECB3 /* channelmgr.cpp in Sources */,
+				FEB4456E1AC3EC75008EECB3 /* channelurl.cpp in Sources */,
+				FEB4456F1AC3EC75008EECB3 /* sourceclient.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

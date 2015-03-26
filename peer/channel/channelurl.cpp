@@ -14,3 +14,7 @@ ChannelUrl::~ChannelUrl()
     
 }
 
+std::string ChannelUrl::cid() const
+{
+    return _cid;
+}

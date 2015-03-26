@@ -5,19 +5,23 @@
 #include "rtspsession.h"
 #include "rtspconnection.h"
 #include "rtspstream.h"
+#include "channelmgr.h"
+#include "channel.h"
 #include <sstream>
 
-RtspSession::RtspSession(const std::string& sid, const std::string& media)
+RtspSession::RtspSession(const std::string& sid, const std::string& cid)
 : _sid(sid)
-, _media(media)
 , _state(INIT)
 {
-
+    _channel = theChannelMgr.GetChannel(cid);
 }
 
 RtspSession::~RtspSession()
 {
-    std::cout << "RtspSession::~RtspSession() " << _sid << "\n";
+    if(_channel != NULL)
+    {
+        theChannelMgr.ReleaseChannel(_channel->id());
+    }
 }
 
 bool RtspSession::run()

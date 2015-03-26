@@ -8,13 +8,16 @@
 RtspListener::RtspListener(RtspServer* server)
 : _server(server)
 {
-
+    assert(_server != NULL);
 }
 
 RtspListener::~RtspListener()
 {
     
 }
+
+// Return false will let the listening socket dropped
+// Dont return false if no error occured
 
 bool RtspListener::OnAccept()
 {

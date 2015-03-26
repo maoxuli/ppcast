@@ -5,19 +5,21 @@
 #include "channel.h"
 #include "endpoint.h"
 #include "sourceclient.h"
+#include "rtspsession.h"
 
 Channel::Channel(const ChannelUrl& url)
 : _url(url)
+, _stopped(true)
 {
     _sourceClient = NULL;
 }
 
 Channel::~Channel()
 {
-    Stop();
+    Close();
 }
 
-bool Channel::Start()
+bool Channel::Intialize()
 {
     if(StartThread())
     {
@@ -39,9 +41,17 @@ bool Channel::Start()
     return true;
 }
 
-void Channel::Stop()
+void Channel::Close()
 {
     StopThread();
+    
+    // Notify all rtsp session
+    for(std::vector<RtspSession*>::iterator it = _sessions.begin(); it != _sessions.end(); ++it)
+    {
+        RtspSession* session = *it;
+        assert(session != NULL);
+        session->setChannel(this);
+    }
 }
 
 void Channel::OnRun()
