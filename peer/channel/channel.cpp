@@ -16,12 +16,12 @@ Channel::Channel(const ChannelUrl& url)
 
 Channel::~Channel()
 {
-    Close();
+    Stop();
 }
 
-bool Channel::Intialize()
+bool Channel::Start()
 {
-    if(StartThread())
+    if(!StartThread())
     {
         return false;
     }
@@ -38,20 +38,19 @@ bool Channel::Intialize()
         }
     }
     
+    _stopped = false;
     return true;
 }
 
-void Channel::Close()
+void Channel::Stop()
 {
     StopThread();
-    
-    // Notify all rtsp session
-    for(std::vector<RtspSession*>::iterator it = _sessions.begin(); it != _sessions.end(); ++it)
-    {
-        RtspSession* session = *it;
-        assert(session != NULL);
-        session->setChannel(this);
-    }
+    _stopped = true;
+}
+
+bool Channel::stopped() const
+{
+    return _stopped;
 }
 
 void Channel::OnRun()
@@ -62,7 +61,12 @@ void Channel::OnRun()
     }
 }
 
-std::string Channel::GetSDP()
+std::string Channel::media() const
+{
+    return _url.media();
+}
+
+std::string Channel::sdp() const
 {
     return _sdp;
 }

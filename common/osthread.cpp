@@ -10,7 +10,7 @@ UInt32 __stdcall ThreadStart(void* pParam)
 {
 	OSThread* pThread = (OSThread*)pParam;
 	pThread->OnRun();
-	printf("thread return\n");
+	//printf("thread return\n");
 	return 0;
 }
 #elif _OS_LINUX
@@ -19,7 +19,7 @@ void* ThreadStart(void* pParam)
 	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
 	OSThread* pThread = (OSThread*)pParam;
 	pThread->OnRun();
-	printf("thread return\n");
+	//printf("thread return\n");
      return NULL;
 }
 #endif

@@ -66,6 +66,9 @@ bool Selector::RemoveAll(bool bDelete)
 
 		if(pSock != NULL && bDelete == TRUE )
 		{
+            // There is a potential problem here
+            // If socket (or derived) object is not removed but deleted by user
+            // Here will be a second delete
 			delete pSock;
 			pSock = NULL;
 		}

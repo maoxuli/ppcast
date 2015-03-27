@@ -118,17 +118,19 @@ bool SourceClient::OnMetaPacket( PPPacket * pPacket )
 bool SourceClient::OnAllowPacket( PPPacket * pPacket )
 {
     theLogger.Message(MSG_ERROR,"Allow join");
-    SendMetaRequest();
+    //SendMetaRequest();
     return true;
 }
 
 bool SourceClient::OnRejectPacket( PPPacket * pPacket )
 {
+    theLogger.Message(MSG_ERROR,"Reject join");
     return false;
 }
 
 bool SourceClient::OnDataFailPacket( PPPacket * pPacket )
 {
+    theLogger.Message(MSG_ERROR,"Data failed");
     return true;
 }
 

@@ -19,10 +19,10 @@ public:
     
     bool Start();
     void Stop();
+    bool stopped() const;
     
-    std::string id();
-    
-    std::string sdp();
+    std::string media() const;
+    std::string sdp() const;
     
     // Override from Selector
     virtual void OnRun();

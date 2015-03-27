@@ -27,10 +27,9 @@ RtspServer::~RtspServer()
         Stop();	
     }
     
-    if(_listener != NULL)
-    {
-        delete _listener;
-    }
+    // If listener is not remove from selector
+    // it will be deleted when selector is destroyed
+    // So do not delete it here
 }
 
 bool RtspServer::Start()
@@ -191,9 +190,9 @@ void RtspServer::OnOptionsRequest(RtspRequest* request, RtspConnection* conn)
     assert(request != NULL);
     assert(conn != NULL);
     
-    // URL: rtsp:// 127.0.0.1:9960/movies/test.wmv?source=...&tracker=...&...
-    ChannelUrl url(request->url());
-    theChannelMgr.StartChannel(url);
+    // URL: rtsp:// 127.0.0.1:9960/movies/test.wmv?id=...&source=...&tracker=...&logger=...
+    //ChannelUrl url(request->url());
+    //theChannelMgr.StartChannel(url);
     
     RtspResponse response;
     response.setStatus(200);
@@ -210,16 +209,16 @@ void RtspServer::OnDescribeRequest(RtspRequest* request, RtspConnection* conn)
     assert(request != NULL);
     assert(conn != NULL);
     
-    // URL: rtsp:// 127.0.0.1:9960/movies/test.wmv?
+    // URL: rtsp:// 127.0.0.1:9960/movies/test.wmv?id=...&
     ChannelUrl url(request->url());
-    Channel* channel = theChannelMgr.GetChannel(url.cid());
+    Channel* channel = theChannelMgr.GetChannel(url.media());
     if(channel == NULL)
     {
         return;
     }
     
     std::string sdp = channel->sdp();
-    theChannelMgr.ReleaseChannel(channel->id());
+    theChannelMgr.ReleaseChannel(channel->media());
     if(sdp.empty())
     {
         // Let rtsp client retry
@@ -250,10 +249,11 @@ void RtspServer::OnSetupRequest(RtspRequest* request, RtspConnection* conn)
     assert(conn != NULL);
     
     // URL: rtsp: //127.0.0.1:9960/movies/test.wmv/[rtx/audio/video]
-    std::string url = request->url();
-    size_t pos = url.rfind("/");
-    std::string streamName = url.substr(pos + 1);
-    std::string mediaName = url.erase(pos);
+    ChannelUrl url(request->url());
+    std::string media = url.media();
+    size_t pos = media.rfind("/");
+    std::string stream = media.substr(pos + 1);
+    media = media.erase(pos);
     
     // At this point, 
     // if it is first setup command, should no session id assigned
@@ -265,11 +265,11 @@ void RtspServer::OnSetupRequest(RtspRequest* request, RtspConnection* conn)
         session = findSession(sid);
         assert(session != NULL);
         assert(sid == session->id());
-        assert(mediaName == session->media());
+        assert(media == session->media());
     }
     else
     {
-        session = createSession(mediaName);
+        session = createSession(media);
         assert(session != NULL);
         sid = session->id();
     }
@@ -285,12 +285,12 @@ void RtspServer::OnSetupRequest(RtspRequest* request, RtspConnection* conn)
     //if( rqtHdr.CanUDP() )
     {
         // Over UDP
-        session->setupStream(streamName, serverPort, clientPort);
+        session->setupStream(stream, serverPort, clientPort);
     }
     //else
     {
         // Over TCP
-        session->setupStream(streamName, conn);
+        session->setupStream(stream, conn);
     }
     
     // Response
@@ -301,7 +301,7 @@ void RtspServer::OnSetupRequest(RtspRequest* request, RtspConnection* conn)
     response.setHeader("Session", sid);
     
     // Stream name: rtx, audio, video
-    if( streamName == "rtx" )
+    if( stream == "rtx" )
     {
         response.setHeader("RealChallenge3","d67b8f21bf272fd5020e9fbb08428cfa4f213d09,sdr=abcdabcd");
         
@@ -310,12 +310,12 @@ void RtspServer::OnSetupRequest(RtspRequest* request, RtspConnection* conn)
         << ";client_port=" << clientPort << "-" << clientPort + 1 << ";ssrc=f2bde83e;mode=PLAY";
         response.setHeader("Transport",oss.str());
     }
-    else if(streamName == "audio" )
+    else if(stream == "audio" )
     {
         response.setHeader("RealChallenge3","d67b8f21bf272fd5020e9fbb08428cfa4f213d09,sdr=abcdabcd");
         response.setHeader("Transport","RTP/AVP/TCP;unicast;interleaved=2-3;ssrc=bedf8d08;mode=PLAY");
     }
-    else if(streamName == "video" )
+    else if(stream == "video" )
     {
         response.setHeader("Transport","RTP/AVP/TCP;unicast;interleaved=4-5;ssrc=bedf8d2d;mode=PLAY");
     }

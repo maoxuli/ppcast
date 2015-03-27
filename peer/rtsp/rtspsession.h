@@ -19,7 +19,7 @@ class Channel;
 class RtspSession
 {  
 public:
-    RtspSession(const std::string& sid, const std::string& cid);
+    RtspSession(const std::string& sid, const std::string& media);
     virtual ~RtspSession();
     
     // Driven by external to run
@@ -28,8 +28,8 @@ public:
     void close();
     
     // Identifier
-    std::string id();
-    std::string media();
+    std::string id() const;
+    std::string media() const;
 
     // Get all streams info	(for RTSP response)	
     std::string streamsInfo();
@@ -56,6 +56,7 @@ public:
 protected:
     // Identifier
     std::string _sid;
+    std::string _media;
 
     // State of session
     enum {INIT, READY, PLAYING};

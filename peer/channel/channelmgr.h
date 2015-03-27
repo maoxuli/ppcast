@@ -20,11 +20,13 @@ public:
 
     // A channel is identified with a channel id
     bool StartChannel(const ChannelUrl& url);
-    void StopChannel(const std::string& cid);
+    void StopChannel(const std::string& media);
+    
+    std::vector<std::string> GetChannelList();
     
     // Channel pointer is protected by reference counting
-    Channel* GetChannel(const std::string& cid);
-    void ReleaseChannel(const std::string& cid);
+    Channel* GetChannel(const std::string& media);
+    void ReleaseChannel(const std::string& media);
     
 private:   
     class ChannelWrapper
@@ -32,7 +34,7 @@ private:
     public:
         ChannelWrapper(Channel* channel)
         : _channel(channel)
-        , _ref(1)
+        , _ref(0)
         {
             
         }

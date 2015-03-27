@@ -9,18 +9,19 @@
 #include "channel.h"
 #include <sstream>
 
-RtspSession::RtspSession(const std::string& sid, const std::string& cid)
+RtspSession::RtspSession(const std::string& sid, const std::string& media)
 : _sid(sid)
+, _media(media)
 , _state(INIT)
 {
-    _channel = theChannelMgr.GetChannel(cid);
+    _channel = theChannelMgr.GetChannel(_media);
 }
 
 RtspSession::~RtspSession()
 {
     if(_channel != NULL)
     {
-        theChannelMgr.ReleaseChannel(_channel->id());
+        theChannelMgr.ReleaseChannel(_channel->media());
     }
 }
 
@@ -34,12 +35,12 @@ void RtspSession::close()
     
 }
     
-std::string RtspSession::id()
+std::string RtspSession::id() const
 {
     return _sid;
 }
 
-std::string RtspSession::media()
+std::string RtspSession::media() const
 {
     return _media;
 }

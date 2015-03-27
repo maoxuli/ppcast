@@ -10,13 +10,19 @@
 class ChannelUrl
 {
 public:
-	ChannelUrl(const std::string& url);
+    ChannelUrl(const std::string& url);
 	virtual ~ChannelUrl();
     
-    std::string cid() const;
+    std::string url() const;
+    std::string media() const;
     
 private:
-    std::string _cid;
+    std::string _url;
+    
+    std::string _protocol;
+    std::string _media;
+    
+    void parse();
 };
 
 #endif 

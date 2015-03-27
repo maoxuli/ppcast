@@ -4,129 +4,109 @@
 
 #include "settings.h"
 #include "rtspserver.h"
+#include "channelmgr.h"
 #include "os.h"
 
 void usage()
 {
     printf("PPCast Peer Server, Copyright 2011-2014 Limlabs.\n"
            "Usage: pppeer [-h] [-v] [-s]\n"
-           "\t -h  : help information\n"
-           "\t -v  : version\n"
-           "\t -s  : running as service (daemon)\n"
+           "-h  : help information\n"
+           "-v  : version\n"
+           "-s  : running as service (daemon)\n"
            );
 }
 
 void version()
 {
     printf("PPCast Peer Server, Copyright 2011-2014 Limlabs.\n"
-           "\t version : %s\n"
-           "\t Build   : %s %s\n",
+           "Version : %s\n"
+           "Build   : %s %s\n",
            PPCAST_PEER_VERSION_STRING,
            __DATE__, __TIME__
            );
 }
 
-void HatApp::menu()
+void menu()
 {
-    cout <<
-	"\n"
-	"Usage:\n"
-	"\n"
-	"select [where] \t\t:Query photos with SQL syntax\n"
-	"score [id] \t\t:Score to find duplicated and like photos\n"
-	"refresh [path] \t:Refresh metadata of photos in a directory\n"
-	"exit \t\t:Exit the application\n"
-	"? \t\t:Display the menu\n"
-	"\n";
+    std::cout <<
+    "Commands:\n"
+	"start url  : Start a channel with given url\n"
+	"stop  cid  : Stop a channel with given channel id\n"
+	"list       : List all channels\n"
+	"exit       : Exit the application\n"
+    "help       : Display the menu\n"
+	"?          : Display the menu\n";
 }
 
-void cmd()
+void exec_cmd()
 {
+    // Display menu
+    menu();
+    
     // Execuate commands
     std::string cmd;
-    do
+    while (true)
     {
         std::cout << ">> ";
         getline(std::cin, cmd);
-        if(cmd.size() >= 6 && cmd.substr(0, 6) == "select")
+        if(cmd.size() >= 5 && cmd.substr(0, 5) == "start")
         {
-            string where = cmd.substr(6);
-            where.erase(where.find_last_not_of(' ')+1); 
-            where.erase(0,where.find_first_not_of(' ')); 
+            std::string url = cmd.substr(5);
+            url.erase(url.find_last_not_of(' ') + 1); 
+            url.erase(0, url.find_first_not_of(' ')); 
             
-            hat::FilterPrx filter = hat::FilterPrx::checkedCast(communicator()->propertyToProxy("Filter.Proxy"));
-            hat::FileInfoSeq files = filter->select(where);
-            int i=0;
-            for (hat::FileInfoSeq::iterator p = files.begin(); p != files.end(); ++p) 
+            if(url.empty())
             {
-                cout << ++i << ":\t" << p->id << "\t" << p->uri << "\t" << p->size << endl;
-            }
-            filter = NULL;           
-        }
-        else if(cmd.size() >= 5 && cmd.substr(0, 5) == "score")
-        {
-            string id = cmd.substr(5);
-            id.erase(id.find_last_not_of(' ')+1); 
-            id.erase(0,id.find_first_not_of(' ')); 
-            int nid = -1;
-            if(!id.empty())
-            {
-                istringstream iss(id);
-                iss >> nid;
+                menu();
+                continue;
             }
             
-            hat::FilterPrx filter = hat::FilterPrx::checkedCast(communicator()->propertyToProxy("Filter.Proxy"));
-            hat::FileInfoSeq files = filter->score(nid);
-            int i=0;
-            for (hat::FileInfoSeq::iterator p = files.begin(); p != files.end(); ++p) 
-            {
-                cout << ++i << ":\t" << p->id << "\t" << p->uri << "\t[" << p->score << "]"<< endl;
-            }
-            filter = NULL; 
+            theChannelMgr.StartChannel(url);
         }
-        else if(cmd.size() >= 7 && cmd.substr(0, 7) == "refresh")
+        else if(cmd.size() >= 4 && cmd.substr(0, 4) == "stop")
         {
-            string path = cmd.substr(7);
-            path.erase(path.find_last_not_of(' ')+1); 
-            path.erase(0,path.find_first_not_of(' ')); 
+            std::string cid = cmd.substr(4);
+            cid.erase(cid.find_last_not_of(' ') + 1); 
+            cid.erase(0, cid.find_first_not_of(' ')); 
             
-            string prefix = "/Users/Shared/Photos";
-            if(((path.size() >= prefix.size()) &&  (path.substr(0, prefix.size()) != prefix))
-               || ((path.size() > 0) && (path.size() < prefix.size())))
+            if(cid.empty())
             {
-                cout << "Wrong path: " << path << endl;
+                menu();
+                continue;
             }
-            else
-            {
-                hat::SynchronizerPrx synchronizer = hat::SynchronizerPrx::checkedCast(communicator()->propertyToProxy("Synchronizer.Proxy"));
-                synchronizer->refresh(path);
-                synchronizer = NULL;
-            }
+            
+            theChannelMgr.StopChannel(cid);
         }
-        else if(cmd == "exit")
+        else if(cmd.size() >= 4 && cmd.substr(0, 4) == "list")
         {
-            // Nothing to do
+            std::vector<std::string> channels = theChannelMgr.GetChannelList();
+            for(std::vector<std::string>::iterator it = channels.begin(); it != channels.end(); ++it)
+            {
+                std::string media = *it;
+                std::cout << media << "\n";
+            }
         }
-        else if(cmd == "?")
+        else if(cmd.size() >= 4 && cmd.substr(0, 4) == "exit")
+        {
+            break;
+        }
+        else if(cmd.size() >= 4 && cmd.substr(0, 4) == "help")
+        {
+            menu();
+        }
+        else if(cmd.size() >= 1 && cmd.substr(0, 1) == "?")
         {
             menu();
         }
         else
         {
-            cout << "Unknown command: " << cmd << endl;
+            std::cout << "Unknown command: " << cmd << std::endl;
             menu();
         }
     }
-    while(cin.good() && cmd != "exit");
 }
     
-// Signals
-bool quit = false;
-void sig(int v_sig)
-{
-    quit = true;
-}
-
 int run()
 {
     
@@ -140,9 +120,9 @@ int run()
     setrlimit(RLIMIT_NOFILE, &rl);
     
     // Signals
-	signal(SIGTERM,sig); // Termination signal
-	signal(SIGUSR1,sig); // User-defined signal 1
-	signal(SIGUSR2,sig); // User-defined signal 2
+	signal(SIGTERM,SIG_IGN); // Termination signal
+	signal(SIGUSR1,SIG_IGN); // User-defined signal 1
+	signal(SIGUSR2,SIG_IGN); // User-defined signal 2
     
 	// Ignore signals
 	signal(SIGTTOU,SIG_IGN); //Terminal output for background process
@@ -164,13 +144,10 @@ int run()
     }
     
     // Signal
-    signal(SIGINT,sig); // Interrupt from keyboard
+    signal(SIGINT,SIG_IGN); // Interrupt from keyboard
     
-    // Wait for terminate
-    while(quit == false)
-    {
-        cmd();
-    }
+    // Wait for exit
+    exec_cmd();
     
     // Exit
     theRtspServer.Stop();
